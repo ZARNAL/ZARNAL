@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>💖 Alexa Cute Whisper</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+--light-bg: linear-gradient(135deg, #ffe4ec, #e3f0ff);
+--dark-bg: #1c1c1c;
+--light-text: #444;
+--dark-text: #eee;
+--pink: #ff7aa2;
+--pink-hover: #ff5c8a;
+}
+
+* {
+box-sizing: border-box;
+}
+
+body {
+margin: 0;
+padding: 20px;
+font-family: 'Comic Sans MS', cursive, sans-serif;
+background: var(--light-bg);
+color: var(--light-text);
+min-height: 100%;
+transition: all 0.3s ease-in-out;
+}
+
+.dark {
+background: var(--dark-bg);
+color: var(--dark-text);
+}
+
+.back-arrow {
+position: fixed;
+top: 16px;
+left: 16px;
+width: 38px;
+height: 38px;
+border-radius: 50%;
+background: rgba(255, 255, 255, 0.8);
+display: flex;
+align-items: center;
+justify-content: center;
+text-decoration: none;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+transition: background 0.3s ease;
+z-index: 10001;
+}
+
+.dark .back-arrow {
+background: rgba(60, 60, 60, 0.8);
+}
+
+.back-arrow:hover {
+background: var(--pink);
+}
+
+.back-arrow svg {
+width: 18px;
+height: 18px;
+fill: var(--pink);
+transition: fill 0.3s;
+}
+
+.dark .back-arrow svg {
+fill: #fff;
+}
+
+.back-arrow:hover svg {
+fill: white;
+}
+
+.switch-container {
+position: fixed;
+top: 15px;
+right: 20px;
+z-index: 10000;
+}
+
+.switch {
+position: relative;
+display: inline-block;
+width: 50px;
+height: 26px;
+}
+
+.switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0; left: 0; right: 0; bottom: 0;
+background-color: #ccc;
+border-radius: 26px;
+transition: 0.4s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 20px;
+width: 20px;
+left: 3px;
+bottom: 3px;
+background-color: white;
+border-radius: 50%;
+transition: 0.4s;
+}
+
+input:checked + .slider {
+background-color: #ff7aa2;
+}
+
+input:checked + .slider:before {
+transform: translateX(24px);
+}
+
+#codeOverlay {
+position: fixed;
+top: 0; left: 0;
+width: 100vw;
+height: 100vh;
+background: var(--light-bg);
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+z-index: 9999;
+transition: background 0.3s ease-in-out;
+}
+
+.dark #codeOverlay {
+background: var(--dark-bg);
+}
+
+#codeOverlay input {
+padding: 12px;
+font-size: 16px;
+border-radius: 10px;
+border: 1px solid #ccc;
+text-align: center;
+margin-bottom: 10px;
+outline: none;
+}
+
+#codeOverlay button {
+padding: 10px 25px;
+font-size: 16px;
+background-color: var(--pink);
+color: white;
+border: none;
+border-radius: 20px;
+cursor: pointer;
+}
+
+#codeError {
+color: red;
+margin-top: 10px;
+display: none;
+}
+
+.container {
+background-color: rgba(255, 255, 255, 0.9);
+border-radius: 20px;
+padding: 30px 25px;
+box-shadow: 0 12px 30px rgba(255, 122, 162, 0.3);
+text-align: center;
+max-width: 600px;
+margin: 80px auto 40px;
+z-index: 2;
+position: relative;
+}
+
+.dark .container {
+background-color: rgba(44, 44, 44, 0.95);
+}
+
+h2, h3 {
+font-size: 26px;
+margin-bottom: 20px;
+color: var(--pink);
+}
+
+.dark h2, .dark h3 {
+color: #ff99bb;
+}
+
+textarea {
+width: 90%;
+height: 120px;
+padding: 15px;
+margin: 15px 0;
+font-size: 16px;
+border: none;
+border-radius: 15px;
+background: #fffafc;
+box-shadow: inset 0 0 6px rgba(255, 112, 159, 0.2);
+resize: none;
+outline: none;
+}
+
+.dark textarea {
+background: #2b2b2b;
+color: #eee;
+}
+
+.preset-buttons {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 10px;
+margin: 15px 0;
+}
+
+.preset-buttons button {
+background-color: #ffd2e5;
+color: #333;
+padding: 8px 15px;
+border: none;
+border-radius: 20px;
+cursor: pointer;
+font-size: 14px;
+transition: background-color 0.2s;
+}
+
+.dark .preset-buttons button {
+background-color: #444;
+color: #fff;
+}
+
+button {
+margin-top: 10px;
+padding: 12px 28px;
+font-size: 16px;
+background-color: var(--pink);
+color: white;
+border: none;
+border-radius: 30px;
+cursor: pointer;
+box-shadow: 0 8px 15px rgba(255, 122, 162, 0.3);
+transition: 0.3s;
+}
+
+button:hover {
+background-color: var(--pink-hover);
+}
+
+#status {
+margin-top: 15px;
+font-size: 16px;
+color: #6b6b6b;
+}
+
+.heart {
+position: fixed;
+width: 20px;
+height: 20px;
+background-color: #ff7aa2;
+transform: rotate(45deg);
+animation: float 8s infinite ease-in-out;
+z-index: 1;
+}
+
+.heart::before,
+.heart::after {
+content: "";
+position: absolute;
+width: 20px;
+height: 20px;
+background-color: #ff7aa2;
+border-radius: 50%;
+}
+
+.heart::before {
+top: -10px;
+left: 0;
+}
+
+.heart::after {
+left: -10px;
+top: 0;
+}
+
+@keyframes float {
+0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
+}
+
+/* GIF section */
+#randomGifContainer {
+text-align: center;
+margin-top: 0px;
+}
+
+#randomGif {
+width: 40px;
+max-width: 60px;
+height: auto;
+border-radius: 15px;
+box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+h2 {
+font-size: 22px;
+}
+
+button, .preset-buttons button {
+font-size: 13px;
+padding: 8px 18px;
+}
+
+.container {
+padding: 20px 15px;
+margin-top: 80px;
+}
+
+textarea {
+height: 100px;
+font-size: 16px;
+}
+
+#randomGif {
+width: 45vw;
+max-width: 140px;
+}
+}
+</style>
+</head>
+<body>
+
+<a href="https://zarnal.odoo.com/funcollector" class="back-arrow" aria-label="Back">
+<svg viewBox="0 0 24 24">
+<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+</svg>
+</a>
+
+<div class="switch-container">
+<label class="switch">
+<input type="checkbox" id="darkToggle" onchange="toggleDark()">
+<span class="slider"></span>
+</label>
+</div>
+
+<div id="codeOverlay">
+<h3>🔒 Enter Secret Code</h3>
+<input type="password" id="codeInput" placeholder="Enter code...">
+<button onclick="checkSecret()">Unlock 💌</button>
+<div id="codeError">❌ Wrong code. Try again.</div>
+</div>
+
+<div class="container">
+<h2>💘 Alexa Cute Whisper 💬</h2>
+<textarea id="text" placeholder="Write a cute or funny sound to Alexa 💌"></textarea>
+
+<div class="preset-buttons">
+<button onclick="setText('meow meow meooooow nya nya nyaaa~')">🐱</button>
+<button onclick="setText('woof woof arf arf awooooo')">🐶</button>
+<button onclick="setText('raaawrrr grrrr roooaaarrr')">🦁</button>
+<button onclick="setText('oooooo ooooooo woooooo')">👻</button>
+
+<button onclick="setText('quack quack quaaaaaack wacka wacka')">🦆</button>
+
+<button onclick="setText('ooh ooh aah aah eee eee eee')">🐵</button>
+
+<button onclick="setText('ssssssss sss ssss hissssss')">🐍</button>
+<button onclick="setText('baaaa baaa baaaaah meh meh')">🐐</button>
+
+<button onclick="setText('waddle waddle brrrrr waddle brrrr')">🐧</button>
+<button onclick="setText('squeak squeak eek eek eek eek')">🐭</button>
+<button id="hatttBtn" onclick="setText('hattt')">𝓱𝓪𝓽𝓽𝓽😏</button>
+<button id="hellowBtn" onclick="setText('hellow')">нєℓℓσ😘</button>
+<button id="hellowBtn" onclick="setText('duttthsss ruuppe teee turrrturreee')"> 😋 kurkure </button>
+<button id="hellowBtn" onclick="setText('Mango Frooti, Fresh and Juicy!')">🧃Frooti </button>
+<button id="hellowBtn" onclick="setText('Jaleebiiieeeeee… yummyyy yummm!')">🌀Jalebi </button>
+<button id="hellowBtn" onclick="setText('Poppp popppp POPCORN!!')">🍿popcorn </button>
+
+
+</div>
+
+<button onclick="sendToAlexa()">✨ Whisper to Alexa</button>
+<p id="status"></p>
+</div>
+
+<div id="randomGifContainer">
+<img id="randomGif" src="" alt="Cute Alexa Gif">
+</div>
+
+<script>
+for (let i = 0; i < 15; i++) {
+let heart = document.createElement("div");
+heart.className = "heart";
+heart.style.left = Math.random() * 100 + "vw";
+heart.style.animationDuration = 5 + Math.random() * 5 + "s";
+heart.style.opacity = 0.4 + Math.random() * 0.6;
+document.body.appendChild(heart);
+}
+
+function setText(message) {
+document.getElementById("text").value = message;
+}
+
+function toggleDark() {
+document.body.classList.toggle('dark');
+localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+}
+
+window.onload = () => {
+if (localStorage.getItem('darkMode') === 'true') {
+document.body.classList.add('dark');
+document.getElementById('darkToggle').checked = true;
+}
+
+const gifs = [
+"https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754576539/panda-bear-brown-bear_hwf3wo.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578120/cuddles-panda_rtkz66.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578119/panda-bear_zvstkv.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578119/sseeyall-bubu-dudu_hapgae.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578119/bubu-dudu_g9gw2u.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578119/panda-bear_zvstkv.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578118/bubu-bubu-dudu_wtl9y7.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578118/bubu-dudu-bubu_tajstx.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578117/tkthao219-bubududu_onda15.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578118/peach-goma_brrxsg.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578118/bubududu-panda_c9mhy3.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578117/love-couple_g3strq.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578117/love-you-too_zq2vnf.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578105/bubu-bubu-dudu_1_b66imi.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578105/mimibubu_wva3xo.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578104/bubu-dudu_1_ca8xno.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578104/saltobears_fewlbf.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578104/bear-kiss-bear-kisses_vvh7fg.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578104/tkthao219-bubududu_1_xoaxec.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578104/bear-run-cant-run_b3rqur.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578104/bubu-bubu-dudu_2_uctsyp.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578103/cat-kiss_xhm0pd.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578103/love-bear_sgu52b.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578103/tkthao219-bubududu_2_pejevk.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578090/tkthao219-bubududu_3_whoqao.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578090/tkthao219-bubududu_4_dpvcse.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578089/tkthao219-bubududu_7_osfrqr.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578089/bear_kzctcy.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578089/tkthao219-bubududu_5_msyaus.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578089/tkthao219-bubududu_6_nseqss.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578089/bubududu-panda_1_rgueti.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578088/bear-panda_lpmknv.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578088/tkthao219-bubududu_8_a2j7br.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578088/hahaha-bubu_motuwb.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578088/tkthao219-bubududu_9_jta1qv.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578088/tonibear-bubu_xemkzz.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578088/bubu-bubu-dudu_3_r33abc.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578087/bubududu-panda_2_dlisnz.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578067/nivin-ilhan_lisiht.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578067/bubu-bubu-dudu_4_beclrd.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578067/bubu-dudu-sseeyall_net0ib.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578066/bubududu-panda_3_grq1ec.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578066/bubududu-panda_4_uvsaou.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578066/snek-bubu_wfy43w.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578065/peach-goma_1_g0t9rg.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578065/hug-couple_wbfjbo.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578065/milk-and-mocha_rokuxs.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578065/peach-and-goma-peach-goma_thsaaf.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578065/chips-peach_jecw1r.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578064/cute-kawaii-cartoon-panda-playing-on-phone-cgsdyn1a5n4zyzvl_nkzueh.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754578064/tkthao219-bubududu_10_q2oixz.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754806845/couple-massage_tcggtc.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754806929/peach-goma-love_ujwm86.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754806968/lpg_hgl6ib.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754807213/2251360657abf442d60835e9f45a0a9a_drlxwj.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754807218/48806ed88acb18dca1b2c420c77829b7_pbnt6y.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754807380/2688a67201845a2da5a14c8403177fd0_ulkarq.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754807381/eaf6b73fc12fa5571ac59e1b325a3ae1_dsfuxh.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754807586/ccc730c2647376c0263dc6298daa6dba_rfps76.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754807587/5d7895762f89f86be8202c743a06a7cb_xathyd.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754807589/42d4bf125045663c90759573b1d41872_ueevav.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754807708/28090ec41b73b210a82c1b33bbddfacb_xb3ytl.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809308/16e67611eb8371794b860162388ae76c_vx1wen.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809340/d4f1bc9148e2132443505868b99ccdfb_k8lvxf.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809389/2d18ffe32d92e77ba6c3d58105485956_houyew.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809451/10011c21993c95cf4f7daf93318dad9f_jpzjeb.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809452/bc70137c0f78423789581c8b0d7f1bbe_hirgpv.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809452/1289728d18bdee119db68f8021cb670e_akyb1g.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809452/3cfbac19517bfa76fad392d339d923a8_nbndjo.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809452/79b07e30cbcdd481b55762342c353867_sow7iy.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809453/bbbc6c98b5bd212f211cc4b7b83df5be_xgbuac.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809453/67b509cf7cc80b3db05e29dfc9ea83e0_qu3a6t.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809454/242e3b85f6c6a52a231acb1d020df0fd_rck5eo.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809465/f43f730ec9696ae44abc03d360d51992_fzvfg7.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809465/1708321beeea08e056914308d7747280_vfth35.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809465/a22d81edde0d9d9172026893670356e2_qfuehd.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809466/eb76377d32e88623e409c3bf62465498_wcbcch.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809466/bad3752fe7645dd3b3bd4d6cf3eb1424_gbwzeh.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809467/5d942674089d3a885ac784393449c625_pl5ro1.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809467/3efa678e5a3e2de24d5e485b5da23b9a_u41yrz.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809467/8b6c119f72ca2841a673394741d1c4b1_vwyqq5.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809468/13896a7fbb6752a1481b3adf95d1756b_vmzblh.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809479/bbd6992df72213ef1bae5d065ed06ce4_iiyi1z.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754809479/d8909bf66b490496c26382969cfdaed9_tsynnu.gif",
+
+];
+const gifElement = document.getElementById("randomGif");
+const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
+gifElement.src = randomGif;
+};
+
+async function sendToAlexa() {
+const text = document.getElementById("text").value.trim();
+const status = document.getElementById("status");
+
+if (!text) {
+status.innerText = "🌸 Please enter a cute message!";
+return;
+}
+
+status.innerText = "💌 Sending love to Alexa...";
+
+const response = await fetch("https://api-v2.voicemonkey.io/announcement", {
+method: "POST",
+headers: {
+"Content-Type": "application/json",
+"Authorization": "ceaf115ac415b9674a43dfb33322e2ef_df91f7d5637439e6586689aa4caa93d1"
+},
+body: JSON.stringify({
+device: "echo",
+text: text
+})
+});
+
+if (response.ok) {
+status.innerText = "💖 Alexa is whispering your sweet message!";
+} else {
+const errorData = await response.json();
+status.innerText = "❌ Error: " + (errorData?.error || "Something went wrong");
+}
+}
+
+function checkSecret() {
+const input = document.getElementById("codeInput").value.trim().toLowerCase();
+const validCodes = ["booboo", "payal5295"];
+const overlay = document.getElementById("codeOverlay");
+const error = document.getElementById("codeError");
+
+if (validCodes.includes(input)) {
+overlay.style.display = "none";
+
+// If code is 'payal5295', hide specific buttons
+if (input === "payal5295") {
+document.getElementById("hatttBtn").style.display = "none";
+document.getElementById("hellowBtn").style.display = "none";
+}
+} else {
+error.style.display = "block";
+}
+}
+</script>
+</body>
+</html>
