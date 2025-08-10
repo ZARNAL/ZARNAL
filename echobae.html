@@ -6,6 +6,7 @@
 <title>💖 Alexa Cute Whisper</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
+/* Your existing CSS remains unchanged */
 :root {
 --light-bg: linear-gradient(135deg, #ffe4ec, #e3f0ff);
 --dark-bg: #1c1c1c;
@@ -306,8 +307,8 @@ max-width: 60px;
 height: auto;
 border-radius: 15px;
 box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+cursor: pointer; /* Add cursor to indicate clickability */
 }
-
 @media (max-width: 768px) {
 h2 {
 font-size: 22px;
@@ -366,14 +367,10 @@ max-width: 140px;
 <button onclick="setText('woof woof arf arf awooooo')">🐶</button>
 <button onclick="setText('raaawrrr grrrr roooaaarrr')">🦁</button>
 <button onclick="setText('oooooo ooooooo woooooo')">👻</button>
-
 <button onclick="setText('quack quack quaaaaaack wacka wacka')">🦆</button>
-
 <button onclick="setText('ooh ooh aah aah eee eee eee')">🐵</button>
-
 <button onclick="setText('ssssssss sss ssss hissssss')">🐍</button>
 <button onclick="setText('baaaa baaa baaaaah meh meh')">🐐</button>
-
 <button onclick="setText('waddle waddle brrrrr waddle brrrr')">🐧</button>
 <button onclick="setText('squeak squeak eek eek eek eek')">🐭</button>
 <button id="hatttBtn" onclick="setText('hattt')">𝓱𝓪𝓽𝓽𝓽😏</button>
@@ -382,8 +379,6 @@ max-width: 140px;
 <button id="hellowBtn" onclick="setText('Mango Frooti, Fresh and Juicy!')">🧃Frooti </button>
 <button id="hellowBtn" onclick="setText('Jaleebiiieeeeee… yummyyy yummm!')">🌀Jalebi </button>
 <button id="hellowBtn" onclick="setText('Poppp popppp POPCORN!!')">🍿popcorn </button>
-
-
 </div>
 
 <button onclick="sendToAlexa()">✨ Whisper to Alexa</button>
@@ -391,7 +386,7 @@ max-width: 140px;
 </div>
 
 <div id="randomGifContainer">
-<img id="randomGif" src="" alt="Cute Alexa Gif">
+<img id="randomGif" src="" alt="Cute Alexa Gif" onclick="changeGif()"> <!-- Added onclick event -->
 </div>
 
 <script>
@@ -411,12 +406,6 @@ document.getElementById("text").value = message;
 function toggleDark() {
 document.body.classList.toggle('dark');
 localStorage.setItem('darkMode', document.body.classList.contains('dark'));
-}
-
-window.onload = () => {
-if (localStorage.getItem('darkMode') === 'true') {
-document.body.classList.add('dark');
-document.getElementById('darkToggle').checked = true;
 }
 
 const gifs = [
@@ -505,12 +494,54 @@ const gifs = [
 "https://res.cloudinary.com/dspclllob/image/upload/v1754809468/13896a7fbb6752a1481b3adf95d1756b_vmzblh.gif",
 "https://res.cloudinary.com/dspclllob/image/upload/v1754809479/bbd6992df72213ef1bae5d065ed06ce4_iiyi1z.gif",
 "https://res.cloudinary.com/dspclllob/image/upload/v1754809479/d8909bf66b490496c26382969cfdaed9_tsynnu.gif",
-
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842274/a00b4421546637a6c9d0819e684beb0c_wjm61p.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842275/48850e2d2837d0ebb445f0d9f98bdea0_makefh.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842275/982df221674d4cde7fb4fedc663b807a_uodyu5.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842275/30474121780979cf78ea9309db7b3b66_y6nwut.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842275/6d099df10e5728a1a8f4d63ce274364b_gjt809.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842275/8fc3722e384bbc6617e7d4aba2185ab4_rwouug.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842276/390bff4ee30c3ee10a1efced40dad737_dswox8.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842276/aac0e909ff1499281d3109c8d1d6e065_ok8mco.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842276/bfc12f1502e603c5a4c2eef529fd1eb5_qtwjsg.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842276/87a8cd19d47f3845c2b637c0d2ba6f14_kbvsec.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842277/dd0b4d7a5ee5fbbbdfb3554c78a841ec_rozb4r.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842277/8c75e4d89d5e19632b2ec71f347b9439_glorbj.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842277/d4ce51d91979d15735464e9abc9db878_rdxoxu.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842278/67930df0a79b4428ed7ca1742d107d21_kctulx.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842278/8aed51c3e42a0d8f2156752903930a50_k34qyy.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842278/0831a036b9a7094c9a524c4071b3613d_pqyuzj.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842278/b43e3e2945c04593a6d3277b8a13461b_zzaslq.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842278/1091324d208c7ecf8ae00e44c390f2ad_kuqckz.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842279/95b632ed03f14bfdc840dcc64ae12e7d_chzrck.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842279/63862e8e9b2bd1bff83e57e420493ca3_frsxwd.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842279/ce5fddfcc23195d16d9d1c39e666bff0_luieid.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842279/cd6c37686f099f354b124af08a6931d7_hqyaai.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842280/1d242ef47e752efbe67a6801a3576c01_hcnmds.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842280/d2f8fa1add65b4f9978bbd42ac7fd812_frazmm.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842280/1e390201503d5a94aa4381f72b0d4541_bouqjs.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842280/a88ad6440e021d647958ac46c4032f6b_lazo7d.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842281/1b573f91d10c7162450ad6a84a944c1a_qu5qgf.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842281/17372378f1e6223d1d3771e319e0e232_e4hjru.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842281/7681a0891e589c3b699619eb312f4dbc_acpbqx.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1754842281/ce380d28c92f69e9c8e6e98ba6451b34_gcypgy.gif",
 ];
+
+window.onload = () => {
+if (localStorage.getItem('darkMode') === 'true') {
+document.body.classList.add('dark');
+document.getElementById('darkToggle').checked = true;
+}
+
 const gifElement = document.getElementById("randomGif");
 const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
 gifElement.src = randomGif;
 };
+
+function changeGif() {
+const gifElement = document.getElementById("randomGif");
+const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
+gifElement.src = randomGif;
+}
 
 async function sendToAlexa() {
 const text = document.getElementById("text").value.trim();
@@ -564,4 +595,3 @@ error.style.display = "block";
 </script>
 </body>
 </html>
-
