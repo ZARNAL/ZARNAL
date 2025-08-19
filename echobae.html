@@ -6,7 +6,6 @@
 <title>💖 Alexa Cute Whisper</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
-/* Your existing CSS remains unchanged */
 :root {
 --light-bg: linear-gradient(135deg, #ffe4ec, #e3f0ff);
 --dark-bg: #1c1c1c;
@@ -14,20 +13,22 @@
 --dark-text: #eee;
 --pink: #ff7aa2;
 --pink-hover: #ff5c8a;
+--pink-dark: #ff99bb;
 }
 
 * {
 box-sizing: border-box;
+margin: 0;
+padding: 0;
 }
 
 body {
-margin: 0;
 padding: 20px;
-font-family: 'Comic Sans MS', cursive, sans-serif;
+font-family: 'Inter', sans-serif;
 background: var(--light-bg);
 color: var(--light-text);
-min-height: 100%;
-transition: all 0.3s ease-in-out;
+min-height: 100vh;
+transition: background 0.3s ease-in-out;
 }
 
 .dark {
@@ -42,18 +43,18 @@ left: 16px;
 width: 38px;
 height: 38px;
 border-radius: 50%;
-background: rgba(255, 255, 255, 0.8);
+background: rgba(255, 255, 255, 0.9);
 display: flex;
 align-items: center;
 justify-content: center;
 text-decoration: none;
-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 transition: background 0.3s ease;
 z-index: 10001;
 }
 
 .dark .back-arrow {
-background: rgba(60, 60, 60, 0.8);
+background: rgba(60, 60, 60, 0.9);
 }
 
 .back-arrow:hover {
@@ -117,7 +118,7 @@ transition: 0.4s;
 }
 
 input:checked + .slider {
-background-color: #ff7aa2;
+background-color: var(--pink);
 }
 
 input:checked + .slider:before {
@@ -150,6 +151,7 @@ border: 1px solid #ccc;
 text-align: center;
 margin-bottom: 10px;
 outline: none;
+width: 200px;
 }
 
 #codeOverlay button {
@@ -160,50 +162,61 @@ color: white;
 border: none;
 border-radius: 20px;
 cursor: pointer;
+transition: background-color 0.3s;
+}
+
+#codeOverlay button:hover {
+background-color: var(--pink-hover);
 }
 
 #codeError {
 color: red;
 margin-top: 10px;
 display: none;
+font-size: 14px;
 }
 
 .container {
-background-color: rgba(255, 255, 255, 0.9);
-border-radius: 20px;
-padding: 30px 25px;
-box-shadow: 0 12px 30px rgba(255, 122, 162, 0.3);
+background-color: rgba(255, 255, 255, 0.95);
+border-radius: 16px;
+padding: 24px;
+border: 1px solid transparent;
+border-image: linear-gradient(135deg, rgba(255, 122, 162, 0.3), rgba(227, 240, 255, 0.3)) 1;
+box-shadow: 0 8px 20px rgba(255, 122, 162, 0.2);
 text-align: center;
 max-width: 600px;
-margin: 80px auto 40px;
+margin: 80px auto 20px;
 z-index: 2;
 position: relative;
+display: none;
 }
 
 .dark .container {
 background-color: rgba(44, 44, 44, 0.95);
+border-image: linear-gradient(135deg, rgba(255, 153, 187, 0.3), rgba(60, 60, 60, 0.3)) 1;
 }
 
 h2, h3 {
-font-size: 26px;
+font-size: 24px;
 margin-bottom: 20px;
 color: var(--pink);
+font-weight: 600;
 }
 
 .dark h2, .dark h3 {
-color: #ff99bb;
+color: var(--pink-dark);
 }
 
 textarea {
-width: 90%;
-height: 120px;
-padding: 15px;
-margin: 15px 0;
+width: 100%;
+height: 100px;
+padding: 12px;
+margin: 12px 0;
 font-size: 16px;
 border: none;
-border-radius: 15px;
+border-radius: 12px;
 background: #fffafc;
-box-shadow: inset 0 0 6px rgba(255, 112, 159, 0.2);
+box-shadow: inset 0 0 4px rgba(255, 112, 159, 0.2);
 resize: none;
 outline: none;
 }
@@ -217,24 +230,29 @@ color: #eee;
 display: flex;
 flex-wrap: wrap;
 justify-content: center;
-gap: 10px;
-margin: 15px 0;
+gap: 8px;
+margin: 12px 0;
 }
 
 .preset-buttons button {
 background-color: #ffd2e5;
 color: #333;
-padding: 8px 15px;
+padding: 8px 14px;
 border: none;
-border-radius: 20px;
+border-radius: 16px;
 cursor: pointer;
 font-size: 14px;
-transition: background-color 0.2s;
+transition: background-color 0.3s;
 }
 
 .dark .preset-buttons button {
 background-color: #444;
 color: #fff;
+}
+
+.preset-buttons button:hover {
+background-color: var(--pink);
+color: white;
 }
 
 button {
@@ -244,27 +262,28 @@ font-size: 16px;
 background-color: var(--pink);
 color: white;
 border: none;
-border-radius: 30px;
+border-radius: 20px;
 cursor: pointer;
-box-shadow: 0 8px 15px rgba(255, 122, 162, 0.3);
-transition: 0.3s;
+box-shadow: 0 6px 12px rgba(255, 122, 162, 0.3);
+transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
 background-color: var(--pink-hover);
+transform: translateY(-2px);
 }
 
 #status {
-margin-top: 15px;
-font-size: 16px;
+margin-top: 12px;
+font-size: 14px;
 color: #6b6b6b;
 }
 
 .heart {
 position: fixed;
-width: 20px;
-height: 20px;
-background-color: #ff7aa2;
+width: 16px;
+height: 16px;
+background-color: var(--pink);
 transform: rotate(45deg);
 animation: float 8s infinite ease-in-out;
 z-index: 1;
@@ -274,49 +293,120 @@ z-index: 1;
 .heart::after {
 content: "";
 position: absolute;
-width: 20px;
-height: 20px;
-background-color: #ff7aa2;
+width: 16px;
+height: 16px;
+background-color: var(--pink);
 border-radius: 50%;
 }
 
 .heart::before {
-top: -10px;
+top: -8px;
 left: 0;
 }
 
 .heart::after {
-left: -10px;
+left: -8px;
 top: 0;
 }
 
 @keyframes float {
-0% { transform: translateY(0) rotate(45deg); opacity: 1; }
+0% { transform: translateY(0) rotate(45deg); opacity: 0.8; }
 100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
 }
 
-/* GIF section */
 #randomGifContainer {
 text-align: center;
-margin-top: 0px;
+margin: 20px auto;
+display: none;
 }
 
 #randomGif {
 width: 40px;
 max-width: 60px;
 height: auto;
-border-radius: 15px;
-box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-cursor: pointer; /* Add cursor to indicate clickability */
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+cursor: pointer;
+transition: transform 0.2s;
 }
+
+#randomGif:hover {
+transform: scale(1.1);
+}
+
+#gifGalleryContainer {
+text-align: center;
+margin: 20px auto;
+max-width: 600px;
+display: none;
+}
+
+#gifGalleryContainer img {
+max-width: 100%;
+height: auto;
+margin: 10px auto;
+display: block;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+transition: transform 0.2s;
+}
+
+#gifGalleryContainer img:hover {
+transform: scale(1.1);
+}
+
+#birthdayCountdownContainer, #anniversaryCountdownContainer {
+text-align: left;
+margin: 8px 0 8px 10px;
+display: none;
+}
+
+#birthdayContainer, #anniversaryContainer {
+text-align: center;
+margin: 8px 0;
+display: none;
+}
+
+#birthdayImage, #anniversaryImage {
+max-width: 100%;
+height: auto;
+margin: 0 auto;
+display: block;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+transition: transform 0.2s;
+}
+
+#birthdayImage:hover, #anniversaryImage:hover {
+transform: scale(1.1);
+}
+
+#birthdayCountdownMessage, #anniversaryCountdownMessage, #birthdayMessage, #anniversaryMessage {
+font-size: 16px;
+color: var(--pink);
+margin: 6px 0;
+font-weight: 600;
+transition: color 0.2s;
+}
+
+#birthdayCountdownMessage:hover, #anniversaryCountdownMessage:hover, #birthdayMessage:hover, #anniversaryMessage:hover {
+color: var(--pink-hover);
+}
+
+.dark #birthdayCountdownMessage, .dark #anniversaryCountdownMessage, .dark #birthdayMessage, .dark #anniversaryMessage {
+color: var(--pink-dark);
+}
+
+.dark #birthdayCountdownMessage:hover, .dark #anniversaryCountdownMessage:hover, .dark #birthdayMessage:hover, .dark #anniversaryMessage:hover {
+color: var(--pink-hover);
+}
+
 @media (max-width: 768px) {
 h2 {
-font-size: 22px;
+font-size: 20px;
 }
 
 button, .preset-buttons button {
 font-size: 13px;
-padding: 8px 18px;
+padding: 8px 16px;
 }
 
 .container {
@@ -325,13 +415,25 @@ margin-top: 80px;
 }
 
 textarea {
-height: 100px;
-font-size: 16px;
+height: 80px;
+font-size: 14px;
 }
 
 #randomGif {
 width: 45vw;
 max-width: 140px;
+}
+
+#gifGalleryContainer img, #birthdayImage, #anniversaryImage {
+max-width: 100%;
+}
+
+#birthdayCountdownMessage, #anniversaryCountdownMessage, #birthdayMessage, #anniversaryMessage {
+font-size: 14px;
+}
+
+#birthdayCountdownContainer, #anniversaryCountdownContainer {
+margin: 8px 0 8px 8px;
 }
 }
 </style>
@@ -374,28 +476,47 @@ max-width: 140px;
 <button onclick="setText('waddle waddle brrrrr waddle brrrr')">🐧</button>
 <button onclick="setText('squeak squeak eek eek eek eek')">🐭</button>
 <button id="hatttBtn" onclick="setText('hattt')">𝓱𝓪𝓽𝓽𝓽😏</button>
-<button id="hellowBtn" onclick="setText('hellow')">нєℓℓσ😘</button>
-<button id="hellowBtn" onclick="setText('duttthsss ruuppe teee turrrturreee')"> 😋 kurkure </button>
-<button id="hellowBtn" onclick="setText('Mango Frooti, Fresh and Juicy!')">🧃Frooti </button>
-<button id="hellowBtn" onclick="setText('Jaleebiiieeeeee… yummyyy yummm!')">🌀Jalebi </button>
-<button id="hellowBtn" onclick="setText('Poppp popppp POPCORN!!')">🍿popcorn </button>
+<button id="hellowBtn1" onclick="setText('hellow')">нєℓℓσ😘</button>
+<button id="hellowBtn2" onclick="setText('duttthsss ruuppe teee turrrturreee')">😋 kurkure </button>
+<button id="hellowBtn3" onclick="setText('Mango Frooti, Fresh and Juicy!')">🧃Frooti </button>
+<button id="hellowBtn4" onclick="setText('Jaleebiiieeeeee… yummyyy yummm!')">🌀Jalebi </button>
+<button id="hellowBtn5" onclick="setText('Poppp popppp POPCORN!!')">🍿popcorn </button>
 </div>
 
 <button onclick="sendToAlexa()">✨ Whisper to Alexa</button>
 <p id="status"></p>
+<div id="birthdayCountdownContainer">
+<p id="birthdayCountdownMessage"></p>
+</div>
+<div id="anniversaryCountdownContainer">
+<p id="anniversaryCountdownMessage"></p>
+</div>
+<div id="birthdayContainer">
+<img id="birthdayImage" src="" alt="Birthday Event">
+<p id="birthdayMessage"></p>
+</div>
+<div id="anniversaryContainer">
+<img id="anniversaryImage" src="" alt="Anniversary Event">
+<p id="anniversaryMessage"></p>
+</div>
 </div>
 
 <div id="randomGifContainer">
-<img id="randomGif" src="" alt="Cute Alexa Gif" onclick="changeGif()"> <!-- Added onclick event -->
+<img id="randomGif" src="" alt="Cute Alexa Gif" onclick="changeGif()">
+</div>
+
+<div id="gifGalleryContainer">
+<img src="https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif" alt="Cute Panda Gif">
+<img src="https://res.cloudinary.com/dspclllob/image/upload/v1754576539/panda-bear-brown-bear_hwf3wo.gif" alt="Panda Bear Gif">
 </div>
 
 <script>
-for (let i = 0; i < 15; i++) {
+for (let i = 0; i < 10; i++) {
 let heart = document.createElement("div");
 heart.className = "heart";
 heart.style.left = Math.random() * 100 + "vw";
-heart.style.animationDuration = 5 + Math.random() * 5 + "s";
-heart.style.opacity = 0.4 + Math.random() * 0.6;
+heart.style.animationDuration = 6 + Math.random() * 4 + "s";
+heart.style.opacity = 0.5 + Math.random() * 0.4;
 document.body.appendChild(heart);
 }
 
@@ -596,14 +717,14 @@ const gifs = [
 ];
 
 window.onload = () => {
+try {
 if (localStorage.getItem('darkMode') === 'true') {
 document.body.classList.add('dark');
 document.getElementById('darkToggle').checked = true;
 }
-
-const gifElement = document.getElementById("randomGif");
-const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
-gifElement.src = randomGif;
+} catch (error) {
+console.error("Error in window.onload:", error);
+}
 };
 
 function changeGif() {
@@ -623,6 +744,7 @@ return;
 
 status.innerText = "💌 Sending love to Alexa...";
 
+try {
 const response = await fetch("https://api-v2.voicemonkey.io/announcement", {
 method: "POST",
 headers: {
@@ -641,24 +763,204 @@ status.innerText = "💖 Alexa is whispering your sweet message!";
 const errorData = await response.json();
 status.innerText = "❌ Error: " + (errorData?.error || "Something went wrong");
 }
+} catch (error) {
+status.innerText = "❌ Network Error: Unable to reach VoiceMonkey.";
+console.error("Error in sendToAlexa:", error);
 }
+}
+
+let currentCode = '';
 
 function checkSecret() {
 const input = document.getElementById("codeInput").value.trim().toLowerCase();
 const validCodes = ["booboo", "payal5295"];
 const overlay = document.getElementById("codeOverlay");
 const error = document.getElementById("codeError");
+const randomGifContainer = document.getElementById("randomGifContainer");
+const gifGalleryContainer = document.getElementById("gifGalleryContainer");
+const birthdayCountdownContainer = document.getElementById("birthdayCountdownContainer");
+const anniversaryCountdownContainer = document.getElementById("anniversaryCountdownContainer");
+const birthdayContainer = document.getElementById("birthdayContainer");
+const anniversaryContainer = document.getElementById("anniversaryContainer");
+const container = document.querySelector(".container");
+const backArrow = document.querySelector(".back-arrow");
+const switchContainer = document.querySelector(".switch-container");
+const presetButtons = document.querySelectorAll(".preset-buttons button");
 
 if (validCodes.includes(input)) {
 overlay.style.display = "none";
+currentCode = input;
 
-// If code is 'payal5295', hide specific buttons
 if (input === "payal5295") {
-document.getElementById("hatttBtn").style.display = "none";
-document.getElementById("hellowBtn").style.display = "none";
+presetButtons.forEach(btn => btn.style.display = "none");
+gifGalleryContainer.style.display = "block";
+randomGifContainer.style.display = "none";
+container.style.display = "none";
+backArrow.style.display = "none";
+switchContainer.style.display = "none";
+birthdayCountdownContainer.style.display = "none";
+anniversaryCountdownContainer.style.display = "none";
+birthdayContainer.style.display = "none";
+anniversaryContainer.style.display = "none";
+} else if (input === "booboo") {
+presetButtons.forEach(btn => btn.style.display = "inline-block");
+gifGalleryContainer.style.display = "none";
+randomGifContainer.style.display = "block";
+const gifElement = document.getElementById("randomGif");
+const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
+gifElement.src = randomGif;
+container.style.display = "block";
+backArrow.style.display = "flex";
+switchContainer.style.display = "block";
+displaySpecialEvents();
 }
 } else {
 error.style.display = "block";
+randomGifContainer.style.display = "none";
+gifGalleryContainer.style.display = "none";
+container.style.display = "none";
+backArrow.style.display = "none";
+switchContainer.style.display = "none";
+birthdayCountdownContainer.style.display = "none";
+anniversaryCountdownContainer.style.display = "none";
+birthdayContainer.style.display = "none";
+anniversaryContainer.style.display = "none";
+}
+}
+
+function displaySpecialEvents() {
+try {
+const birthdayCountdownContainer = document.getElementById("birthdayCountdownContainer");
+const birthdayCountdownMessage = document.getElementById("birthdayCountdownMessage");
+const anniversaryCountdownContainer = document.getElementById("anniversaryCountdownContainer");
+const anniversaryCountdownMessage = document.getElementById("anniversaryCountdownMessage");
+const birthdayContainer = document.getElementById("birthdayContainer");
+const birthdayImage = document.getElementById("birthdayImage");
+const birthdayMessage = document.getElementById("birthdayMessage");
+const anniversaryContainer = document.getElementById("anniversaryContainer");
+const anniversaryImage = document.getElementById("anniversaryImage");
+const anniversaryMessage = document.getElementById("anniversaryMessage");
+
+birthdayCountdownContainer.style.display = "none";
+anniversaryCountdownContainer.style.display = "none";
+birthdayContainer.style.display = "none";
+anniversaryContainer.style.display = "none";
+
+if (currentCode !== "booboo") {
+return;
+}
+
+const today = new Date();
+const currentYear = today.getFullYear();
+
+// Define birthday and anniversary dates
+const birthday = new Date(currentYear, 9, 31); // October 31
+const anniversary = new Date(currentYear, 5, 14); // June 14
+
+// Adjust for next year if event has passed
+if (today > birthday) {
+birthday.setFullYear(currentYear + 1);
+}
+if (today > anniversary) {
+anniversary.setFullYear(currentYear + 1);
+}
+
+const emojis = ["😊", "🎉", "💖", "🐻", "🌸", "🍦", "🍧", "🍨", "🍩", "🍪", "🧁", "🥧", "🍫", "🍮", "🍾", "🥂", "🧋", "🌹", "🌷", "🎀", "👑", "💘", "💞", "🍀"];
+const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+// Year-specific birthday messages and images (no age)
+const birthdayContent = [
+{
+year: 2025,
+message: `🎂 Happy birthday, my love! My heart beats for you! 💖`,
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+},
+{
+year: 2026,
+message: `🎂 Happy birthday, sweetheart! You're my forever wish! 💝`,
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+},
+{
+year: 2027,
+message: `🎂 Happy birthday, my darling! Another year of loving you! 💕`,
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+},
+{
+year: 2075,
+message: `🎂 Happy birthday, my eternal star! Fifty years of love and still counting! ✨`,
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+}
+];
+
+// Year-specific anniversary messages and images
+const anniversaryContent = [
+{
+year: 2025,
+message: "💞 Our first meeting on this day, happy 1st anniversary, darling! 💖",
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+},
+{
+year: 2026,
+message: "💞 Happy 2nd anniversary, my love! Forever yours since we met! 💝",
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+},
+{
+year: 2027,
+message: "💞 Happy 3rd anniversary, sweetheart! Another year of us! 💕",
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+},
+{
+year: 2075,
+message: "💞 Happy 50th anniversary, my forever love! Half a century since we met! 🌟",
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+}
+];
+
+// Fallback generic content for unspecified years (no age for birthday)
+const defaultBirthdayContent = {
+message: `🎂 Happy birthday, my eternal star! Your love lights up my world! ✨`,
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+};
+const defaultAnniversaryContent = {
+message: `💞 Happy ${anniversary.getFullYear() - 2025}th anniversary, my forever love! Here's to us, always and forever! 🌟`,
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+};
+
+// Check for birthday event
+if (today.getMonth() === birthday.getMonth() && today.getDate() === birthday.getDate()) {
+const content = birthdayContent.find(c => c.year === currentYear) || defaultBirthdayContent;
+birthdayContainer.style.display = "block";
+birthdayImage.src = content.image;
+birthdayImage.style.display = "block";
+birthdayMessage.innerText = content.message;
+}
+
+// Check for anniversary event
+if (today.getMonth() === anniversary.getMonth() && today.getDate() === anniversary.getDate()) {
+const content = anniversaryContent.find(c => c.year === currentYear) || defaultAnniversaryContent;
+anniversaryContainer.style.display = "block";
+anniversaryImage.src = content.image;
+anniversaryImage.style.display = "block";
+anniversaryMessage.innerText = content.message;
+}
+
+// Check for anniversary countdown (within 7 days before June 14)
+const timeDiffAnniversary = anniversary - today;
+const daysUntilAnniversary = Math.ceil(timeDiffAnniversary / (1000 * 60 * 60 * 24));
+if (daysUntilAnniversary > 0 && daysUntilAnniversary <= 7) {
+anniversaryCountdownContainer.style.display = "block";
+anniversaryCountdownMessage.innerText = `💞 ${daysUntilAnniversary} day${daysUntilAnniversary === 1 ? '' : 's'} left to our ${anniversary.getFullYear() - 2025}th anniversary! ${randomEmoji}`;
+}
+
+// Check for birthday countdown (within 60 days before October 31)
+const timeDiffBirthday = birthday - today;
+const daysUntilBirthday = Math.ceil(timeDiffBirthday / (1000 * 60 * 60 * 24));
+if (daysUntilBirthday > 0 && daysUntilBirthday <= 75) {
+birthdayCountdownContainer.style.display = "block";
+birthdayCountdownMessage.innerText = `🎂 in ${daysUntilBirthday} day${daysUntilBirthday === 1 ? '' : 's'} ! ${randomEmoji}`;
+}
+} catch (error) {
+console.error("Error in displaySpecialEvents:", error);
 }
 }
 </script>
