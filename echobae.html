@@ -14,6 +14,9 @@
 --pink: #ff7aa2;
 --pink-hover: #ff5c8a;
 --pink-dark: #ff99bb;
+--gallery-bg: #fff;
+--gallery-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+--gallery-shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 * {
@@ -34,6 +37,10 @@ transition: background 0.3s ease-in-out;
 .dark {
 background: var(--dark-bg);
 color: var(--dark-text);
+}
+
+.dark #gifGalleryContainer {
+background: #2b2b2b;
 }
 
 .back-arrow {
@@ -337,21 +344,29 @@ transform: scale(1.1);
 #gifGalleryContainer {
 text-align: center;
 margin: 20px auto;
-max-width: 600px;
+max-width: 1200px;
+background: var(--gallery-bg);
+border-radius: 16px;
+padding: 20px;
+box-shadow: var(--gallery-shadow);
 display: none;
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+gap: 16px;
 }
 
 #gifGalleryContainer img {
-max-width: 100%;
-height: auto;
-margin: 10px auto;
-display: block;
-box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-transition: transform 0.2s;
+width: 200px;
+height: 200px;
+object-fit: contain;
+border-radius: 12px;
+box-shadow: var(--gallery-shadow);
+transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 #gifGalleryContainer img:hover {
-transform: scale(1.1);
+transform: scale(1.05);
+box-shadow: var(--gallery-shadow-hover);
 }
 
 #birthdayCountdownContainer, #anniversaryCountdownContainer {
@@ -372,11 +387,31 @@ height: auto;
 margin: 0 auto;
 display: block;
 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+border-radius: 12px;
 transition: transform 0.2s;
 }
 
 #birthdayImage:hover, #anniversaryImage:hover {
-transform: scale(1.1);
+transform: scale(1.05);
+}
+
+#birthdayVideo, #anniversaryVideo {
+max-width: 100%;
+height: auto;
+margin: 10px auto;
+display: block;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+border-radius: 12px;
+transition: transform 0.2s;
+}
+
+#birthdayVideo:hover, #anniversaryVideo:hover {
+transform: scale(1.05);
+}
+
+#birthdayAudio, #anniversaryAudio {
+margin: 10px auto;
+display: block;
 }
 
 #birthdayCountdownMessage, #anniversaryCountdownMessage, #birthdayMessage, #anniversaryMessage {
@@ -424,7 +459,18 @@ width: 45vw;
 max-width: 140px;
 }
 
-#gifGalleryContainer img, #birthdayImage, #anniversaryImage {
+#gifGalleryContainer {
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 12px;
+padding: 15px;
+}
+
+#gifGalleryContainer img {
+width: 150px;
+height: 150px;
+}
+
+#birthdayImage, #anniversaryImage, #birthdayVideo, #anniversaryVideo {
 max-width: 100%;
 }
 
@@ -477,6 +523,8 @@ margin: 8px 0 8px 8px;
 <button onclick="setText('squeak squeak eek eek eek eek')">🐭</button>
 <button id="hatttBtn" onclick="setText('hattt')">𝓱𝓪𝓽𝓽𝓽😏</button>
 <button id="hellowBtn1" onclick="setText('hellow')">нєℓℓσ😘</button>
+<button id="hellowBtn6" onclick="setText('bekaarrrr')">bekar😑</button>
+<button id="hellowBtn7" onclick="setText('naiii kevu')">nay kevu😏</button>
 <button id="hellowBtn2" onclick="setText('duttthsss ruuppe teee turrrturreee')">😋 kurkure </button>
 <button id="hellowBtn3" onclick="setText('Mango Frooti, Fresh and Juicy!')">🧃Frooti </button>
 <button id="hellowBtn4" onclick="setText('Jaleebiiieeeeee… yummyyy yummm!')">🌀Jalebi </button>
@@ -492,7 +540,9 @@ margin: 8px 0 8px 8px;
 <p id="anniversaryCountdownMessage"></p>
 </div>
 <div id="birthdayContainer">
-<img id="birthdayImage" src="" alt="Birthday Event">
+<img id="birthdayImage" src="" alt="Birthday Image">
+<video id="birthdayVideo" src="" muted autoplay loop alt="Birthday Video"></video>
+<audio id="birthdayAudio" src="" controls></audio>
 <p id="birthdayMessage"></p>
 </div>
 <div id="anniversaryContainer">
@@ -505,10 +555,7 @@ margin: 8px 0 8px 8px;
 <img id="randomGif" src="" alt="Cute Alexa Gif" onclick="changeGif()">
 </div>
 
-<div id="gifGalleryContainer">
-<img src="https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif" alt="Cute Panda Gif">
-<img src="https://res.cloudinary.com/dspclllob/image/upload/v1754576539/panda-bear-brown-bear_hwf3wo.gif" alt="Panda Bear Gif">
-</div>
+<div id="gifGalleryContainer"></div>
 
 <script>
 for (let i = 0; i < 10; i++) {
@@ -722,6 +769,14 @@ if (localStorage.getItem('darkMode') === 'true') {
 document.body.classList.add('dark');
 document.getElementById('darkToggle').checked = true;
 }
+// Populate gifGalleryContainer with all GIFs
+const gifGalleryContainer = document.getElementById("gifGalleryContainer");
+gifs.forEach((gif, index) => {
+const img = document.createElement("img");
+img.src = gif;
+img.alt = `Cute Gif ${index + 1}`;
+gifGalleryContainer.appendChild(img);
+});
 } catch (error) {
 console.error("Error in window.onload:", error);
 }
@@ -793,7 +848,7 @@ currentCode = input;
 
 if (input === "payal5295") {
 presetButtons.forEach(btn => btn.style.display = "none");
-gifGalleryContainer.style.display = "block";
+gifGalleryContainer.style.display = "grid";
 randomGifContainer.style.display = "none";
 container.style.display = "none";
 backArrow.style.display = "none";
@@ -836,6 +891,8 @@ const anniversaryCountdownContainer = document.getElementById("anniversaryCountd
 const anniversaryCountdownMessage = document.getElementById("anniversaryCountdownMessage");
 const birthdayContainer = document.getElementById("birthdayContainer");
 const birthdayImage = document.getElementById("birthdayImage");
+const birthdayVideo = document.getElementById("birthdayVideo");
+const birthdayAudio = document.getElementById("birthdayAudio");
 const birthdayMessage = document.getElementById("birthdayMessage");
 const anniversaryContainer = document.getElementById("anniversaryContainer");
 const anniversaryImage = document.getElementById("anniversaryImage");
@@ -868,27 +925,35 @@ anniversary.setFullYear(currentYear + 1);
 const emojis = ["😊", "🎉", "💖", "🐻", "🌸", "🍦", "🍧", "🍨", "🍩", "🍪", "🧁", "🥧", "🍫", "🍮", "🍾", "🥂", "🧋", "🌹", "🌷", "🎀", "👑", "💘", "💞", "🍀"];
 const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
-// Year-specific birthday messages and images (no age)
+// Year-specific birthday messages and media
 const birthdayContent = [
 {
 year: 2025,
 message: `🎂 Happy birthday, my love! My heart beats for you! 💖`,
-image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif",
+video: "https://res.cloudinary.com/dspclllob/video/upload/v1754576519/sample-romantic-video.mp4",
+audio: "https://res.cloudinary.com/dspclllob/audio/upload/v1754576519/sample-birthday-song.mp3"
 },
 {
 year: 2026,
 message: `🎂 Happy birthday, sweetheart! You're my forever wish! 💝`,
-image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576539/panda-bear-brown-bear_hwf3wo.gif",
+video: "https://res.cloudinary.com/dspclllob/video/upload/v1754576519/sample-romantic-video.mp4",
+audio: "https://res.cloudinary.com/dspclllob/audio/upload/v1754576519/sample-birthday-song.mp3"
 },
 {
 year: 2027,
 message: `🎂 Happy birthday, my darling! Another year of loving you! 💕`,
-image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754578120/cuddles-panda_rtkz66.gif",
+video: "https://res.cloudinary.com/dspclllob/video/upload/v1754576519/sample-romantic-video.mp4",
+audio: "https://res.cloudinary.com/dspclllob/audio/upload/v1754576519/sample-birthday-song.mp3"
 },
 {
 year: 2075,
 message: `🎂 Happy birthday, my eternal star! Fifty years of love and still counting! ✨`,
-image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754578119/panda-bear_zvstkv.gif",
+video: "https://res.cloudinary.com/dspclllob/video/upload/v1754576519/sample-romantic-video.mp4",
+audio: "https://res.cloudinary.com/dspclllob/audio/upload/v1754576519/sample-birthday-song.mp3"
 }
 ];
 
@@ -916,10 +981,12 @@ image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda
 }
 ];
 
-// Fallback generic content for unspecified years (no age for birthday)
+// Fallback generic content for unspecified years
 const defaultBirthdayContent = {
 message: `🎂 Happy birthday, my eternal star! Your love lights up my world! ✨`,
-image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif"
+image: "https://res.cloudinary.com/dspclllob/image/upload/v1754576519/cute-panda_wds9mi.gif",
+video: "https://res.cloudinary.com/dspclllob/video/upload/v1754576519/sample-romantic-video.mp4",
+audio: "https://res.cloudinary.com/dspclllob/audio/upload/v1754576519/sample-birthday-song.mp3"
 };
 const defaultAnniversaryContent = {
 message: `💞 Happy ${anniversary.getFullYear() - 2025}th anniversary, my forever love! Here's to us, always and forever! 🌟`,
@@ -932,6 +999,10 @@ const content = birthdayContent.find(c => c.year === currentYear) || defaultBirt
 birthdayContainer.style.display = "block";
 birthdayImage.src = content.image;
 birthdayImage.style.display = "block";
+birthdayVideo.src = content.video;
+birthdayVideo.style.display = "block";
+birthdayAudio.src = content.audio;
+birthdayAudio.style.display = "block";
 birthdayMessage.innerText = content.message;
 }
 
