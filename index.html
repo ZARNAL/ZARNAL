@@ -42,16 +42,16 @@
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
       box-shadow: var(--shadow);
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      position: relative; /* scrolls with content */
+      top: auto;
+      z-index: 1;
     }
 
     main {
       flex: 1;
-      padding: 1.2rem 1.5rem; /* added side padding */
+      padding: 1.2rem;
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* mobile: 2 per row */
+      grid-template-columns: repeat(2, 1fr); /* 2 cards per row on mobile */
       gap: 1rem;
       animation: fadeIn 0.5s ease-in-out;
     }
