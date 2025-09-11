@@ -2,286 +2,96 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Magic Mirror 💖</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati&family=Great+Vibes&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>💖 Pyaar Ka Magic Mirror 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
 :root {
---pink: #ff5c8a;
---bg1: #fde2e4;
---bg2: #f9f5ff;
---font-main: 'Inter', sans-serif;
---font-romantic: 'Great Vibes', cursive;
---font-gujarati: 'Noto Sans Gujarati', sans-serif;
+  --pink: #ff5c8a;
+  --bg1: #fde2e4;
+  --bg2: #f9f5ff;
 }
 
-body {
-font-family: var(--font-main);
-background: linear-gradient(135deg, var(--bg1), var(--bg2));
-background-size: 400% 400%;
-animation: bgFlow 12s ease infinite;
-text-align: center;
-padding: 5rem 1rem 2rem;
-min-height: 100%;
-color: #333;
-transition: background 0.5s, color 0.5s;
+/* Fullscreen Loader */
+#loader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--bg1), var(--bg2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+  font-family: 'Great Vibes', cursive;
+  transition: opacity 1s ease, visibility 1s ease;
 }
 
-@keyframes bgFlow {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
+#loader h1 {
+  color: var(--pink);
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
 }
 
-h1 {
-font-family: var(--font-romantic);
-font-size: 2.5rem;
-color: var(--pink);
-margin-bottom: 1.5rem;
+.heart-loader {
+  width: 50px;
+  height: 50px;
+  background: var(--pink);
+  position: relative;
+  transform: rotate(45deg);
+  animation: pulse 1.5s infinite;
 }
 
-.mirror {
-width: 250px;
-height: 250px;
-margin: auto;
-border-radius: 50%;
-background: rgba(255, 255, 255, 0.3);
-backdrop-filter: blur(10px);
-border: 4px solid #ffc0cb;
-box-shadow: 0 0 25px rgba(255, 182, 193, 0.4), inset 0 0 20px white;
-margin-bottom: 2rem;
-position: relative;
+.heart-loader::before, .heart-loader::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: var(--pink);
+  border-radius: 50%;
 }
 
-.heart {
-width: 12px;
-height: 12px;
-background: var(--pink);
-position: absolute;
-top: 100%;
-left: 50%;
-transform: rotate(45deg);
-animation: floatUp 6s infinite ease-in;
-opacity: 0.4;
+.heart-loader::before { top: -25px; left: 0; }
+.heart-loader::after { left: -25px; top: 0; }
+
+@keyframes pulse {
+  0% { transform: scale(0.9) rotate(45deg); opacity: 0.7; }
+  50% { transform: scale(1.1) rotate(45deg); opacity: 1; }
+  100% { transform: scale(0.9) rotate(45deg); opacity: 0.7; }
 }
 
-.heart::before, .heart::after {
-content: '';
-position: absolute;
-width: 12px;
-height: 12px;
-background: var(--pink);
-border-radius: 50%;
-}
-
-.heart::before { top: -6px; left: 0; }
-.heart::after { top: 0; left: -6px; }
-
-@keyframes floatUp {
-0% { transform: translateY(0) rotate(45deg); opacity: 0.2; }
-100% { transform: translateY(-300%) rotate(45deg); opacity: 0; }
-}
-
-select, input, button {
-font-family: var(--font-main);
-padding: 0.6rem 1rem;
-margin: 0.4rem;
-border: none;
-border-radius: 25px;
-font-size: 1rem;
-box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-}
-
-input {
-width: 80%;
-max-width: 400px;
-}
-
-button {
-background: var(--pink);
-color: white;
-cursor: pointer;
-transition: background 0.3s;
-}
-
-button:hover {
-background: #e6005c;
-}
-
-.response {
-margin-top: 1.5rem;
-font-size: 1.2rem;
-max-width: 90%;
-line-height: 1.6;
-word-break: break-word;
-}
-
-.guj {
-font-family: var(--font-gujarati);
-font-size: 1.3rem;
-}
-
-.switch {
-position: absolute;
-top: 1rem;
-right: 1rem;
-z-index: 999;
-}
-
-.switch input {
-opacity: 0;
-width: 0;
-height: 0;
-}
-
-.slider {
-position: relative;
-display: block;
-width: 50px;
-height: 26px;
-background-color: #ccc;
-border-radius: 50px;
-transition: background-color 0.4s;
-cursor: pointer;
-}
-
-.slider:before {
-content: "";
-position: absolute;
-width: 20px;
-height: 20px;
-left: 3px;
-bottom: 3px;
-background-color: white;
-border-radius: 50%;
-transition: transform 0.4s;
-}
-
-input:checked + .slider {
-background-color: #444;
-}
-
-input:checked + .slider:before {
-transform: translateX(24px);
-}
-
-body.dark {
-background: linear-gradient(-45deg, #1c1c1c, #2a2a2a, #222, #111);
-color: #eee;
-}
-
-body.dark .mirror {
-background: rgba(255, 255, 255, 0.1);
-border-color: #666;
-box-shadow: 0 0 20px rgba(255,255,255,0.1), inset 0 0 20px #000;
-}
-
-body.dark button {
-background-color: #555;
-color: #fff;
-}
-
-body.dark button:hover {
-background-color: #888;
-}
-
-body.dark select,
-body.dark input {
-background-color: #222;
-color: #eee;
-border: 1px solid #444;
+/* Hide loader */
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
 }
 </style>
 </head>
 <body>
-<!-- Dark mode toggle -->
-<label class="switch">
-<input type="checkbox" id="modeToggle" />
-<span class="slider"></span>
-</label>
 
-<h1>Magic Mirror 💖</h1>
-<div class="mirror">
-<div class="heart" style="left: 30%; animation-delay: 0s;"></div>
-<div class="heart" style="left: 60%; animation-delay: 2s;"></div>
-<div class="heart" style="left: 80%; animation-delay: 4s;"></div>
+<!-- Loader -->
+<div id="loader">
+  <h1>Magic Mirror 💖</h1>
+  <div class="heart-loader"></div>
+  <p style="margin-top:1rem; color:#ff5c8a;">Loading your reflection of love...</p>
 </div>
 
-<div>
-<select id="mood">
-<option value="romantic">Romantic 💞</option>
-<option value="support">Support 🫂</option>
-<option value="advisor">Advice 💡</option>
-<option value="gossip">Gossip 🤭</option>
-<option value="bitching">Bitching Mode 💅</option>
-<option value="filmy">Filmy Vibes 🎬</option>
-<option value="glamdiva">Glam Diva 💄👑</option>
-</select>
-<select id="language">
-<option value="hi-IN">Hindi 🇮🇳</option>
-<option value="en-US">English 🇬🇧</option>
-<option value="gu-IN">Gujarati 🇬🇺</option>
-</select>
+<!-- Main Page -->
+<div id="content" style="display:none; text-align:center; padding:2rem;">
+  <h2 style="font-family:'Great Vibes', cursive; color:#ff5c8a;">Welcome to Magic Mirror 💞</h2>
+  <p>Your romantic mirror is ready ✨</p>
 </div>
 
-<input type="text" id="question" placeholder="Dil ki baat likho..." />
-<button onclick="askMirror()">Ask Mirror ✨</button>
-
-<div class="response" id="response"></div>
-
-<script src="https://js.puter.com/v2/"></script>
 <script>
-const moodTemplates = {
-romantic: `You are a flirty, charming Gen Z mirror. Speak like a sweet 19 year boyfriend using Hinglish with heart-melting tone, full of "babe", "cutie", and soft emojis. 1–2 lines max.`,
-support: `You are a caring Gen Z bestie mirror. Use Hinglish and say kind, uplifting, and cozy replies like "you got this bestie 💖". Stay gender-neutral unless told.`,
-advisor: `You're a smart but chill Gen Z mirror. Give short (1–2 lines) practical Hinglish advice like a cool bestie. Be clear, casual, and supportive.`,
-gossip: `You're a spicy Gen Z bestie. React in dramatic Hinglish, full of Gen Z slang and emojis. Say things like "OMG cutie, that's wild 😱".`,
-bitching: `You're a savage bestie mirror. Speak bold Hinglish, full of sass, honesty, and loyalty. Use "babe" or "bestie" and protect the user fiercely.`,
-filmy: `You're a dramatic Bollywood Gen Z mirror. Use famous filmy lines or dramatic Hinglish with full-on vibes like "senoritaaa 💃". Max 2 lines.`,
-glamdiva: `You're a bold, fabulous beauty parlor owner with glam queen energy. Speak like a stylish Gen Z makeup artist bestie — full of sass, makeup tips, and confident compliments.in 3-4 line Use phrases like "gorgeous", "diva", "babyyy", "slay", and "this face is a masterpiece 💄✨". Use Hinglish, add emojis, and make every reply feel like a mirror selfie moment.`
-};
-
-async function askMirror() {
-const question = document.getElementById("question").value.trim();
-const mood = document.getElementById("mood").value;
-const language = document.getElementById("language").value;
-const responseBox = document.getElementById("response");
-
-if (!question) {
-responseBox.innerHTML = "Kuch to bolo jaan... 💭";
-return;
-}
-
-const prompt = `${moodTemplates[mood]}
-Speak in a Gen Z tone using gender-neutral terms like "babe", "bestie", or "cutie".
-Do NOT assume gender unless clearly mentioned (e.g., "my girlfriend", "he hurt me", "I'm a girl").
-Respond in ${language === "gu-IN" ? "Gujarati script" : language === "hi-IN" ? "Hindi" : "English"}.
-User said: "${question}"`;
-
-responseBox.innerHTML = "🪞 Magic Mirror soch raha hai...";
-
-try {
-const reply = await puter.ai.chat(prompt, { model: "gpt-4o" });
-responseBox.innerHTML = language === "gu-IN"
-? `<span class="guj">${reply}</span>`
-: reply;
-
-if (language !== "gu-IN") {
-const speak = new SpeechSynthesisUtterance(reply);
-speak.lang = language;
-speak.rate = 1;
-speak.pitch = 1.2;
-speechSynthesis.speak(speak);
-}
-} catch (err) {
-console.error(err);
-responseBox.innerText = "Mirror ka jadoo fail ho gaya... 🫣";
-}
-}
-
-document.getElementById("modeToggle").addEventListener("change", function () {
-document.body.classList.toggle("dark");
+window.addEventListener("load", () => {
+  const loader = document.getElementById("loader");
+  const content = document.getElementById("content");
+  setTimeout(() => {
+    loader.classList.add("hidden");
+    content.style.display = "block";
+  }, 2500); // 2.5 sec romantic loading
 });
 </script>
+
 </body>
 </html>
