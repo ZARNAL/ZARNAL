@@ -1,213 +1,231 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zarnal</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --primary: #ff3366;
-    --bg: #ffffff;
-    --text: #111;
-    --card-bg: #fdfdfd;
-    --card-radius: 20px;
-    --shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    --transition: all 0.3s ease;
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zarnal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff3366;
+      --bg: #ffffff;
+      --text: #111;
+      --card-bg: #fdfdfd;
+      --card-radius: 20px;
+      --shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      --transition: all 0.3s ease;
+    }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-  }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
 
-  header {
-    padding: 1rem;
-    text-align: center;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #fff;
-    background: linear-gradient(135deg, #ff3366, #ff80ab);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-    box-shadow: var(--shadow);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-
-  main {
-    flex: 1;
-    padding: 1.2rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1rem;
-    animation: fadeIn 0.5s ease-in-out;
-  }
-
-  .card {
-    background: var(--card-bg);
-    padding: 1.8rem 1rem;
-    border-radius: var(--card-radius);
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    transition: var(--transition);
-    cursor: pointer;
-    aspect-ratio: 1 / 1;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card span {
-    font-size: 2.2rem;
-    margin-bottom: 0.8rem;
-    transition: var(--transition);
-  }
-
-  .card p {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #333;
-    letter-spacing: 0.5px;
-    transition: var(--transition);
-  }
-
-  .card:hover {
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-    background: #fff0f6;
-  }
-
-  .card:hover span {
-    transform: scale(1.15) rotate(3deg);
-  }
-
-  @media (max-width: 768px) {
-    main {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.8rem;
+    header {
       padding: 1rem;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #ff3366, #ff80ab);
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    main {
+      flex: 1;
+      padding: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* mobile: 2 per row */
+      gap: 1rem;
+      animation: fadeIn 0.5s ease-in-out;
     }
 
     .card {
-      padding: 1.5rem 0.8rem;
+      background: var(--card-bg);
+      padding: 1.8rem 1rem;
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: var(--transition);
+      cursor: pointer;
+      aspect-ratio: 1 / 1;
+      position: relative;
+      overflow: hidden;
     }
 
     .card span {
-      font-size: 1.8rem;
+      font-size: 2rem;
+      margin-bottom: 0.6rem;
+      transition: var(--transition);
     }
 
     .card p {
       font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+      letter-spacing: 0.5px;
+      transition: var(--transition);
     }
 
-    header {
-      font-size: 1.2rem;
-      padding: 0.8rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    main {
-      grid-template-columns: 1fr 1fr;
-      gap: 0.7rem;
+    .card:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+      background: #fff0f6;
     }
 
-    .card {
-      padding: 1.2rem 0.6rem;
-      border-radius: 16px;
+    .card:hover span {
+      transform: scale(1.15) rotate(3deg);
     }
 
-    .card span {
-      font-size: 1.6rem;
+    /* Ripple effect */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      background-color: rgba(255, 51, 102, 0.3);
+      pointer-events: none;
     }
 
-    .card p {
-      font-size: 0.85rem;
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
     }
-  }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-</style>
+    /* Tablet/Desktop */
+    @media (min-width: 992px) {
+      main {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
 
-<header>
-  Love with Spark ❤️✨
-</header>
+    /* Large screens */
+    @media (min-width: 1400px) {
+      main {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
 
-<main>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/shayari'">
-    <span>💌</span>
-    <p>Shayari</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/babyname'">
-    <span>👶</span>
-    <p>Baby Name</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/lovequotes'">
-    <span>💬</span>
-    <p>Love Quotes</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/morsecode'">
-    <span>📡</span>
-    <p>Morse Code</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/lovedairy'">
-    <span>📖</span>
-    <p>Love Diary</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/funcollector'">
-    <span>🎮</span>
-    <p>Fun</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/shorts'">
-    <span>🎬</span>
-    <p>Shorts</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/fancyfont'">
-    <span>✨</span>
-    <p>Fancy Fonts</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.github.io/ZARNAL/echobae.html'">
-    <span>📣</span>
-    <p>EchoBae</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/emojis'">
-    <span>🧋</span>
-    <p>Emojis World</p>
-  </div>
-  <div class="card" onclick="location.href='https://in.pinterest.com/search/pins/?rs=typed&q=Mehndi%20designs'">
-    <span>🫳</span>
-    <p>Mehndi Designs</p>
-  </div>
-  <div class="card" onclick="location.href='https://in.pinterest.com/search/pins/?rs=typed&q=Nailart'">
-    <span>💅</span>
-    <p>Nail Art</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/textemoji'">
-    <span>-`♡´-</span>
-    <p>Text Emoji</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.odoo.com/instaquotes'">
-    <span>🍀</span>
-    <p>InstaQuotes</p>
-  </div>
-  <div class="card" onclick="location.href='https://zarnal.github.io/ZARNAL/magicmirrorhome.html'">
-    <span>📣</span>
-    <p>EchoBaeA</p>
-  </div>
-</main>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Love with Spark ❤️✨
+  </header>
+
+  <main>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/shayari')">
+      <span>💌</span>
+      <p>Shayari</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/babyname')">
+      <span>👶</span>
+      <p>Baby Name</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/lovequotes')">
+      <span>💬</span>
+      <p>Love Quotes</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/morsecode')">
+      <span>📡</span>
+      <p>Morse Code</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/lovedairy')">
+      <span>📖</span>
+      <p>Love Diary</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/funcollector')">
+      <span>🎮</span>
+      <p>Fun</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/shorts')">
+      <span>🎬</span>
+      <p>Shorts</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/fancyfont')">
+      <span>✨</span>
+      <p>Fancy Fonts</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.github.io/ZARNAL/echobae.html')">
+      <span>📣</span>
+      <p>EchoBae</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/emojis')">
+      <span>🧋</span>
+      <p>Emojis World</p>
+    </div>
+    <div class="card" onclick="goTo('https://in.pinterest.com/search/pins/?rs=typed&q=Mehndi%20designs')">
+      <span>🫳</span>
+      <p>Mehndi Designs</p>
+    </div>
+    <div class="card" onclick="goTo('https://in.pinterest.com/search/pins/?rs=typed&q=Nailart')">
+      <span>💅</span>
+      <p>Nail Art</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/textemoji')">
+      <span>-`♡´-</span>
+      <p>Text Emoji</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/instaquotes')">
+      <span>🍀</span>
+      <p>InstaQuotes</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.github.io/ZARNAL/magicmirrorhome.html')">
+      <span>📣</span>
+      <p>EchoBaeA</p>
+    </div>
+  </main>
+
+  <script>
+    // Redirect function
+    function goTo(url) {
+      window.location.href = url;
+    }
+
+    // Ripple effect on cards
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        this.appendChild(ripple);
+
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = e.clientX - rect.left - size / 2 + 'px';
+        ripple.style.top = e.clientY - rect.top - size / 2 + 'px';
+
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
+      });
+    });
+  </script>
+</body>
+</html>
