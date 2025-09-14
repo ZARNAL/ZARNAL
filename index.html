@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Zarnal</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
   <style>
     :root {
       --primary: #ff3366;
@@ -17,7 +16,11 @@
       --transition: all 0.3s ease;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -40,6 +43,7 @@
       border-bottom-right-radius: 20px;
       box-shadow: var(--shadow);
       position: relative;
+      top: auto;
       z-index: 1;
     }
 
@@ -69,8 +73,19 @@
       overflow: hidden;
     }
 
-    .card span { font-size: 2rem; margin-bottom: 0.6rem; transition: var(--transition); }
-    .card p { font-size: 0.9rem; font-weight: 600; color: #333; letter-spacing: 0.5px; }
+    .card span {
+      font-size: 2rem;
+      margin-bottom: 0.6rem;
+      transition: var(--transition);
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #333;
+      letter-spacing: 0.5px;
+      transition: var(--transition);
+    }
 
     .card:hover {
       transform: translateY(-4px) scale(1.03);
@@ -78,9 +93,11 @@
       background: #fff0f6;
     }
 
-    .card:hover span { transform: scale(1.15) rotate(3deg); }
+    .card:hover span {
+      transform: scale(1.15) rotate(3deg);
+    }
 
-    /* Ripple */
+    /* Ripple effect */
     .ripple {
       position: absolute;
       border-radius: 50%;
@@ -89,119 +106,126 @@
       background-color: rgba(255, 51, 102, 0.3);
       pointer-events: none;
     }
-    @keyframes ripple { to { transform: scale(4); opacity: 0; } }
 
-    /* Responsive */
-    @media (min-width: 992px) { main { grid-template-columns: repeat(4, 1fr); } }
-    @media (min-width: 1400px) { main { grid-template-columns: repeat(5, 1fr); } }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
-
-    /* Random image */
-    #random-image-box { grid-column: 1 / -1; text-align: center; margin-top: 1.5rem; }
-    #random-image {
-      max-width: 100%;
-      border-radius: 20px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
     }
-    #random-image.loaded { opacity: 1; }
+
+    /* Tablet/Desktop */
+    @media (min-width: 992px) {
+      main {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    /* Large screens */
+    @media (min-width: 1400px) {
+      main {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <header>Love with Spark ❤️✨</header>
+  <header>
+    Love with Spark ❤️✨
+  </header>
 
   <main>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/shayari')"><span>💌</span><p>Shayari</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/babyname')"><span>👶</span><p>Baby Name</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/lovequotes')"><span>💬</span><p>Love Quotes</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/morsecode')"><span>📡</span><p>Morse Code</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/lovedairy')"><span>📖</span><p>Love Diary</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/funcollector')"><span>🎮</span><p>Fun</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/shorts')"><span>🎬</span><p>Shorts</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/fancyfont')"><span>✨</span><p>Fancy Fonts</p></div>
-    <div class="card" onclick="goTo('https://zarnal.github.io/ZARNAL/echobae.html')"><span>📣</span><p>EchoBae</p></div>
-    <div class="card" onclick="goTo('https://zarnal.github.io/ZARNAL/magicmirrorhome.html')"><span>🪞</span><p>Magic Mirror</p></div>
-    <div class="card" onclick="goTo('https://in.pinterest.com/search/pins/?rs=typed&q=Mehndi%20designs')"><span>🫳</span><p>Mehndi Designs</p></div>
-    <div class="card" onclick="goTo('https://in.pinterest.com/search/pins/?rs=typed&q=Nailart')"><span>💅</span><p>Nail Art</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/textemoji')"><span>-`♡´-</span><p>Text Emoji</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/emojis')"><span>🧋</span><p>Emojis World</p></div>
-    <div class="card" onclick="goTo('https://zarnal.odoo.com/instaquotes')"><span>🍀</span><p>InstaQuotes</p></div>
-
-    <!-- Random Image Section -->
-    <div id="random-image-box">
-      <img id="random-image"
-           src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
-           alt="Random Love Spark"
-           loading="lazy">
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/shayari')">
+      <span>💌</span>
+      <p>Shayari</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/babyname')">
+      <span>👶</span>
+      <p>Baby Name</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/lovequotes')">
+      <span>💬</span>
+      <p>Love Quotes</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/morsecode')">
+      <span>📡</span>
+      <p>Morse Code</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/lovedairy')">
+      <span>📖</span>
+      <p>Love Diary</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/funcollector')">
+      <span>🎮</span>
+      <p>Fun</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/shorts')">
+      <span>🎬</span>
+      <p>Shorts</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/fancyfont')">
+      <span>✨</span>
+      <p>Fancy Fonts</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.github.io/ZARNAL/echobae.html')">
+      <span>📣</span>
+      <p>EchoBae</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.github.io/ZARNAL/magicmirrorhome.html')">
+      <span>🪞</span>
+      <p>Magic Mirror</p>
+    </div>
+    <div class="card" onclick="goTo('https://in.pinterest.com/search/pins/?rs=typed&q=Mehndi%20designs')">
+      <span>🫳</span>
+      <p>Mehndi Designs</p>
+    </div>
+    <div class="card" onclick="goTo('https://in.pinterest.com/search/pins/?rs=typed&q=Nailart')">
+      <span>💅</span>
+      <p>Nail Art</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/textemoji')">
+      <span>-`♡´-</span>
+      <p>Text Emoji</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/emojis')">
+      <span>🧋</span>
+      <p>Emojis World</p>
+    </div>
+    <div class="card" onclick="goTo('https://zarnal.odoo.com/instaquotes')">
+      <span>🍀</span>
+      <p>InstaQuotes</p>
     </div>
   </main>
 
   <script>
-    function goTo(url) { window.location.href = url; }
+    // Redirect function
+    function goTo(url) {
+      window.location.href = url;
+    }
 
-    // Ripple
+    // Ripple effect on cards
     document.querySelectorAll('.card').forEach(card => {
       card.addEventListener('click', function(e) {
         const ripple = document.createElement('span');
         ripple.classList.add('ripple');
         this.appendChild(ripple);
+
         const rect = this.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
         ripple.style.width = ripple.style.height = size + 'px';
         ripple.style.left = e.clientX - rect.left - size / 2 + 'px';
         ripple.style.top = e.clientY - rect.top - size / 2 + 'px';
-        setTimeout(() => ripple.remove(), 600);
+
+        setTimeout(() => {
+          ripple.remove();
+        }, 600);
       });
     });
-
-    // Random GIFs
-    const imageUrls = [
-       "https://res.cloudinary.com/dspclllob/image/upload/v1757623635/82fffadc3d49fb45dd2b7498a9a958c9_dadbhz.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623687/f9c66c239426463d9fab8e5eada9a435_h904zk.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623571/7c96bfd9a02b3ff088bbf3e9ca871bb1_csbepq.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623719/ef3b42ceb18014af07c46182bacf1f0b_hycr8i.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623546/0c2f133a35c11c13eb50b0ba9a5e282c_u54pun.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623580/d8cbb31231555eda7dff68848db4aee1_bpfiac.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623620/ddc013635f19439384eca06eb076e0e4_nu0bg6.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623643/05020404f5546f4c9373327e96ac9fcd_fig1za.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623724/758e2b37f4251d4443335b9e52a9a9a0_rtxqgm.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623743/c6356d716748e7b195b1d622a5b4326d_doogtg.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759241/1c3e6cf5100fc66db16880281354fcdf_jcqirw.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759242/46eba785a74a5f6d59b31102ecd5f098_bw8mgt.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759244/d5d71b2b47998191bd31d361753d86ff_xyb6ns.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759245/cd733db29e4f0f9fd6e1cfd00a06453c_yyqhko.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759248/b94e18ea40626f10bc67eaba042ec415_uamxhv.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759249/59ea71439cceecc40f102c83fadbbb40_yzm8pv.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759249/59a7278c2684cb7be25f423014d237a5_b9ggl4.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759250/ec3373cf7b02071135fbf328f526eeb0_queey2.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759252/224a9d39157211a36e3e1d43cc0fccf4_il73la.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759254/c3b1caab4ca684a0f2387681bcb4b274_zjzwu0.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759255/9172ec7a719b7b54b83b84604979286e_zyx5ns.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759255/14ca7a66a6c8d11abc09d488bcac2683_euus1p.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761460/182bc6a747a4441eb1af0cf7e0d0cddc_hknrff.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761461/2e93119a6f4a138992c8021f91b51f74_cka2v7.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761461/02136d0bec30467abaa0d11c419698b4_vbedni.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761462/7d07a255678962d30d8717dcf5dbd266_ass51g.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761463/c3274236e4e16329c247da3a95871ad4_qicobq.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757766013/07277e3ac89f3b5ecb02530bb350f255_qfji78.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757766014/2d6b02fffaddc99f27fb267015997cce_jete14.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761465/443ca36f3fe93d7f050029bf63039eb0_ltx3eq.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761465/74ca7a451c3eea33f7e09622c439404f_mluifn.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761466/e8ac0e05e8a106d16e54d843b7d24aed_bgupnq.gif"
-      // … keep your full list
-    ];
-
-    function showRandomImage() {
-      const img = document.getElementById("random-image");
-      const randomIndex = Math.floor(Math.random() * imageUrls.length);
-      img.classList.remove("loaded");
-      img.src = imageUrls[randomIndex];
-      img.onload = () => img.classList.add("loaded");
-    }
-
-    window.addEventListener("DOMContentLoaded", showRandomImage);
   </script>
 </body>
 </html>
