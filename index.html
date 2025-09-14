@@ -15,9 +15,7 @@
       --shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
       --transition: all 0.3s ease;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
       font-family: 'Inter', sans-serif;
       background-color: var(--bg);
@@ -27,7 +25,6 @@
       display: flex;
       flex-direction: column;
     }
-
     /* Loading Screen */
     #loader {
       position: fixed;
@@ -39,7 +36,6 @@
       align-items: center;
       z-index: 9999;
     }
-
     .spinner {
       width: 60px;
       height: 60px;
@@ -48,12 +44,7 @@
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
-    }
-
+    @keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
     header {
       padding: 1rem;
       text-align: center;
@@ -68,7 +59,6 @@
       top: auto;
       z-index: 1;
     }
-
     main {
       flex: 1;
       padding: 1.2rem;
@@ -77,7 +67,6 @@
       gap: 1rem;
       animation: fadeIn 0.5s ease-in-out;
     }
-
     .card {
       background: var(--card-bg);
       padding: 1.8rem 1rem;
@@ -94,13 +83,7 @@
       position: relative;
       overflow: hidden;
     }
-
-    .card span {
-      font-size: 2rem;
-      margin-bottom: 0.6rem;
-      transition: var(--transition);
-    }
-
+    .card span { font-size: 2rem; margin-bottom: 0.6rem; transition: var(--transition); }
     .card p {
       font-size: 0.9rem;
       font-weight: 600;
@@ -108,17 +91,12 @@
       letter-spacing: 0.5px;
       transition: var(--transition);
     }
-
     .card:hover {
       transform: translateY(-4px) scale(1.03);
       box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
       background: #fff0f6;
     }
-
-    .card:hover span {
-      transform: scale(1.15) rotate(3deg);
-    }
-
+    .card:hover span { transform: scale(1.15) rotate(3deg); }
     /* Ripple effect */
     .ripple {
       position: absolute;
@@ -128,33 +106,16 @@
       background-color: rgba(255, 51, 102, 0.3);
       pointer-events: none;
     }
-
-    @keyframes ripple {
-      to { transform: scale(4); opacity: 0; }
-    }
-
-    /* Tablet/Desktop */
-    @media (min-width: 992px) {
-      main { grid-template-columns: repeat(4, 1fr); }
-    }
-
-    /* Large screens */
-    @media (min-width: 1400px) {
-      main { grid-template-columns: repeat(5, 1fr); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    @keyframes ripple { to { transform: scale(4); opacity: 0; } }
+    @media (min-width: 992px) { main { grid-template-columns: repeat(4, 1fr); } }
+    @media (min-width: 1400px) { main { grid-template-columns: repeat(5, 1fr); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     /* Random image styling */
     #random-image-box {
       grid-column: 1 / -1;
       text-align: center;
       margin-top: 1.5rem;
     }
-
     #random-image {
       max-width: 100%;
       border-radius: 20px;
@@ -187,15 +148,13 @@
 
     <!-- Random Image Section -->
     <div id="random-image-box">
-      <img id="random-image" src="" alt="Random Love Spark" />
+      <img id="random-image" alt="Random Love Spark" loading="lazy"/>
     </div>
   </main>
 
   <script>
     // Redirect function
-    function goTo(url) {
-      window.location.href = url;
-    }
+    function goTo(url) { window.location.href = url; }
 
     // Ripple effect
     document.querySelectorAll('.card').forEach(card => {
@@ -203,20 +162,18 @@
         const ripple = document.createElement('span');
         ripple.classList.add('ripple');
         this.appendChild(ripple);
-
         const rect = this.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
         ripple.style.width = ripple.style.height = size + 'px';
         ripple.style.left = e.clientX - rect.left - size / 2 + 'px';
         ripple.style.top = e.clientY - rect.top - size / 2 + 'px';
-
         setTimeout(() => { ripple.remove(); }, 600);
       });
     });
 
     // 🎲 Random Image Generator
     const imageUrls = [
-       "https://res.cloudinary.com/dspclllob/image/upload/v1757623635/82fffadc3d49fb45dd2b7498a9a958c9_dadbhz.gif",
+      "https://res.cloudinary.com/dspclllob/image/upload/v1757623635/82fffadc3d49fb45dd2b7498a9a958c9_dadbhz.gif",
       "https://res.cloudinary.com/dspclllob/image/upload/v1757623687/f9c66c239426463d9fab8e5eada9a435_h904zk.gif",
       "https://res.cloudinary.com/dspclllob/image/upload/v1757623571/7c96bfd9a02b3ff088bbf3e9ca871bb1_csbepq.gif",
       "https://res.cloudinary.com/dspclllob/image/upload/v1757623719/ef3b42ceb18014af07c46182bacf1f0b_hycr8i.gif",
@@ -248,19 +205,25 @@
       "https://res.cloudinary.com/dspclllob/image/upload/v1757761465/443ca36f3fe93d7f050029bf63039eb0_ltx3eq.gif",
       "https://res.cloudinary.com/dspclllob/image/upload/v1757761465/74ca7a451c3eea33f7e09622c439404f_mluifn.gif",
       "https://res.cloudinary.com/dspclllob/image/upload/v1757761466/e8ac0e05e8a106d16e54d843b7d24aed_bgupnq.gif"
-      // ... keep rest of your GIFs
     ];
 
     function showRandomImage() {
       const randomIndex = Math.floor(Math.random() * imageUrls.length);
-      document.getElementById("random-image").src = imageUrls[randomIndex];
+      const img = document.getElementById("random-image");
+      img.src = imageUrls[randomIndex];
     }
 
-    // Hide loader when page fully loads
-    window.addEventListener("load", () => {
-      showRandomImage();
+    // Hide loader once DOM is ready, don't wait for all images
+    document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("loader").style.display = "none";
+      showRandomImage();
     });
+
+    // Fallback: hide loader after 3s even if something is stuck
+    setTimeout(() => {
+      const loader = document.getElementById("loader");
+      if (loader) loader.style.display = "none";
+    }, 3000);
   </script>
 </body>
 </html>
