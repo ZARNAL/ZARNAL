@@ -4,10 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Zarnal</title>
-
-  <!-- Preconnect to Cloudinary for faster first load -->
-  <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
-
   <style>
     :root {
       --primary: #ff3366;
@@ -20,7 +16,7 @@
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: system-ui, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -28,10 +24,11 @@
       display: flex;
       flex-direction: column;
     }
-    /* Loading Screen */
+    /* Loader */
     #loader {
       position: fixed;
-      inset: 0;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: #fff;
       display: flex;
       justify-content: center;
@@ -57,6 +54,7 @@
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
       box-shadow: var(--shadow);
+      position: relative;
       z-index: 1;
     }
     main {
@@ -97,7 +95,7 @@
       background: #fff0f6;
     }
     .card:hover span { transform: scale(1.15) rotate(3deg); }
-    /* Ripple effect */
+    /* Ripple */
     .ripple {
       position: absolute;
       border-radius: 50%;
@@ -110,7 +108,7 @@
     @media (min-width: 992px) { main { grid-template-columns: repeat(4, 1fr); } }
     @media (min-width: 1400px) { main { grid-template-columns: repeat(5, 1fr); } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    /* Random image styling */
+    /* Optional Image */
     #random-image-box {
       grid-column: 1 / -1;
       text-align: center;
@@ -146,14 +144,13 @@
     <div class="card" onclick="goTo('https://zarnal.odoo.com/emojis')"><span>🧋</span><p>Emojis World</p></div>
     <div class="card" onclick="goTo('https://zarnal.odoo.com/instaquotes')"><span>🍀</span><p>InstaQuotes</p></div>
 
-    <!-- Random Image Section -->
+    <!-- Optional Static Image -->
     <div id="random-image-box">
-      <img id="random-image" alt="Random Love Spark" loading="lazy"/>
+      <img id="random-image" src="https://via.placeholder.com/600x300.png?text=Love+with+Spark" alt="Love Spark"/>
     </div>
   </main>
 
   <script>
-    // Redirect function
     function goTo(url) { window.location.href = url; }
 
     // Ripple effect
@@ -171,59 +168,16 @@
       });
     });
 
-    // 🎲 Random Image Generator
-    const imageUrls = [
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623635/82fffadc3d49fb45dd2b7498a9a958c9_dadbhz.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623687/f9c66c239426463d9fab8e5eada9a435_h904zk.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623571/7c96bfd9a02b3ff088bbf3e9ca871bb1_csbepq.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623719/ef3b42ceb18014af07c46182bacf1f0b_hycr8i.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623546/0c2f133a35c11c13eb50b0ba9a5e282c_u54pun.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623580/d8cbb31231555eda7dff68848db4aee1_bpfiac.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623620/ddc013635f19439384eca06eb076e0e4_nu0bg6.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623643/05020404f5546f4c9373327e96ac9fcd_fig1za.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623724/758e2b37f4251d4443335b9e52a9a9a0_rtxqgm.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757623743/c6356d716748e7b195b1d622a5b4326d_doogtg.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759241/1c3e6cf5100fc66db16880281354fcdf_jcqirw.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759242/46eba785a74a5f6d59b31102ecd5f098_bw8mgt.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759244/d5d71b2b47998191bd31d361753d86ff_xyb6ns.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759245/cd733db29e4f0f9fd6e1cfd00a06453c_yyqhko.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759248/b94e18ea40626f10bc67eaba042ec415_uamxhv.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759249/59ea71439cceecc40f102c83fadbbb40_yzm8pv.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759249/59a7278c2684cb7be25f423014d237a5_b9ggl4.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759250/ec3373cf7b02071135fbf328f526eeb0_queey2.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759252/224a9d39157211a36e3e1d43cc0fccf4_il73la.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759254/c3b1caab4ca684a0f2387681bcb4b274_zjzwu0.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759255/9172ec7a719b7b54b83b84604979286e_zyx5ns.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757759255/14ca7a66a6c8d11abc09d488bcac2683_euus1p.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761460/182bc6a747a4441eb1af0cf7e0d0cddc_hknrff.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761461/2e93119a6f4a138992c8021f91b51f74_cka2v7.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761461/02136d0bec30467abaa0d11c419698b4_vbedni.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761462/7d07a255678962d30d8717dcf5dbd266_ass51g.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761463/c3274236e4e16329c247da3a95871ad4_qicobq.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757766013/07277e3ac89f3b5ecb02530bb350f255_qfji78.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757766014/2d6b02fffaddc99f27fb267015997cce_jete14.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761465/443ca36f3fe93d7f050029bf63039eb0_ltx3eq.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761465/74ca7a451c3eea33f7e09622c439404f_mluifn.gif",
-      "https://res.cloudinary.com/dspclllob/image/upload/v1757761466/e8ac0e05e8a106d16e54d843b7d24aed_bgupnq.gif"
-    ];
-
-    function showRandomImage() {
-      const randomIndex = Math.floor(Math.random() * imageUrls.length);
-      const img = document.getElementById("random-image");
-      img.src = imageUrls[randomIndex];
-    }
-
-    // Hide loader once DOM is ready, don't wait for all images
+    // Hide loader when DOM is ready
     document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("loader").style.display = "none";
-      showRandomImage();
     });
 
-    // Fallback: hide loader after 3s even if something is stuck
+    // Fallback: hide loader after 2s
     setTimeout(() => {
       const loader = document.getElementById("loader");
       if (loader) loader.style.display = "none";
-    }, 3000);
+    }, 2000);
   </script>
 </body>
 </html>
