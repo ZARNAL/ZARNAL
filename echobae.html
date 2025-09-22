@@ -132,7 +132,7 @@ input:checked + .slider:before {
 transform: translateX(24px);
 }
 
-#codeOverlay {
+#codeOverlay, #secretMessageOverlay {
 position: fixed;
 top: 0; left: 0;
 width: 100vw;
@@ -146,11 +146,11 @@ z-index: 9999;
 transition: background 0.3s ease-in-out;
 }
 
-.dark #codeOverlay {
+.dark #codeOverlay, .dark #secretMessageOverlay {
 background: var(--dark-bg);
 }
 
-#codeOverlay input {
+#codeOverlay input, #secretMessageOverlay input {
 padding: 12px;
 font-size: 16px;
 border-radius: 10px;
@@ -161,7 +161,7 @@ outline: none;
 width: 200px;
 }
 
-#codeOverlay button {
+#codeOverlay button, #secretMessageOverlay button {
 padding: 10px 25px;
 font-size: 16px;
 background-color: var(--pink);
@@ -172,15 +172,27 @@ cursor: pointer;
 transition: background-color 0.3s;
 }
 
-#codeOverlay button:hover {
+#codeOverlay button:hover, #secretMessageOverlay button:hover {
 background-color: var(--pink-hover);
 }
 
-#codeError {
+#codeError, #secretMessageError {
 color: red;
 margin-top: 10px;
 display: none;
 font-size: 14px;
+}
+
+#secretMessageDisplay {
+display: none;
+margin-top: 20px;
+font-size: 18px;
+color: var(--pink);
+font-weight: 600;
+}
+
+.dark #secretMessageDisplay {
+color: var(--pink-dark);
 }
 
 .container {
@@ -323,19 +335,19 @@ top: 0;
 
 #randomGifContainer {
 text-align: center;
-    margin: 20px auto;
-    display: none;
-    overflow: visible; /* Prevent cropping from container */
+margin: 20px auto;
+display: none;
+overflow: visible;
 }
 
 #randomGif {
-max-width: 140px; /* Base size for GIF */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: transform 0.2s;
-    object-fit:contain; /* Ensure full GIF is shown without cropping */
+max-width: 140px;
+height: auto;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+cursor: pointer;
+transition: transform 0.2s;
+object-fit: contain;
 }
 
 #randomGif:hover {
@@ -351,7 +363,6 @@ border-radius: 16px;
 padding: 20px;
 box-shadow: var(--gallery-shadow);
 display: none;
-display: grid;
 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 gap: 16px;
 }
@@ -507,6 +518,14 @@ margin: 8px 0 8px 8px;
 <div id="codeError">❌ Wrong code. Try again.</div>
 </div>
 
+<div id="secretMessageOverlay" style="display: none;">
+<h3>🔐 Enter Secret Code for Message</h3>
+<input type="password" id="secretMessageInput" placeholder="Enter code...">
+<button onclick="checkSecretMessage()">Unlock Message 💌</button>
+<div id="secretMessageError">❌ Wrong code. Try again.</div>
+<div id="secretMessageDisplay"></div>
+</div>
+
 <div class="container">
 <h2>💘 Alexa Cute Whisper 💬</h2>
 <textarea id="text" placeholder="Write a cute or funny sound to Alexa 💌"></textarea>
@@ -531,6 +550,7 @@ margin: 8px 0 8px 8px;
 <button id="hellowBtn4" onclick="setText('Jaleebiiieeeeee… yummyyy yummm!')">🌀Jalebi </button>
 <button id="hellowBtn5" onclick="setText('Poppp popppp POPCORN!!')">🍿popcorn </button>
 <button id="hellowBtn5" onclick="setText('Gulaaaablaaaablaaaablaaa Jummmmuuuuuuun!!')">🧆gulabjamun </button>
+<button id="secretMessageBtn" onclick="showSecretMessageOverlay()">🔒</button>
 </div>
 
 <button onclick="sendToAlexa()">✨ Whisper to Alexa</button>
@@ -762,18 +782,18 @@ const gifs = [
 "https://res.cloudinary.com/dspclllob/image/upload/v1755499812/227fb695ad1fa7a5cd07d00dac065491_anlkkc.gif",
 "https://res.cloudinary.com/dspclllob/image/upload/v1755499813/cc67e2102c7e7ab94265a47785f881c5_npnq1a.gif",
 "https://res.cloudinary.com/dspclllob/image/upload/v1755499813/d14dbd0eb45954ebfb3de84f1b1ff83d_fxhvhk.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003656/1b9c0b72377b9a67b7df56caf1033649_cwfngt.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003656/45124f9af551252dd73e9fc464c99ead_s6gmik.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003656/bae6831544b6953394eb01437a09039c_qsdq8q.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003657/904d57467723fe4dbf1b4628b4f98855_ykiy5c.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003658/607a8b7fd12e7c1ae9aa82ab6e7c5a22_to5bkn.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003657/f29f827357d861d33571bed42987374c_eqtx9j.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003656/5e73c9be96e405ebb181aafd192d16ee_f50etw.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003659/e13e3f956c19e591b7021b669fc2a2b0_b1jkvs.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003658/f7442bdb32d72b584a2ba60870870e72_szdq3a.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003657/d967731c6cdf2ab14492ced0217fdc03_1_dl5ldd.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003659/9744d55f2765351233d508f36e995e71_ppg6tv.gif",
-    "https://res.cloudinary.com/dspclllob/image/upload/v1758003659/9289338e75595b1bb81e39cb6ea9e181_btahye.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003656/1b9c0b72377b9a67b7df56caf1033649_cwfngt.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003656/45124f9af551252dd73e9fc464c99ead_s6gmik.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003656/bae6831544b6953394eb01437a09039c_qsdq8q.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003657/904d57467723fe4dbf1b4628b4f98855_ykiy5c.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003658/607a8b7fd12e7c1ae9aa82ab6e7c5a22_to5bkn.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003657/f29f827357d861d33571bed42987374c_eqtx9j.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003656/5e73c9be96e405ebb181aafd192d16ee_f50etw.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003659/e13e3f956c19e591b7021b669fc2a2b0_b1jkvs.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003658/f7442bdb32d72b584a2ba60870870e72_szdq3a.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003657/d967731c6cdf2ab14492ced0217fdc03_1_dl5ldd.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003659/9744d55f2765351233d508f36e995e71_ppg6tv.gif",
+"https://res.cloudinary.com/dspclllob/image/upload/v1758003659/9289338e75595b1bb81e39cb6ea9e181_btahye.gif",
 ];
 
 window.onload = () => {
@@ -854,6 +874,7 @@ const container = document.querySelector(".container");
 const backArrow = document.querySelector(".back-arrow");
 const switchContainer = document.querySelector(".switch-container");
 const presetButtons = document.querySelectorAll(".preset-buttons button");
+const secretMessageBtn = document.getElementById("secretMessageBtn");
 
 if (validCodes.includes(input)) {
 overlay.style.display = "none";
@@ -880,6 +901,7 @@ gifElement.src = randomGif;
 container.style.display = "block";
 backArrow.style.display = "flex";
 switchContainer.style.display = "block";
+secretMessageBtn.style.display = "inline-block";
 displaySpecialEvents();
 }
 } else {
@@ -893,6 +915,33 @@ birthdayCountdownContainer.style.display = "none";
 anniversaryCountdownContainer.style.display = "none";
 birthdayContainer.style.display = "none";
 anniversaryContainer.style.display = "none";
+secretMessageBtn.style.display = "none";
+}
+}
+
+function showSecretMessageOverlay() {
+const secretMessageOverlay = document.getElementById("secretMessageOverlay");
+const secretMessageDisplay = document.getElementById("secretMessageDisplay");
+const secretMessageError = document.getElementById("secretMessageError");
+secretMessageOverlay.style.display = "flex";
+secretMessageDisplay.style.display = "none";
+secretMessageError.style.display = "none";
+document.getElementById("secretMessageInput").value = "";
+}
+
+function checkSecretMessage() {
+const input = document.getElementById("secretMessageInput").value.trim().toLowerCase();
+const secretMessageOverlay = document.getElementById("secretMessageOverlay");
+const secretMessageDisplay = document.getElementById("secretMessageDisplay");
+const secretMessageError = document.getElementById("secretMessageError");
+
+if (input === "booboo") {
+secretMessageDisplay.innerText = "SMARTEEFI ID zrnhl@proton.me ,password is your name with first letter capital@your birthyear";
+secretMessageDisplay.style.display = "block";
+secretMessageError.style.display = "none";
+} else {
+secretMessageError.style.display = "block";
+secretMessageDisplay.style.display = "none";
 }
 }
 
@@ -1050,6 +1099,3 @@ console.error("Error in displaySpecialEvents:", error);
 </script>
 </body>
 </html>
-
-
-
