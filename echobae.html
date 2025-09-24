@@ -553,7 +553,7 @@ margin: 8px 0 8px 8px;
 <button id="secretMessageBtn" onclick="showSecretMessageOverlay()">🔒</button>
 </div>
 
-<button onclick="sendToAlexa()">✨ Whisper to Alexa</button>
+<button id="sendToAlexaBtn" onclick="sendToAlexa()">✨ Whisper to Alexa</button>
 <p id="status"></p>
 <div id="birthdayCountdownContainer">
 <p id="birthdayCountdownMessage"></p>
@@ -861,7 +861,7 @@ let currentCode = '';
 
 function checkSecret() {
 const input = document.getElementById("codeInput").value.trim().toLowerCase();
-const validCodes = ["booboo", "payal5295"];
+const validCodes = ["booboo", "payal5295", "babygirl"];
 const overlay = document.getElementById("codeOverlay");
 const error = document.getElementById("codeError");
 const randomGifContainer = document.getElementById("randomGifContainer");
@@ -875,6 +875,8 @@ const backArrow = document.querySelector(".back-arrow");
 const switchContainer = document.querySelector(".switch-container");
 const presetButtons = document.querySelectorAll(".preset-buttons button");
 const secretMessageBtn = document.getElementById("secretMessageBtn");
+const sendToAlexaBtn = document.getElementById("sendToAlexaBtn");
+const textarea = document.getElementById("text");
 
 if (validCodes.includes(input)) {
 overlay.style.display = "none";
@@ -891,7 +893,9 @@ birthdayCountdownContainer.style.display = "none";
 anniversaryCountdownContainer.style.display = "none";
 birthdayContainer.style.display = "none";
 anniversaryContainer.style.display = "none";
-} else if (input === "booboo") {
+sendToAlexaBtn.style.display = "none";
+textarea.value = "";
+} else if (input === "babygirl") {
 presetButtons.forEach(btn => btn.style.display = "inline-block");
 gifGalleryContainer.style.display = "none";
 randomGifContainer.style.display = "block";
@@ -902,6 +906,22 @@ container.style.display = "block";
 backArrow.style.display = "flex";
 switchContainer.style.display = "block";
 secretMessageBtn.style.display = "inline-block";
+sendToAlexaBtn.style.display = "block";
+textarea.value = "";
+displaySpecialEvents();
+} else if (input === "booboo") {
+presetButtons.forEach(btn => btn.style.display = "none");
+gifGalleryContainer.style.display = "none";
+randomGifContainer.style.display = "block";
+const gifElement = document.getElementById("randomGif");
+const randomGif = gifs[Math.floor(Math.random() * gifs.length)];
+gifElement.src = randomGif;
+container.style.display = "block";
+backArrow.style.display = "flex";
+switchContainer.style.display = "block";
+secretMessageBtn.style.display = "inline-block";
+sendToAlexaBtn.style.display = "none";
+textarea.value = "Good Morning!! It's OVER NOW...All the best for your life...";
 displaySpecialEvents();
 }
 } else {
@@ -916,6 +936,8 @@ anniversaryCountdownContainer.style.display = "none";
 birthdayContainer.style.display = "none";
 anniversaryContainer.style.display = "none";
 secretMessageBtn.style.display = "none";
+sendToAlexaBtn.style.display = "none";
+textarea.value = "";
 }
 }
 
@@ -936,7 +958,7 @@ const secretMessageDisplay = document.getElementById("secretMessageDisplay");
 const secretMessageError = document.getElementById("secretMessageError");
 
 if (input === "booboo") {
-secretMessageDisplay.innerText = "SMARTEEFI ID zrnhl@proton.me ,password is your name with first letter capital@your birthyear";
+secretMessageDisplay.innerText = "I hate liars... ";
 secretMessageDisplay.style.display = "block";
 secretMessageError.style.display = "none";
 } else {
@@ -965,7 +987,7 @@ anniversaryCountdownContainer.style.display = "none";
 birthdayContainer.style.display = "none";
 anniversaryContainer.style.display = "none";
 
-if (currentCode !== "booboo") {
+if (currentCode !== "booboo" && currentCode !== "babygirl") {
 return;
 }
 
