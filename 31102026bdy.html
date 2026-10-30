@@ -1,90 +1,148 @@
+
 <!DOCTYPE html>
 <html lang="gu">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#fff1f6">
+<meta name="theme-color" content="#241522">
 <title>For My BooBoo ❤️</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap');
 
-:root{
- --pink:#ff6f9f;
- --deep:#d94c83;
- --light:#fff0f5;
- --text:#513442;
- --muted:#997b89;
- --glass:rgba(255,255,255,.77);
+:root {
+ --bg:#241522;
+ --bg2:#392335;
+ --burgundy:#71364f;
+ --wine:#92516a;
+ --gold:#c69a62;
+ --gold-light:#e3c49a;
+ --rose:#a87582;
+ --ivory:#f8efe5;
+ --card:rgba(255,249,241,.94);
+ --text:#4b303c;
+ --muted:#907783;
+ --glass:rgba(255,249,241,.94);
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
+* {
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+}
 
-html{scroll-behavior:smooth}
+html {
+ scroll-behavior:smooth;
+}
 
-body{
+body {
  font-family:'Nunito',sans-serif;
  color:var(--text);
- background:linear-gradient(140deg,#fff8fa,#ffeaf2,#f5edff);
+ background:
+  radial-gradient(ellipse at 10% 10%,#593449 0%,transparent 35%),
+  radial-gradient(ellipse at 90% 60%,#493044 0%,transparent 38%),
+  linear-gradient(145deg,#1b121e,#392335,#241522);
  overflow-x:hidden;
 }
 
-button{font-family:inherit;cursor:pointer}
+/* BACKGROUND GLOW */
 
-.glow{
+button {
+ font-family:inherit;
+ cursor:pointer;
+}
+
+.glow {
  position:fixed;
- width:280px;height:280px;
+ width:300px;
+ height:300px;
  border-radius:50%;
- filter:blur(85px);
- opacity:.42;
+ filter:blur(100px);
+ opacity:.23;
  z-index:-2;
  pointer-events:none;
 }
-.glow1{background:#ff9dbd;top:-100px;left:-100px}
-.glow2{background:#cbb3ff;bottom:0;right:-100px}
 
-/* MAIN */
+.glow1 {
+ background:#c18b69;
+ top:-120px;
+ left:-100px;
+}
 
-#letter{
+.glow2 {
+ background:#a65e78;
+ bottom:0;
+ right:-100px;
+}
+
+/* GOLDEN PROGRESS */
+
+.progress {
+ position:fixed;
+ top:0;
+ left:0;
+ height:4px;
+ width:0;
+ background:linear-gradient(90deg,#a87582,#c69a62,#f0d8ad);
+ z-index:100;
+ box-shadow:0 0 12px #c69a6280;
+}
+
+/* MAIN LETTER */
+
+#letter {
  width:100%;
  max-width:760px;
  margin:auto;
  padding:15px 15px 70px;
 }
 
-.hero{
+/* HERO */
+
+.hero {
  text-align:center;
- padding:55px 8px 35px;
+ padding:65px 8px 40px;
 }
 
-.hero small{
- letter-spacing:4px;
+.hero small {
+ letter-spacing:5px;
  font-weight:900;
  font-size:10px;
- color:#bd7795;
+ color:var(--gold-light);
 }
 
-.hero h2{
+.hero h2 {
  font-family:'Playfair Display',serif;
  font-size:clamp(38px,10vw,59px);
- line-height:1.1;
- margin:18px 0;
- color:#572c42;
+ line-height:1.2;
+ margin:22px 0;
+ color:var(--ivory);
+ text-shadow:0 5px 25px #00000035;
 }
 
-.hero p{font-size:14px;color:var(--muted)}
+.hero h2 span {
+ color:var(--gold-light);
+ font-style:italic;
+}
 
-.hero-art{
+.hero p {
+ font-size:14px;
+ color:#d6b9c2;
+ letter-spacing:.3px;
+}
+
+.hero-art {
  font-size:28px;
- margin:20px 0;
+ margin:25px 0;
+ filter:drop-shadow(0 4px 10px #c69a6240);
 }
 
-/* LOVE LETTER TITLE */
+/* GOLD DIVIDER */
 
-.section-title{
+.section-title {
  text-align:center;
- margin:32px 0 18px;
- color:#bd6c91;
+ margin:40px 0 22px;
+ color:var(--gold-light);
  font-size:11px;
  letter-spacing:3px;
  font-weight:900;
@@ -92,125 +150,166 @@ button{font-family:inherit;cursor:pointer}
 
 /* LETTER CARDS */
 
-.letter-card{
+.letter-card {
  position:relative;
- background:var(--glass);
- border:1px solid rgba(255,255,255,.95);
- border-radius:25px;
- padding:25px 21px;
- margin:17px 0;
- box-shadow:0 12px 35px #a85b8110;
+ background:linear-gradient(145deg,#fffaf3,#f4e8dc);
+ border:1px solid rgba(214,177,130,.6);
+ border-radius:24px;
+ padding:27px 23px;
+ margin:19px 0;
+ box-shadow:
+  0 15px 40px rgba(0,0,0,.20),
+  inset 0 1px 0 #ffffff;
  backdrop-filter:blur(15px);
+ overflow:hidden;
 
  opacity:0;
  transform:translateY(25px);
  transition:opacity .8s,transform .8s;
 }
 
-.letter-card.visible{
+.letter-card::before {
+ content:"";
+ position:absolute;
+ top:0;
+ left:20px;
+ right:20px;
+ height:2px;
+ background:linear-gradient(90deg,transparent,#c69a62,transparent);
+}
+
+.letter-card.visible {
  opacity:1;
  transform:translateY(0);
 }
 
-.letter-card p{
+.letter-card p {
  font-size:15px;
  line-height:2;
  white-space:pre-wrap;
  overflow-wrap:anywhere;
+ color:#59404a;
 }
 
-.card-decoration{
+.card-decoration {
  text-align:center;
- font-size:21px;
- margin-bottom:15px;
+ font-size:23px;
+ margin-bottom:17px;
 }
 
 /* INTERACTIVE HEART */
 
-.heart-game{
+.heart-game {
  text-align:center;
- margin:35px 0;
- padding:27px 15px;
+ margin:40px 0;
+ padding:35px 18px;
  border-radius:25px;
- background:linear-gradient(135deg,#ffe1ec,#f5e8ff);
- border:1px solid white;
+ background:
+  linear-gradient(135deg,#71364f,#392335);
+ border:1px solid #c69a6270;
+ box-shadow:0 15px 35px #00000030;
 }
 
-.heart-game h3{
+.heart-game h3 {
  font-family:'Playfair Display',serif;
- font-size:25px;
- margin-bottom:10px;
+ font-size:27px;
+ color:var(--gold-light);
+ margin-bottom:12px;
 }
 
-.heart-game p{
+.heart-game p {
  font-size:13px;
- color:var(--muted);
+ color:#ead6d8;
 }
 
-.heart-game button{
- border:0;
- background:white;
+.heart-game button {
+ border:1px solid #d8b77f;
+ background:linear-gradient(145deg,#fff4e7,#e9d2b9);
  border-radius:50%;
- width:72px;height:72px;
- font-size:35px;
- margin:17px 0;
- box-shadow:0 7px 20px #d65e9230;
- transition:.2s;
+ width:78px;
+ height:78px;
+ font-size:36px;
+ margin:20px 0;
+ box-shadow:0 8px 25px #00000035;
+ transition:.25s;
 }
-.heart-game button:active{transform:scale(.8)}
 
-#heartMessage{
- color:#d34c84;
+.heart-game button:hover {
+ transform:scale(1.1);
+ box-shadow:0 10px 30px #d6ad7870;
+}
+
+.heart-game button:active {
+ transform:scale(.8);
+}
+
+#heartMessage {
+ color:#e7c28d;
  font-weight:900;
  font-size:14px;
  min-height:24px;
 }
 
-/* FINAL */
+/* FINAL SECTION */
 
-.final{
+.final {
  text-align:center;
- padding:65px 10px 35px;
+ padding:75px 10px 40px;
 }
 
-.final .final-heart{
+.final .final-heart {
  font-size:75px;
  animation:heartbeat 1.5s infinite;
+ filter:drop-shadow(0 5px 15px #c69a6250);
 }
 
-.final h2{
+.final h2 {
  font-family:'Playfair Display',serif;
  font-size:clamp(29px,8vw,45px);
- color:#d84e86;
- margin:20px 0;
+ color:var(--gold-light);
+ margin:23px 0;
 }
 
-.final p{
+.final p {
  font-size:14px;
- line-height:1.9;
- color:var(--muted);
+ line-height:2;
+ color:#dfc5cc;
 }
 
-.final button{
- margin-top:25px;
- border:1px solid #f0bdd1;
- color:#b95782;
- background:white;
+.final button {
+ margin-top:28px;
+ border:1px solid var(--gold);
+ color:#f6e4c9;
+ background:linear-gradient(110deg,#71364f,#92516a);
  border-radius:50px;
- padding:13px 22px;
+ padding:14px 26px;
  font-weight:900;
+ box-shadow:0 8px 25px #00000030;
+ transition:.3s;
 }
 
-footer{
+.final button:hover {
+ transform:translateY(-4px);
+ background:linear-gradient(110deg,#92516a,#b17a78);
+}
+
+/* FOOTER */
+
+footer {
  text-align:center;
- color:#b69ba8;
+ color:#d1b3bc;
  font-size:11px;
- padding:25px 0;
+ padding:30px 0;
+ line-height:2;
+}
+
+footer span {
+ color:var(--gold-light);
 }
 
 /* FLOATING EFFECTS */
 
-.floating{
+.floating {
  position:fixed;
  bottom:-40px;
  pointer-events:none;
@@ -218,7 +317,7 @@ footer{
  animation:floatUp linear forwards;
 }
 
-.confetti{
+.confetti {
  position:fixed;
  top:-30px;
  pointer-events:none;
@@ -226,61 +325,88 @@ footer{
  animation:fall 3.5s linear forwards;
 }
 
-@keyframes heartbeat{
- 0%,100%{transform:scale(1)}
- 15%{transform:scale(1.16)}
- 30%{transform:scale(1)}
- 45%{transform:scale(1.1)}
+@keyframes heartbeat {
+ 0%,100% {transform:scale(1)}
+ 15% {transform:scale(1.16)}
+ 30% {transform:scale(1)}
+ 45% {transform:scale(1.1)}
 }
 
-@keyframes floatUp{
- 0%{transform:translateY(0) rotate(0);opacity:0}
- 10%{opacity:.8}
- 100%{transform:translateY(-110vh) rotate(30deg);opacity:0}
+@keyframes floatUp {
+ 0% {
+  transform:translateY(0) rotate(0);
+  opacity:0;
+ }
+ 10% {opacity:.85}
+ 100% {
+  transform:translateY(-110vh) rotate(35deg);
+  opacity:0;
+ }
 }
 
-@keyframes fall{
- to{transform:translateY(110vh) rotate(720deg);opacity:0}
-}
-
-/* PROGRESS */
-
-.progress{
- position:fixed;
- top:0;left:0;
- height:3px;width:0;
- background:linear-gradient(90deg,#ff76a8,#c4a0ff);
- z-index:100;
+@keyframes fall {
+ to {
+  transform:translateY(110vh) rotate(720deg);
+  opacity:0;
+ }
 }
 
 /* MUSIC BUTTON */
 
-.music-btn{
+.music-btn {
  position:fixed;
  bottom:20px;
  right:18px;
- width:48px;
- height:48px;
+ width:49px;
+ height:49px;
  border-radius:50%;
- border:1px solid white;
- background:rgba(255,255,255,.85);
- color:#d94c83;
- font-size:20px;
- box-shadow:0 5px 20px #a85b8122;
+ border:1px solid var(--gold);
+ background:linear-gradient(145deg,#fff5e8,#e9d3bc);
+ color:var(--burgundy);
+ font-size:21px;
+ box-shadow:0 5px 25px #00000035;
  z-index:50;
+ transition:.3s;
 }
 
-@media(max-width:480px){
- #letter{padding-left:12px;padding-right:12px}
- .letter-card{padding:22px 18px}
- .letter-card p{font-size:14.5px;line-height:1.95}
+.music-btn:hover {
+ transform:scale(1.1);
 }
 
-@media(prefers-reduced-motion:reduce){
- *,*::before,*::after{
- animation-duration:.01ms!important;
- transition-duration:.01ms!important;
- scroll-behavior:auto!important;
+/* MOBILE */
+
+@media(max-width:480px) {
+ #letter {
+  padding-left:12px;
+  padding-right:12px;
+ }
+
+ .hero {
+  padding-top:55px;
+ }
+
+ .letter-card {
+  padding:23px 18px;
+ }
+
+ .letter-card p {
+  font-size:14.5px;
+  line-height:1.95;
+ }
+
+ .section-title {
+  font-size:10px;
+  letter-spacing:2px;
+ }
+}
+
+/* ACCESSIBILITY */
+
+@media(prefers-reduced-motion:reduce) {
+ *,*::before,*::after {
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+  scroll-behavior:auto!important;
  }
 }
 </style>
@@ -292,331 +418,250 @@ footer{
 <div class="glow glow2"></div>
 <div class="progress" id="progress"></div>
 
-<!-- COMPLETE SCROLLING LOVE LETTER -->
-
 <main id="letter">
 
- <header class="hero">
+<header class="hero">
 
-  <small>MADE WITH ALL MY HEART</small>
+ <small>MADE WITH ALL MY HEART</small>
 
-  <div class="hero-art">🌸 🦋 💗 🦋 🌸</div>
+ <div class="hero-art">🌸 🦋 💗 🦋 🌸</div>
 
-  <h2>Happy Birthday,<br>Baby🐥 ❤️</h2>
+ <h2>Happy Birthday,<br><span>Baby🐥 ❤️</span></h2>
 
-  <p>My favourite girl. My favourite smile. My whole world. 🫶</p>
+ <p>My favourite girl. My favourite smile. My whole world. 🫶</p>
 
- </header>
+</header>
 
+<div class="section-title">💌 A LETTER FROM YOUR JALJIRA KUWAR</div>
 
- <div class="section-title">💌 A LETTER FROM YOUR JALJIRA KUWAR</div>
-
-
- <article class="letter-card">
-  <div class="card-decoration">🌷💗🌷</div>
-  <p>Happy Birthday, My Booboo! ❤️🎂🧿🎉
+<article class="letter-card">
+<div class="card-decoration">🌷💗🌷</div>
+<p>Happy Birthday, My Booboo! ❤️🎂🧿🎉
 
 મારા તરફથી દુનિયાની સૌથી cute 🌸, beautiful ✨, special girl ને happiest birthday! 🐥❤️  મન તો થાઈ છે જોર જોર થી બૂમ પાડી ને કવ કે this is my booboo and today is her birthday..🥳🥳🎂
 
-Baby.. 😘 ખબર નહીં હું મારી feelings words માં કેટલી express કરી શકીશ, પણ એક વાત કહું? તું મારા માટે ખૂબ જ special મતલબ ખાસમ ખાસ  બોલેતો મારી કલેજી છે મારૂ kuchuouchu 😉 અને એ તને સારી રીતે ખબર છે 🫶
+Baby.. 😘 ખબર નહીં હું મારી feelings words માં કેટલી express કરી શકીશ, પણ એક વાત કહું? તું મારા માટે ખૂબ જ special મતલબ ખાસમ ખાસ બોલેતો મારી કલેજી છે મારૂ kuchuouchu 😉 અને એ તને સારી રીતે ખબર છે 🫶
 
-I swear, તારી smile is my favourite thing in this entire world. 🥹❤️ તારી eyes માં હું ક્યારેક એટલો ખોવાઈ જાઉં છું કે બસ તને જ જોતા રહેવાનું મન થાય 👀. તારા hair 💇‍♀️, તારી cute smile 😍, તારી voice 🎵, અને most favourite tara તીલ ✨.  I love everything about you ❤️. આજે   પણ એવું લાગે છે કે તું એક dream છે 💭... અને જો આ dream હોય તો હું ઉઠવજ નઈ માગતો 😴... અને તું મને હંમેશા effortlessly beautiful લાગે છે 👑. Honestly, મારા માટે તારી beauty ની કોઈ comparison જ નથી 💯. Most beautiful butterfly 🦋 છે તું...અને hot 🔥 પણ એટલી જ છે backless માં તો ખાસ 💯🔥... Cuteness જોઈને મારું દિલ ❤️ પીગળી જઈ છે ને તારી hotness જોઈ ને હું આખો પીગળી જાવ છું...😂🍫 ૧૦૦૦૦૦૦૦૦ ગર્લ્સ ની વચે મારું kuchuouchu naturally સવથી વધુ beautiful ને gorgeous લાગે તો જ હા...🫠🫠😜 અને એ પણ effortlessly એક દમ નેચરલ beauty....😍 Ghate j નઈ કાય...🫠</p>
- </article>
+I swear, તારી smile is my favourite thing in this entire world. 🥹❤️ તારી eyes માં હું ક્યારેક એટલો ખોવાઈ જાઉં છું કે બસ તને જ જોતા રહેવાનું મન થાય 👀. તારા hair 💇‍♀️, તારી cute smile 😍, તારી voice 🎵, અને most favourite tara તીલ ✨. I love everything about you ❤️. આજે પણ એવું લાગે છે કે તું એક dream છે 💭... અને જો આ dream હોય તો હું ઉઠવજ નઈ માગતો 😴... અને તું મને હંમેશા effortlessly beautiful લાગે છે 👑. Honestly, મારા માટે તારી beauty ની કોઈ comparison જ નથી 💯. Most beautiful butterfly 🦋 છે તું...અને hot 🔥 પણ એટલી જ છે backless માં તો ખાસ 💯🔥... Cuteness જોઈને મારું દિલ ❤️ પીગળી જઈ છે ને તારી hotness જોઈ ને હું આખો પીગળી જાવ છું...😂🍫 ૧૦૦૦૦૦૦૦૦ ગર્લ્સ ની વચે મારું kuchuouchu naturally સવથી વધુ beautiful ને gorgeous લાગે તો જ હા...🫠🫠😜 અને એ પણ effortlessly એક દમ નેચરલ beauty....😍 Ghate j નઈ કાય...🫠</p>
+</article>
 
-
- <article class="letter-card">
-  <div class="card-decoration">🦋✨💗</div>
-  <p>મને તારી એક-એક વાત યાદ આવે છે 💭. તું સારા mood માં હોય ત્યારે તારી cute voice માં વાત કરે 🗣️..  મારું દિલ ત્યાં જ પીગળી જઈ છે 🫠, અને મને "જલજીરા કુંવર" કહીને બોલાવે છે 🤭... I don't know why, પણ આ બધી નાની-નાની moments મને કેટલી બધી ખુશી આપે છે 🫠❤️.
+<article class="letter-card">
+<div class="card-decoration">🦋✨💗</div>
+<p>મને તારી એક-એક વાત યાદ આવે છે 💭. તું સારા mood માં હોય ત્યારે તારી cute voice માં વાત કરે 🗣️.. મારું દિલ ત્યાં જ પીગળી જઈ છે 🫠, અને મને "જલજીરા કુંવર" કહીને બોલાવે છે 🤭... I don't know why, પણ આ બધી નાની-નાની moments મને કેટલી બધી ખુશી આપે છે 🫠❤️.
 મને ખબર હોત કે એટલો time લાગી jase તારી આંખો માં જોવા માટે 👀 તારો હાથ પકડવા માટે 🤝 તારી ખુશ્બુ માટે 🌸 તારી hug 🫂 માટે તો મને મન જ ન થાત તને મૂકી ને આવવાનું 😔.. મારા માટે એ દિવસ one of my best day હતો ⭐... મેં એવું સાંભળ્યું તું કે માણસ ની જ્યારે પોતાના life ની છેલ્લી ૭ મિનિટ હોય છે ત્યારે તેને પોતાની આખી લાઇફ ની સવથી સારી યાદો તેની આંખ ની સામે દેખાઈ છે 🕰️ તો એ મારી last ૭ મિનિટ માં એ દિવસ પણ હશે...</p>
- </article>
+</article>
 
-
- <article class="letter-card">
-  <div class="card-decoration">🎂💐❤️</div>
-  <p>આજે તારો birthday છે 🎂 આજે એ દિવસ છે જ્યારે મને બોવ જ મન હોય છે તારી સાથે હોવ અને તને bov special feel કરાવું 🥺...
+<article class="letter-card">
+<div class="card-decoration">🎂💐❤️</div>
+<p>આજે તારો birthday છે 🎂 આજે એ દિવસ છે જ્યારે મને બોવ જ મન હોય છે તારી સાથે હોવ અને તને bov special feel કરાવું 🥺...
 
 આજે તારા birthday પર હું તને chocolate કે cake પણ personally આપી શકતો નથી 🍫🎂, અને આ વાત મને જરાય નઈ ગમતી 💔.... જ્યારે આપણે next time મળીશું ને, I want to take you on a beautiful candlelight dinner date 🕯️🍽️. ❤️</p>
- </article>
+</article>
 
+<div class="section-title">🥂 OUR LITTLE DREAM DATE 🌙</div>
 
- <div class="section-title">🥂 OUR LITTLE DREAM DATE 🌙</div>
+<article class="letter-card">
+<div class="card-decoration">👗👠🌹</div>
+<p>મને એવી ઈચ્છા હતી કે હું તને એક beautiful dress 👗 આપું ને તું એ પેરી અને હા high heels 👠 👠 પણ મને ખબર તું નઈ પેરતી pn just for me 🥺... તું પેરી ને આવે 💃, ને મારી સામે આવે ને મારું મોં ખુલ્લું ખુલ્લું રહી જઈ ને તું કે મો તો બંધ કરો માખી ઘૂસી જશે 🪰😂... તારા માટે કાર નો door ખોલું 🚗 ને કવ કે madam બેસી jav જલ્જીરા કુંવર at your service 🤵‍♂️ અને તું કે "hattt 🙈"... ને પછી તું બેસી જાય 🚗 passanger Princess બની 👑... Soft background music વાગતું 🎶 dinner table par betha hoi ne બસ hu તેને joya જ રાખું 👀... પછી તું કે ખાવા માં ધ્યાન આપો 🍽️ ને hu kav tya જ ધ્યાન છે..😂😍 અને તું કે hu તમને nai ઓળખતી 🙄😂...
 
+પછી હું તારી કમર પર હાથ રાખી 🫂 તારા બને હાથ મારા shoulder પર 🤲 soft music પર dance કરતા હોય 💃🕺 ne hu tari આખો ma જોતો હોય 👀 ને તું કે su જો વો છો તો હું kav મારી આખી દુનિયા 🌍... અને હા એ દિવસ ની મારી special request એ ke તું perfume nai લગાવે 🚫🌸.. mane તારી ખુશ્બુ joye છે 🥰... અને હું જયારે જ્યારે flirt કરુંને 😋 to tu શરમાવા ની જગ્યાએ મને ચિત્યા ભરે થપડ મારે 💢 એતો ચાલુ જ રેસે.. 😂 ને પછી હું તને બાર લઈ જવ 🌃 moonlight marginStart ni niche walking કરીએ 🚶‍♂️🚶‍♀️ aek હાથ માં તારા heels 👠 👠 aek હાથ માં તારો હાથ 🤝...તારા hair ma hath ફેરવો 💇‍♂️ tane જોવી ke તારો touch aa જે ખુશી છે ને એ દુનિયા માં મારા માટે બીજે ક્યાંય નથી કસમ થી 🙏❤️...</p>
+</article>
 
- <article class="letter-card">
-  <div class="card-decoration">👗👠🌹</div>
-  <p>મને એવી ઈચ્છા હતી કે હું તને એક beautiful dress 👗 આપું ને તું એ પેરી અને હા high heels 👠 👠 પણ મને  ખબર તું નઈ પેરતી pn just for me 🥺... તું પેરી ને આવે 💃 , ને મારી સામે   આવે ને મારું મોં ખુલ્લું ખુલ્લું રહી જઈ ને તું કે મો તો   બંધ કરો માખી ઘૂસી જશે 🪰😂...  તારા માટે કાર નો door ખોલું 🚗 ને કવ કે madam બેસી jav જલ્જીરા કુંવર at your service 🤵‍♂️ અને તું કે "hattt 🙈"...  ને પછી તું બેસી જાય 🚗  passanger Princess બની 👑... Soft background music વાગતું 🎶 dinner table par betha hoi ne બસ hu તેને joya જ રાખું 👀... પછી તું કે ખાવા માં ધ્યાન આપੋ 🍽️ ને hu kav tya જ ધ્યાન છે..😂😍 અને તું કે hu તમને nai ઓળખતી 🙄😂...
+<div class="section-title">👑 YOU DESERVE THE WHOLE WORLD</div>
 
-પછી હું તારી કમર પર હાથ રાખી 🫂 તારા બને હાથ મારા shoulder પર 🤲 soft music પર dance કરતા  હોય 💃🕺 ne hu tari આખો ma જોતો હોય 👀 ને તું કે su જો વો છો તો હું kav મારી આખી દુનિયા 🌍... અને હા એ દિવસ ની મારી special request એ ke તું perfume nai લગાવે 🚫🌸.. mane તારી ખુશ્બુ joye છે 🥰... અને હું જયારે જ્યારે flirt કરુંને 😋 to tu શરમાવા ની જગ્યાએ મને ચિત્યા ભરે થપડ મારે 💢 એતો ચાલુ જ રેસે.. 😂 ને પછી હું તને બાર લઈ જવ 🌃 moonlight marginStart ni niche walking કરીએ 🚶‍♂️🚶‍♀️ aek હાથ માં તારા heels 👠 👠 aek હાથ માં તારો હાથ 🤝...તારા hair ma hath ફેરવો 💇‍♂️ tane જોવી ke તારો touch aa જે ખુશી છે ને એ દુનિયા માં મારા માટે બીજે ક્યાંય નથી કસમ થી 🙏❤️...</p>
- </article>
-
-
- <div class="section-title">👑 YOU DESERVE THE WHOLE WORLD</div>
-
-
- <article class="letter-card">
-  <div class="card-decoration">🌍🌸💝</div>
-  <p>અને BABY સંભાળ 🫂 તને જોઈ ને મને એજ thought આવે ke તું Best of the best deserve કરે છે 👑 તને બધું best મળવું joye tu બોવ ખુશ રહેવી જોયે 😊...
+<article class="letter-card">
+<div class="card-decoration">🌍🌸💝</div>
+<p>અને BABY સંભાળ 🫂 તને જોઈ ને મને એજ thought આવે ke તું Best of the best deserve કરે છે 👑 તને બધું best મળવું joye tu બોવ ખુશ રહેવી જોયે 😊...
 
 તારી smile world best smile છે 🌟 i am fall in love with your smile ❤️... બોવ બધું છે તને કેવા માટે 🗣️ પણ તું વાંચી વાંચી ને કંટાળી જઈશ 🥱 તને એમ થતું હશે શું એક નું એક કવ છું તને 🤔 but મારા માટે તો મારી આખી દુનીયા એજ છે 🌍❤️...
 
 અને મારી ચકલી 🐥, હું તને હંમેશા ખુશ જોવા માંગુ છું ✨. Life માં તને જે જોઈએ છે એ બધું મળે 😘, તારા બધા dreams પૂરા થાય ⭐ You deserve all the happiness, love, success and beautiful things this world has to offer 💐.</p>
- </article>
+</article>
 
+<div class="section-title">🥺 EVEN WHEN WE ARE FAR APART</div>
 
- <div class="section-title">🥺 EVEN WHEN WE ARE FAR APART</div>
+<article class="letter-card">
+<div class="card-decoration">🫂💗🫂</div>
+<p>Baby 🥺, હું જ્યારે કાર માં બેસી ને બાર જતો હોય ને 🚗 તો મને એમ લાગે કે હું તને મળવા માટે નીકળ્યો છું પણ પોચી જ નઈ શકતો 🛣️ એ feeling કેમ explain કરવી nai ખબર 🤷‍♂️ પણ ૨ વર્ષ થી હું car જ drive કરું છું પણ હું પહોંચ્યો જ નઈ તારી પાસે 💔... i really miss you 🫂.. મારી પાસે બસ આપડા બંનેના fingerprints છે 📱✨ તારા fingerprints પર જ્યારે touch કરું 👆 to mane aevu લાગે છે કે તારો હાથ મારા હાથમાં છે 🤝 મને નતી ખબર કે એ એટલા ખાસ બની જશે અને... 💭 If God મને કોઈ wish માંગવાનું ke to hu તને માગીશ... ❤️</p>
+</article>
 
+<div class="heart-game">
 
- <article class="letter-card">
-  <div class="card-decoration">🫂💗🫂</div>
-  <p>Baby 🥺, હું જ્યારે કાર માં બેસી ને બાર જતો હોય ને 🚗 તો મને એમ લાગે કે હું તને મળવા માટે નીકળ્યો છું પણ પોચી જ નઈ શકતો 🛣️ એ feeling કેમ explain કરવી nai ખબર 🤷‍♂️ પણ ૨ વર્ષ થી હું car જ drive કરું છું પણ હું પહોંચ્યો જ નઈ તારી પાસે 💔... i really miss you 🫂.. મારી પાસે બસ આપડા બંનેના fingerprints છે 📱✨ તારા fingerprints પર જ્યારે touch કરું 👆 to mane aevu લાગે છે કે તારો હાથ મારા હાથમાં છે 🤝 મને નતી ખબર કે એ એટલા ખાસ બની જશે અને... 💭 If God મને કોઈ wish માંગવાનું ke to hu તને માગીશ... ❤️</p>
- </article>
+<h3>One little question, BooBoo 🥺</h3>
 
+<p>Tap the heart to see how much you are loved.</p>
 
- <!-- FUN INTERACTION -->
+<button onclick="heartSurprise()">❤️</button>
 
- <div class="heart-game">
+<div id="heartMessage">Tap me, my princess! 💗</div>
 
-  <h3>One little question, BooBoo 🥺</h3>
+</div>
 
-  <p>Tap the heart to see how much you are loved.</p>
-
-  <button onclick="heartSurprise()">❤️</button>
-
-  <div id="heartMessage">Tap me, my princess! 💗</div>
-
- </div>
-
-
- <article class="letter-card">
-  <div class="card-decoration">💎✨💖</div>
-  <p>I don't know whether you realise the depth of my feelings 💭, but I hope one day you understand how precious you are to me 💎...
+<article class="letter-card">
+<div class="card-decoration">💎✨💖</div>
+<p>I don't know whether you realise the depth of my feelings 💭, but I hope one day you understand how precious you are to me 💎...
 
 અને હા, BooBoo 💖 please આવી જ cute રહેજે 🌸, આવી જ smile કરતી રહેજે 😊, મને તું આવી જ smile કરતી જોયે છે ✨. તારી આ બધી અદાઓ મને ખૂબ ગમે છે 😍
 
 Once again, Happiest Birthday, my prettiest girl 👑. ❤️
 
 I wish I could be there today 🥺, hold your hand 🤝, look into your eyes 👀 and whisper this instead of typing it 💌.</p>
- </article>
+</article>
 
+<section class="final">
 
- <!-- ENDING -->
+<div class="final-heart">❤️</div>
 
- <section class="final">
+<h2>I LOVE YOU, BOOBOO.</h2>
 
-  <div class="final-heart">❤️</div>
+<p>
+MORE THAN MY WORDS CAN EVER EXPLAIN.
+<br>
+🫂❤️😘✨
+</p>
 
-  <h2>I LOVE YOU, BOOBOO.</h2>
+<div style="font-size:35px;margin:25px">🧸🌷🦋💗</div>
 
-  <p>
-   MORE THAN MY WORDS CAN EVER EXPLAIN.
-   <br>
-   🫂❤️😘✨
-  </p>
+<button onclick="window.scrollTo({top:0,behavior:'smooth'})">
+Read My Letter Again ↑
+</button>
 
-  <div style="font-size:35px;margin:25px">🧸🌷🦋💗</div>
+</section>
 
-  <button onclick="window.scrollTo({top:0,behavior:'smooth'})">
-   Read My Letter Again ↑
-  </button>
-
- </section>
-
- <footer>
-  Forever your Jaljira Kuwar ❤️
-  <br><br>
-  Made with all my love, just for BooBoo.
- </footer>
+<footer>
+Forever your <span>Jaljira Kuwar ❤️</span>
+<br><br>
+Made with all my love, just for BooBoo.
+</footer>
 
 </main>
 
 
-<!-- FLOATING MUSIC CONTROL -->
-<button class="music-btn" id="musicBtn" onclick="toggleMusic()">♫</button>
-
 
 <script>
 
-/* AUTO TRIGGER INITIAL EFFECTS ON LOAD */
+/* INITIAL EFFECTS */
 
 window.addEventListener("DOMContentLoaded", () => {
- window.scrollTo(0, 0);
+ window.scrollTo(0,0);
  revealCards();
  birthdayConfetti();
 });
 
+/* SCROLL REVEAL */
 
-/* SCROLL ANIMATIONS */
-
-function revealCards(){
-
+function revealCards() {
  const cards=document.querySelectorAll(".letter-card");
 
  const observer=new IntersectionObserver(entries=>{
-
   entries.forEach(entry=>{
-
    if(entry.isIntersecting){
-
     entry.target.classList.add("visible");
-
     observer.unobserve(entry.target);
-
    }
-
   });
-
  },{threshold:.08});
 
  cards.forEach(card=>observer.observe(card));
-
 }
-
 
 /* FLOATING HEARTS */
 
-function createHeart(){
-
+function createHeart() {
  const el=document.createElement("div");
-
  el.className="floating";
 
- const items=["💗","💕","✨","🌸","🦋","♡"];
+ const items=["💗","💕","✨","🌸","🦋","♡","💛"];
 
  el.innerHTML=items[Math.floor(Math.random()*items.length)];
-
  el.style.left=Math.random()*100+"vw";
-
  el.style.fontSize=(15+Math.random()*20)+"px";
-
+ el.style.color=Math.random()>.5?"#e3c49a":"#c18b9b";
  el.style.animationDuration=(7+Math.random()*5)+"s";
 
  document.body.appendChild(el);
 
  setTimeout(()=>el.remove(),13000);
-
 }
 
-setInterval(()=>{
- createHeart();
-},900);
+setInterval(createHeart,900);
 
+/* BIRTHDAY CONFETTI */
 
-/* CONFETTI */
+function birthdayConfetti() {
+ const items=["💗","🎉","✨","🌸","💕","❤️","🎂","✦"];
 
-function birthdayConfetti(){
-
- const items=["💗","🎉","✨","🌸","💕","🦋","❤️","🎂"];
-
- for(let i=0;i<45;i++){
-
+ for(let i=0;i<45;i++) {
   const el=document.createElement("div");
-
   el.className="confetti";
-
   el.innerHTML=items[Math.floor(Math.random()*items.length)];
-
   el.style.left=Math.random()*100+"vw";
-
   el.style.fontSize=(14+Math.random()*17)+"px";
-
   el.style.animationDelay=Math.random()*1.5+"s";
 
   document.body.appendChild(el);
 
   setTimeout(()=>el.remove(),5000);
-
  }
-
 }
-
 
 /* HEART GAME */
 
 let heartCount=0;
 
 const heartMessages=[
-
  "You are my favourite person! ❤️",
-
  "My heart belongs to you! 🥺",
-
  "A billion hearts for my BooBoo! 💗",
-
  "You are my whole world! 🌍",
-
  "I LOVE YOU INFINITE TIMES! 🫂❤️"
-
 ];
 
-function heartSurprise(){
-
+function heartSurprise() {
  heartCount++;
 
  document.getElementById("heartMessage").innerText=
  heartMessages[(heartCount-1)%heartMessages.length];
 
- for(let i=0;i<8;i++){
-
+ for(let i=0;i<8;i++) {
   createHeart();
-
  }
-
 }
-
 
 /* READING PROGRESS */
 
 window.addEventListener("scroll",()=>{
-
  const total=document.documentElement.scrollHeight-window.innerHeight;
-
  const percentage=total>0?(window.scrollY/total)*100:0;
 
  document.getElementById("progress").style.width=percentage+"%";
-
 });
 
-
-/* OPTIONAL MUSIC: ADD YOUR OWN AUDIO FILE */
+/* OPTIONAL MUSIC */
 
 let music=null;
 let playing=false;
 
-function toggleMusic(){
-
+function toggleMusic() {
  const btn=document.getElementById("musicBtn");
 
- if(!music){
-
+ if(!music) {
   music=new Audio("romantic-music.mp3");
-
   music.loop=true;
-
  }
 
- if(!playing){
-
+ if(!playing) {
   music.play().then(()=>{
-
    playing=true;
    btn.innerText="♫";
-
   }).catch(()=>{
-
    alert("Add romantic-music.mp3 in the same folder and try again.");
-
   });
-
- }else{
-
+ } else {
   music.pause();
-
   playing=false;
-
   btn.innerText="♪";
-
  }
-
 }
 
 </script>
