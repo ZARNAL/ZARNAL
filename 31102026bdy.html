@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="gu">
 <head>
@@ -44,90 +43,9 @@ button{font-family:inherit;cursor:pointer}
 .glow1{background:#ff9dbd;top:-100px;left:-100px}
 .glow2{background:#cbb3ff;bottom:0;right:-100px}
 
-/* OPENING */
-
-#opening{
- min-height:100svh;
- display:flex;
- align-items:center;
- justify-content:center;
- padding:20px;
- text-align:center;
- position:relative;
-}
-
-.open-card{
- width:100%;
- max-width:440px;
- padding:42px 25px;
- background:var(--glass);
- border:1px solid white;
- border-radius:35px;
- backdrop-filter:blur(25px);
- box-shadow:0 25px 80px #a85b811a;
- animation:appear 1s ease;
- position:relative;
-}
-
-.eyebrow{
- font-size:10px;
- letter-spacing:4px;
- font-weight:900;
- color:#bd7795;
-}
-
-.big-heart{
- font-size:75px;
- margin:22px 0;
- display:block;
- animation:heartbeat 1.5s infinite;
-}
-
-.open-card h1{
- font-family:'Playfair Display',serif;
- font-size:clamp(37px,10vw,52px);
- line-height:1.12;
- color:#572c42;
-}
-
-.open-card p{
- margin:20px auto 25px;
- color:var(--muted);
- font-size:14px;
- line-height:1.9;
-}
-
-.open-btn{
- border:none;
- padding:16px 29px;
- border-radius:50px;
- background:linear-gradient(135deg,#ff8fb4,#ed5791);
- color:white;
- font-weight:900;
- font-size:15px;
- box-shadow:0 10px 25px #ed579155;
- transition:.3s;
-}
-.open-btn:hover{transform:translateY(-4px) scale(1.03)}
-
-.tap-note{
- font-size:11px;
- color:#b69ba8;
- margin-top:20px;
-}
-
-/* TEDDY */
-
-.teddy{
- font-size:42px;
- margin-top:20px;
- animation:bounce 2s infinite;
-}
-
 /* MAIN */
 
 #letter{
- display:none;
  width:100%;
  max-width:760px;
  margin:auto;
@@ -315,16 +233,6 @@ footer{
  45%{transform:scale(1.1)}
 }
 
-@keyframes appear{
- from{opacity:0;transform:translateY(25px)}
- to{opacity:1;transform:translateY(0)}
-}
-
-@keyframes bounce{
- 0%,100%{transform:translateY(0)}
- 50%{transform:translateY(-9px)}
-}
-
 @keyframes floatUp{
  0%{transform:translateY(0) rotate(0);opacity:0}
  10%{opacity:.8}
@@ -360,7 +268,6 @@ footer{
  font-size:20px;
  box-shadow:0 5px 20px #a85b8122;
  z-index:50;
- display:none;
 }
 
 @media(max-width:480px){
@@ -385,38 +292,6 @@ footer{
 <div class="glow glow2"></div>
 <div class="progress" id="progress"></div>
 
-<!-- OPENING SURPRISE -->
-
-<section id="opening">
-
- <div class="open-card">
-
-  <div class="eyebrow">A SPECIAL DAY FOR SOMEONE SPECIAL</div>
-
-  <span class="big-heart">💗</span>
-
-  <h1>Happy Birthday,<br>My BooBoo!</h1>
-
-  <p>
-   Someone as beautiful as you deserves
-   the most beautiful surprise.
-   <br>
-   I made this little world just for you, baby. 🥺❤️
-  </p>
-
-  <button class="open-btn" onclick="openLetter()">
-   Open Your Surprise 💌
-  </button>
-
-  <div class="teddy">🧸🌷</div>
-
-  <div class="tap-note">A LITTLE GIFT FROM YOUR JALJIRA KUWAR ❤️</div>
-
- </div>
-
-</section>
-
-
 <!-- COMPLETE SCROLLING LOVE LETTER -->
 
 <main id="letter">
@@ -427,7 +302,7 @@ footer{
 
   <div class="hero-art">🌸 🦋 💗 🦋 🌸</div>
 
-  <h2>Happy Birthday,<br>My Booboo! ❤️</h2>
+  <h2>Happy Birthday,<br>Baby🐥 ❤️</h2>
 
   <p>My favourite girl. My favourite smile. My whole world. 🫶</p>
 
@@ -441,11 +316,11 @@ footer{
   <div class="card-decoration">🌷💗🌷</div>
   <p>Happy Birthday, My Booboo! ❤️🎂🧿🎉
 
-મારા તરફથી દુનિયાની સૌથી cute 🌸, beautiful ✨, special girl ને happiest birthday! ❤️  મન તો થાઈ છે જોર જોર થી બૂમ પાડી ને કવ કે this is my booboo and today is her birthday..🥳🥳🎂
+મારા તરફથી દુનિયાની સૌથી cute 🌸, beautiful ✨, special girl ને happiest birthday! 🐥❤️  મન તો થાઈ છે જોર જોર થી બૂમ પાડી ને કવ કે this is my booboo and today is her birthday..🥳🥳🎂
 
 Baby.. 😘 ખબર નહીં હું મારી feelings words માં કેટલી express કરી શકીશ, પણ એક વાત કહું? તું મારા માટે ખૂબ જ special મતલબ ખાસમ ખાસ  બોલેતો મારી કલેજી છે મારૂ kuchuouchu 😉 અને એ તને સારી રીતે ખબર છે 🫶
 
-I swear, તારી smile is my favourite thing in this entire world. 🥹❤️ તારી eyes માં હું ક્યારેક એટલો ખોવાઈ જાઉં છું કે બસ તને જ જોતા રહેવાનું મન થાય 👀. તારા hair 💇‍♀️, તારી cute smile 😍, તારી voice 🎵, અને most favourite tara તીલ ✨.  I love everything about you ❤️. આજે  પણ એવું લાગે છે કે તું એક dream છે 💭... અને જો આ dream હોય તો હું ઉઠવજ નઈ માગતો 😴... અને તું મને હંમેશા effortlessly beautiful લાગે છે 👑. Honestly, મારા માટે તારી beauty ની કોઈ comparison જ નથી 💯. Most beautiful butterfly 🦋 છે તું...અને hot 🔥 પણ એટલી જ છે backless માં તો ખાસ 💯🔥... Cuteness જોઈને મારું દિલ ❤️ પીગળી જઈ છે ને તારી hotness જોઈ ને હું આખો પીગળી જાવ છું...😂🍫 ૧૦૦૦૦૦૦૦૦ ગર્લ્સ ની વચે મારું kuchuouchu naturally સવથી વધુ beautiful ને gorgeous લાગે તો જ હા...🫠🫠😜 અને એ પણ effortlessly એક દમ નેચરલ beauty....😍 Ghate j નઈ કાય...🫠</p>
+I swear, તારી smile is my favourite thing in this entire world. 🥹❤️ તારી eyes માં હું ક્યારેક એટલો ખોવાઈ જાઉં છું કે બસ તને જ જોતા રહેવાનું મન થાય 👀. તારા hair 💇‍♀️, તારી cute smile 😍, તારી voice 🎵, અને most favourite tara તીલ ✨.  I love everything about you ❤️. આજે   પણ એવું લાગે છે કે તું એક dream છે 💭... અને જો આ dream હોય તો હું ઉઠવજ નઈ માગતો 😴... અને તું મને હંમેશા effortlessly beautiful લાગે છે 👑. Honestly, મારા માટે તારી beauty ની કોઈ comparison જ નથી 💯. Most beautiful butterfly 🦋 છે તું...અને hot 🔥 પણ એટલી જ છે backless માં તો ખાસ 💯🔥... Cuteness જોઈને મારું દિલ ❤️ પીગળી જઈ છે ને તારી hotness જોઈ ને હું આખો પીગળી જાવ છું...😂🍫 ૧૦૦૦૦૦૦૦૦ ગર્લ્સ ની વચે મારું kuchuouchu naturally સવથી વધુ beautiful ને gorgeous લાગે તો જ હા...🫠🫠😜 અને એ પણ effortlessly એક દમ નેચરલ beauty....😍 Ghate j નઈ કાય...🫠</p>
  </article>
 
 
@@ -469,9 +344,9 @@ I swear, તારી smile is my favourite thing in this entire world. 🥹❤�
 
  <article class="letter-card">
   <div class="card-decoration">👗👠🌹</div>
-  <p>મને એવી ઈચ્છા હતી કે હું તને એક beautiful dress 👗 આપું ને તું એ પેરી અને હા high heels 👠 👠 પણ મને  ખબર તું નઈ પેરતી pn just for me 🥺... તું પેરી ને આવે 💃 , ને મારી સામે  આવે ને મારું મોં ખુલ્લું ખુલ્લું રહી જઈ ને તું કે મો તો  બંધ કરો માખી ઘૂસી જશે 🪰😂...  તારા માટે કાર નો door ખોલું 🚗 ને કવ કે madam બેસી jav જલ્જીરા કુંવર at your service 🤵‍♂️ અને તું કે "hattt 🙈"...  ને પછી તું બેસી જાય 🚗  passanger Princess બની 👑... Soft background music વાગતું 🎶 dinner table par betha hoi ne બસ hu તેને joya જ રાખું 👀... પછી તું કે ખાવા માં ધ્યાન આપો 🍽️ ને hu kav tya જ ધ્યાન છે..😂😍 અને તું કે hu તમને nai ઓળખતી 🙄😂...
+  <p>મને એવી ઈચ્છા હતી કે હું તને એક beautiful dress 👗 આપું ને તું એ પેરી અને હા high heels 👠 👠 પણ મને  ખબર તું નઈ પેરતી pn just for me 🥺... તું પેરી ને આવે 💃 , ને મારી સામે   આવે ને મારું મોં ખુલ્લું ખુલ્લું રહી જઈ ને તું કે મો તો   બંધ કરો માખી ઘૂસી જશે 🪰😂...  તારા માટે કાર નો door ખોલું 🚗 ને કવ કે madam બેસી jav જલ્જીરા કુંવર at your service 🤵‍♂️ અને તું કે "hattt 🙈"...  ને પછી તું બેસી જાય 🚗  passanger Princess બની 👑... Soft background music વાગતું 🎶 dinner table par betha hoi ne બસ hu તેને joya જ રાખું 👀... પછી તું કે ખાવા માં ધ્યાન આપੋ 🍽️ ને hu kav tya જ ધ્યાન છે..😂😍 અને તું કે hu તમને nai ઓળખતી 🙄😂...
 
-પછી હું તારી કમર પર હાથ રાખી 🫂 તારા બને હાથ મારા shoulder પર 🤲 soft music પર dance કરતા  હોય 💃🕺 ne hu tari આખો ma જોતો હોય 👀 ને તું કે su જો વો છો તો હું kav મારી આખી દુનિયા 🌍... અને હા એ દિવસ ની મારી special request એ ke તું perfume nai લગાવે 🚫🌸.. mane તારી ખુશ્બુ joye છે 🥰... અને હું જયારે જ્યારે flirt કરુંને 😋 to tu શરમાવા ની જગ્યાએ મને ચિત્યા ભરે થપડ મારે 💢 એતો ચાલુ જ રેસે.. 😂 ને પછી હું તને બાર લઈ જવ 🌃 moonlight 🌙 ni niche walking કરીએ 🚶‍♂️🚶‍♀️ aek હાથ માં તારા heels 👠 👠 aek હાથ માં તારો હાથ 🤝...તારા hair ma hath ફેરવો 💇‍♂️ tane જોવી ke તારો touch aa જે ખુશી છે ને એ દુનિયા માં મારા માટે બીજે ક્યાંય નથી કસમ થી 🙏❤️...</p>
+પછી હું તારી કમર પર હાથ રાખી 🫂 તારા બને હાથ મારા shoulder પર 🤲 soft music પર dance કરતા  હોય 💃🕺 ne hu tari આખો ma જોતો હોય 👀 ને તું કે su જો વો છો તો હું kav મારી આખી દુનિયા 🌍... અને હા એ દિવસ ની મારી special request એ ke તું perfume nai લગાવે 🚫🌸.. mane તારી ખુશ્બુ joye છે 🥰... અને હું જયારે જ્યારે flirt કરુંને 😋 to tu શરમાવા ની જગ્યાએ મને ચિત્યા ભરે થપડ મારે 💢 એતો ચાલુ જ રેસે.. 😂 ને પછી હું તને બાર લઈ જવ 🌃 moonlight marginStart ni niche walking કરીએ 🚶‍♂️🚶‍♀️ aek હાથ માં તારા heels 👠 👠 aek હાથ માં તારો હાથ 🤝...તારા hair ma hath ફેરવો 💇‍♂️ tane જોવી ke તારો touch aa જે ખુશી છે ને એ દુનિયા માં મારા માટે બીજે ક્યાંય નથી કસમ થી 🙏❤️...</p>
  </article>
 
 
@@ -561,23 +436,13 @@ I wish I could be there today 🥺, hold your hand 🤝, look into your eyes �
 
 <script>
 
-/* OPEN LETTER */
+/* AUTO TRIGGER INITIAL EFFECTS ON LOAD */
 
-function openLetter(){
-
- document.getElementById("opening").style.display="none";
-
- document.getElementById("letter").style.display="block";
-
- document.getElementById("musicBtn").style.display="block";
-
- window.scrollTo(0,0);
-
+window.addEventListener("DOMContentLoaded", () => {
+ window.scrollTo(0, 0);
  revealCards();
-
  birthdayConfetti();
-
-}
+});
 
 
 /* SCROLL ANIMATIONS */
@@ -632,13 +497,7 @@ function createHeart(){
 }
 
 setInterval(()=>{
-
- if(document.getElementById("letter").style.display==="block"){
-
-  createHeart();
-
- }
-
+ createHeart();
 },900);
 
 
