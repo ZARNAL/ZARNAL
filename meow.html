@@ -4,11 +4,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#251522">
+
 <title>For Zarna BooBoo ❤️</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root {
+    --background: #251522;
+    --background-light: #392032;
+    --card: #fff8f0;
+    --burgundy: #713b55;
+    --rose: #b66d83;
+    --gold: #d6ad78;
+    --cream: #fff8f0;
+    --text: #553746;
+    --muted: #967b83;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -22,16 +36,19 @@ body {
     align-items: center;
     padding: 20px;
     font-family: 'DM Sans', sans-serif;
-    background: linear-gradient(135deg, #fff5f5, #fce5eb, #fff8f5);
+    background:
+        radial-gradient(circle at 15% 20%, #62364f 0%, transparent 35%),
+        radial-gradient(circle at 85% 80%, #513044 0%, transparent 35%),
+        linear-gradient(135deg, #1d1220, #392032, #251522);
     overflow: hidden;
 }
 
-/* Soft background hearts */
+/* Floating Hearts */
 
 .heart {
-    position: absolute;
-    color: #d994a8;
-    opacity: .35;
+    position: fixed;
+    color: var(--gold);
+    opacity: .45;
     pointer-events: none;
     animation: float 7s ease-in-out infinite;
 }
@@ -42,11 +59,11 @@ body {
 .h4 { bottom: 20%; right: 15%; font-size: 34px; animation-delay: 3s; }
 
 @keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    0%,100% { transform: translateY(0) rotate(0); }
+    50% { transform: translateY(-18px) rotate(8deg); }
 }
 
-/* Main card */
+/* Main Card */
 
 .card {
     position: relative;
@@ -55,21 +72,23 @@ body {
     max-width: 420px;
     padding: 55px 28px;
     text-align: center;
-    background: rgba(255,255,255,.8);
-    border: 1px solid white;
+    background: linear-gradient(145deg, #fffaf4, #f8e9df);
+    border: 1px solid rgba(214,173,120,.6);
     border-radius: 28px;
-    box-shadow: 0 20px 65px rgba(160,90,110,.10);
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.35),
+        0 0 35px rgba(214,173,120,.08);
     animation: appear 1s ease;
 }
 
 @keyframes appear {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(25px) scale(.97);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -77,7 +96,7 @@ body {
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 4px;
-    color: #b77a8c;
+    color: #a77a70;
     margin-bottom: 30px;
 }
 
@@ -85,6 +104,7 @@ body {
     font-size: 43px;
     margin-bottom: 22px;
     animation: beat 2s infinite;
+    filter: drop-shadow(0 5px 8px rgba(182,109,131,.2));
 }
 
 @keyframes beat {
@@ -97,17 +117,17 @@ h1 {
     font-size: clamp(37px, 10vw, 49px);
     font-weight: 500;
     line-height: 1.25;
-    color: #674550;
+    color: #482a3b;
 }
 
 h1 span {
     display: block;
-    color: #cf8198;
+    color: #ad687e;
     font-style: italic;
 }
 
 .message {
-    color: #987e87;
+    color: #907580;
     font-size: 13px;
     line-height: 1.9;
     max-width: 300px;
@@ -115,49 +135,64 @@ h1 span {
 }
 
 .divider {
-    color: #d28ba0;
+    color: #bd9569;
     margin-bottom: 27px;
     font-size: 16px;
 }
 
-/* Button */
+/* Surprise Buttons */
 
 .btn {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     width: 100%;
     max-width: 265px;
+    margin: 0 auto;
     padding: 17px 25px;
     border-radius: 50px;
-    background: linear-gradient(110deg,#dc94a8,#bd718a);
+    background: linear-gradient(110deg, #a95773, #713b55);
     color: white;
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
-    box-shadow: 0 10px 25px rgba(190,110,140,.25);
-    transition: .3s ease;
+    letter-spacing: .3px;
+    box-shadow: 0 10px 25px rgba(113,59,85,.25);
+    transition: .35s ease;
 }
 
 .btn:hover {
     transform: translateY(-4px);
-    box-shadow: 0 15px 30px rgba(190,110,140,.35);
+    box-shadow: 0 15px 30px rgba(113,59,85,.35);
 }
 
 .btn:active {
     transform: scale(.97);
 }
 
+/* Second Button - Rose Gold */
+
+.btn-second {
+    margin-top: 14px;
+    background: linear-gradient(110deg, #d4a16e, #a96f68);
+    box-shadow: 0 10px 25px rgba(169,111,104,.25);
+}
+
+.btn-second:hover {
+    background: linear-gradient(110deg, #c48b61, #925665);
+    box-shadow: 0 15px 30px rgba(169,111,104,.35);
+}
+
 .footer {
     margin-top: 30px;
-    color: #b49aa2;
+    color: #a58a83;
     font-size: 10px;
     letter-spacing: 2px;
 }
 
 .footer span {
-    color: #d47e97;
+    color: #b66d83;
 }
 
 /* Mobile */
@@ -171,19 +206,32 @@ h1 span {
     .message {
         font-size: 12px;
     }
+
+    .h1 { left: 5%; }
+    .h2 { right: 5%; }
+}
+
+/* Reduced motion */
+
+@media(prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Background hearts -->
+<!-- Background Hearts -->
+
 <div class="heart h1">♡</div>
 <div class="heart h2">♥</div>
 <div class="heart h3">♡</div>
 <div class="heart h4">♥</div>
 
-<!-- Main webpage -->
+<!-- Main Card -->
 
 <div class="card">
 
@@ -195,7 +243,7 @@ h1 span {
 
     <h1>
         Hey,
-        <span>Baby❤️ </span>
+        <span>Baby ❤️</span>
     </h1>
 
     <p class="message">
@@ -207,9 +255,22 @@ h1 span {
 
     <div class="divider">♡ &nbsp; ✦ &nbsp; ♡</div>
 
+    <!-- First Surprise -->
+
     <a class="btn"
-       href="https://meowpages.site/g/86IhipgR">
+       href="https://meowpages.site/g/86IhipgR"
+       target="_blank"
+       rel="noopener noreferrer">
        Open Your Surprise <span>♡</span>
+    </a>
+
+    <!-- Second Surprise -->
+
+    <a class="btn btn-second"
+       href="https://zarnal.github.io/ZARNAL/31102026bdy"
+       target="_blank"
+       rel="noopener noreferrer">
+       One More Surprise <span>💗</span>
     </a>
 
     <div class="footer">
@@ -217,6 +278,57 @@ h1 span {
     </div>
 
 </div>
+
+<script>
+
+// Romantic floating hearts
+
+const hearts = ['♡', '♥', '💕', '💗', '✦'];
+
+function createHeart() {
+
+    const heart = document.createElement('div');
+
+    heart.innerHTML =
+        hearts[Math.floor(Math.random() * hearts.length)];
+
+    heart.style.position = 'fixed';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.bottom = '-30px';
+    heart.style.fontSize =
+        (14 + Math.random() * 18) + 'px';
+
+    heart.style.color =
+        Math.random() > 0.5 ? '#d6ad78' : '#c47e91';
+
+    heart.style.opacity = '0.65';
+    heart.style.pointerEvents = 'none';
+    heart.style.zIndex = '0';
+
+    heart.style.transition =
+        'transform 7s linear, opacity 7s linear';
+
+    document.body.appendChild(heart);
+
+    requestAnimationFrame(() => {
+
+        heart.style.transform =
+            `translateY(-110vh) rotate(${Math.random() * 180}deg)`;
+
+        heart.style.opacity = '0';
+
+    });
+
+    setTimeout(() => {
+        heart.remove();
+    }, 7200);
+}
+
+// Generate hearts periodically
+
+setInterval(createHeart, 900);
+
+</script>
 
 </body>
 </html>
