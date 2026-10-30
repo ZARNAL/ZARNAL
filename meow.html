@@ -13,14 +13,9 @@
 <style>
 :root {
     --background: #251522;
-    --background-light: #392032;
-    --card: #fff8f0;
     --burgundy: #713b55;
     --rose: #b66d83;
     --gold: #d6ad78;
-    --cream: #fff8f0;
-    --text: #553746;
-    --muted: #967b83;
 }
 
 * {
@@ -43,7 +38,7 @@ body {
     overflow: hidden;
 }
 
-/* Floating Hearts */
+/* Floating Background Hearts */
 
 .heart {
     position: fixed;
@@ -51,6 +46,7 @@ body {
     opacity: .45;
     pointer-events: none;
     animation: float 7s ease-in-out infinite;
+    z-index: 0;
 }
 
 .h1 { top: 15%; left: 12%; font-size: 30px; }
@@ -59,8 +55,12 @@ body {
 .h4 { bottom: 20%; right: 15%; font-size: 34px; animation-delay: 3s; }
 
 @keyframes float {
-    0%,100% { transform: translateY(0) rotate(0); }
-    50% { transform: translateY(-18px) rotate(8deg); }
+    0%,100% {
+        transform: translateY(0) rotate(0);
+    }
+    50% {
+        transform: translateY(-18px) rotate(8deg);
+    }
 }
 
 /* Main Card */
@@ -108,9 +108,15 @@ body {
 }
 
 @keyframes beat {
-    0%,100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    0%,100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
 }
+
+/* Heading */
 
 h1 {
     font-family: 'Playfair Display', serif;
@@ -125,6 +131,8 @@ h1 span {
     color: #ad687e;
     font-style: italic;
 }
+
+/* Message */
 
 .message {
     color: #907580;
@@ -171,7 +179,7 @@ h1 span {
     transform: scale(.97);
 }
 
-/* Second Button - Rose Gold */
+/* Second Surprise Button */
 
 .btn-second {
     margin-top: 14px;
@@ -184,6 +192,8 @@ h1 span {
     box-shadow: 0 15px 30px rgba(169,111,104,.35);
 }
 
+/* Footer */
+
 .footer {
     margin-top: 30px;
     color: #a58a83;
@@ -195,7 +205,7 @@ h1 span {
     color: #b66d83;
 }
 
-/* Mobile */
+/* Mobile Responsive */
 
 @media(max-width:480px) {
     .card {
@@ -211,7 +221,7 @@ h1 span {
     .h2 { right: 5%; }
 }
 
-/* Reduced motion */
+/* Reduced Motion */
 
 @media(prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -231,7 +241,7 @@ h1 span {
 <div class="heart h3">♡</div>
 <div class="heart h4">♥</div>
 
-<!-- Main Card -->
+<!-- Main Romantic Card -->
 
 <div class="card">
 
@@ -255,21 +265,17 @@ h1 span {
 
     <div class="divider">♡ &nbsp; ✦ &nbsp; ♡</div>
 
-    <!-- First Surprise -->
+    <!-- First Surprise: SAME TAB -->
 
     <a class="btn"
-       href="https://meowpages.site/g/86IhipgR"
-       target="_blank"
-       rel="noopener noreferrer">
+       href="https://meowpages.site/g/86IhipgR">
        Open Your Surprise <span>♡</span>
     </a>
 
-    <!-- Second Surprise -->
+    <!-- Second Surprise: SAME TAB -->
 
     <a class="btn btn-second"
-       href="https://zarnal.github.io/ZARNAL/31102026bdy"
-       target="_blank"
-       rel="noopener noreferrer">
+       href="https://zarnal.github.io/ZARNAL/31102026bdy">
        One More Surprise <span>💗</span>
     </a>
 
@@ -279,9 +285,9 @@ h1 span {
 
 </div>
 
-<script>
+<!-- JavaScript: Floating Hearts -->
 
-// Romantic floating hearts
+<script>
 
 const hearts = ['♡', '♥', '💕', '💗', '✦'];
 
@@ -289,12 +295,13 @@ function createHeart() {
 
     const heart = document.createElement('div');
 
-    heart.innerHTML =
+    heart.textContent =
         hearts[Math.floor(Math.random() * hearts.length)];
 
     heart.style.position = 'fixed';
     heart.style.left = Math.random() * 100 + 'vw';
     heart.style.bottom = '-30px';
+
     heart.style.fontSize =
         (14 + Math.random() * 18) + 'px';
 
@@ -322,6 +329,7 @@ function createHeart() {
     setTimeout(() => {
         heart.remove();
     }, 7200);
+
 }
 
 // Generate hearts periodically
