@@ -1,0 +1,644 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#030308">
+<title>For You ❤️</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #030308;
+  --card: rgba(255,255,255,.055);
+  --text: #fff;
+  --muted: #a3a3b5;
+  --accent: #d7b8ff;
+  --border: rgba(255,255,255,.12);
+}
+
+body.light {
+  --bg: #f4f1fa;
+  --card: rgba(255,255,255,.78);
+  --text: #171321;
+  --muted: #777184;
+  --accent: #8a5bd1;
+  --border: rgba(30,20,50,.12);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(74,52,120,.19), transparent 45%),
+    var(--bg);
+  color: var(--text);
+  font-family: Inter, sans-serif;
+  overflow-x: hidden;
+  transition: background .5s, color .5s;
+}
+
+/* STAR BACKGROUND */
+#stars {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.shooting-star {
+  position: fixed;
+  width: 130px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, white, transparent);
+  opacity: 0;
+  transform: rotate(-35deg);
+  animation: shoot 5s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.shooting-star.one {
+  top: 15%;
+  right: -150px;
+  animation-delay: 1s;
+}
+
+.shooting-star.two {
+  top: 48%;
+  right: -150px;
+  animation-delay: 7s;
+}
+
+@keyframes shoot {
+  0% { transform: translate(0,0) rotate(-35deg); opacity: 0; }
+  5% { opacity: 1; }
+  18% { transform: translate(-650px,420px) rotate(-35deg); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* SECRET CODE SCREEN */
+#lockScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: #030308;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+
+#lockScreen.unlocked {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.lock-box {
+  width: 100%;
+  max-width: 370px;
+  padding: 40px 25px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 25px;
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 70px rgba(0,0,0,.5);
+  animation: lockAppear 1s ease;
+}
+
+@keyframes lockAppear {
+  from { opacity: 0; transform: translateY(25px) scale(.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lock-heart {
+  font-size: 1px;
+  color: #d7b8ff;
+  margin-bottom: 15px;
+  animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+  50% { transform: scale(1.15); }
+}
+
+.lock-box h2 {
+  color: white;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+
+.lock-box p {
+  color: #aaa;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+#secretInput {
+  width: 100%;
+  padding: 15px;
+  border-radius: 13px;
+  border: 1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.08);
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  outline: none;
+  margin-bottom: 15px;
+}
+
+#secretInput:focus { border-color: #d7b8ff; }
+
+.lock-box button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 13px;
+  background: #d7b8ff;
+  color: #171020;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.lock-box button:hover { transform: scale(1.03); }
+
+#errorMessage {
+  color: #ff8499;
+  margin: 15px 0 0;
+  min-height: 16px;
+}
+
+/* TOP BAR */
+.topbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  padding: 24px 7%;
+}
+
+.theme-toggle {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  padding: 11px 17px;
+  border-radius: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  backdrop-filter: blur(15px);
+  transition: .3s;
+}
+
+.theme-toggle:hover { transform: scale(1.05); }
+
+/* MAIN CONTENT */
+.container {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 32px, 760px);
+  margin: 0 auto;
+  padding: 10px 0 80px;
+}
+
+.song-card {
+  width: 100%;
+  margin: 0 auto 65px;
+  padding: 17px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 27px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 70px rgba(0,0,0,.22);
+  animation: appear .9s ease both;
+  transition: background .5s, border .5s, transform .4s;
+}
+
+.song-card:hover { transform: translateY(-5px); }
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(35px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PHOTOGRAPHS */
+.song-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: rgba(0,0,0,.18);
+  border-radius: 19px;
+  margin-bottom: 20px;
+}
+
+/* MUSIC PLAYER */
+.player { padding: 7px 5px 5px; }
+
+.song-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -.3px;
+  margin-bottom: 17px;
+}
+
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.play-btn {
+  width: 49px;
+  height: 49px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #171020;
+  font-size: 19px;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.play-btn:hover { transform: scale(1.09); }
+
+.progress-area { flex: 1; min-width: 0; }
+
+.progress {
+  width: 100%;
+  height: 5px;
+  appearance: none;
+  background: rgba(150,150,170,.3);
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
+}
+
+.progress::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.progress::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 9px;
+}
+
+.volume {
+  width: 75px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--muted);
+  font-size: 11px;
+  padding: 10px 0 30px;
+}
+
+/* MOBILE */
+@media(max-width:600px) {
+  .topbar { padding: 17px 18px; }
+
+  .container {
+    width: calc(100% - 22px);
+    padding-top: 5px;
+  }
+
+  .song-card {
+    padding: 10px;
+    border-radius: 21px;
+    margin-bottom: 35px;
+  }
+
+  .song-image {
+    border-radius: 14px;
+    margin-bottom: 15px;
+  }
+
+  .song-title { font-size: 15px; }
+
+  .play-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .volume { display: none; }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+<div class="shooting-star one"></div>
+<div class="shooting-star two"></div>
+
+<!-- SECRET CODE -->
+<div id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-heart">♡</div>
+    <h2>A Little Secret</h2>
+    <p>Enter your secret code to unlock</p>
+
+    <input
+      type="password"
+      id="secretInput"
+      placeholder="Enter secret code"
+      autocomplete="off"
+    >
+
+    <button id="unlockButton">Unlock </button>
+
+    <p id="errorMessage" aria-live="polite"></p>
+  </div>
+</div>
+
+<!-- THEME BUTTON -->
+<div class="topbar">
+  <button class="theme-toggle" id="themeToggle">☀️ Light Mode</button>
+</div>
+
+<!-- SONGS -->
+<main class="container">
+
+  <!-- SONG ONE -->
+  <section class="song-card">
+    <img
+      class="song-image"
+      src="https://github.com/user-attachments/assets/f89cbe64-d971-494e-8cdd-a76acfd79386"
+      alt="Meri Zarna photograph"
+    >
+
+    <div class="player">
+      <div class="song-title">Meri Zarna ♡</div>
+
+      <div class="player-controls">
+        <button class="play-btn" aria-label="Play Meri Zarna">▶</button>
+
+        <div class="progress-area">
+          <input class="progress" type="range" min="0" max="100" value="0">
+          <div class="time">
+            <span class="current">0:00</span>
+            <span class="duration">0:00</span>
+          </div>
+        </div>
+
+        <input class="volume" type="range" min="0" max="1" step="0.05" value="0.8" aria-label="Volume">
+      </div>
+
+      <audio preload="metadata">
+        <source src="https://github.com/user-attachments/files/34280216/MeriZarna.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+  </section>
+
+  <!-- SONG TWO -->
+  <section class="song-card">
+    <img
+      class="song-image"
+      src="https://github.com/user-attachments/assets/f13c4366-e8d8-4423-896f-d6679bf06264"
+      alt="Meri BooBoo photograph"
+    >
+
+    <div class="player">
+      <div class="song-title">Meri BooBoo ♡</div>
+
+      <div class="player-controls">
+        <button class="play-btn" aria-label="Play Meri BooBoo">▶</button>
+
+        <div class="progress-area">
+          <input class="progress" type="range" min="0" max="100" value="0">
+          <div class="time">
+            <span class="current">0:00</span>
+            <span class="duration">0:00</span>
+          </div>
+        </div>
+
+        <input class="volume" type="range" min="0" max="1" step="0.05" value="0.8" aria-label="Volume">
+      </div>
+
+      <audio preload="metadata">
+        <source src="https://github.com/user-attachments/files/34280233/MeriBooBoo.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+  </section>
+
+</main>
+
+<footer>♡</footer>
+
+<script>
+// SECRET CODE
+const SECRET_CODE = "booboo";
+
+const lockScreen = document.getElementById("lockScreen");
+const secretInput = document.getElementById("secretInput");
+const errorMessage = document.getElementById("errorMessage");
+
+function unlockPage() {
+  if (secretInput.value === SECRET_CODE) {
+    errorMessage.textContent = "";
+    lockScreen.classList.add("unlocked");
+
+    setTimeout(() => {
+      lockScreen.style.display = "none";
+    }, 850);
+
+  } else {
+    errorMessage.textContent = "Wrong code! Try again ";
+    secretInput.value = "";
+    secretInput.focus();
+  }
+}
+
+document.getElementById("unlockButton").addEventListener("click", unlockPage);
+
+secretInput.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") unlockPage();
+});
+
+
+// STARFIELD
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+let stars = [];
+let width, height, dpr;
+
+function resizeStars() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  width = window.innerWidth;
+  height = window.innerHeight;
+
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  canvas.style.width = width + "px";
+  canvas.style.height = height + "px";
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  stars = Array.from({length:180}, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    radius: Math.random() * 1.5 + .3,
+    alpha: Math.random(),
+    speed: Math.random() * .018 + .004
+  }));
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, width, height);
+
+  stars.forEach(star => {
+    star.alpha += star.speed;
+
+    const opacity = .25 + Math.abs(Math.sin(star.alpha)) * .75;
+
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(220,220,255,${opacity})`;
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = "#a9a9ff";
+    ctx.fill();
+  });
+
+  requestAnimationFrame(drawStars);
+}
+
+window.addEventListener("resize", resizeStars);
+resizeStars();
+drawStars();
+
+
+// DAY / NIGHT MODE
+const themeToggle = document.getElementById("themeToggle");
+
+themeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+
+  const isLight = document.body.classList.contains("light");
+
+  themeToggle.textContent = isLight
+    ? "🌙 Dark Mode"
+    : "☀️ Light Mode";
+});
+
+
+// CUSTOM MUSIC PLAYERS
+const players = document.querySelectorAll(".player");
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds)) return "0:00";
+
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+
+  return `${mins}:${String(secs).padStart(2, "0")}`;
+}
+
+players.forEach(player => {
+  const audio = player.querySelector("audio");
+  const button = player.querySelector(".play-btn");
+  const progress = player.querySelector(".progress");
+  const current = player.querySelector(".current");
+  const duration = player.querySelector(".duration");
+  const volume = player.querySelector(".volume");
+
+  button.addEventListener("click", async () => {
+    if (audio.paused) {
+      document.querySelectorAll("audio").forEach(other => {
+        if (other !== audio) other.pause();
+      });
+
+      try {
+        await audio.play();
+      } catch (error) {
+        console.error("Audio could not be played:", error);
+      }
+    } else {
+      audio.pause();
+    }
+  });
+
+  audio.addEventListener("play", () => {
+    button.textContent = "Ⅱ";
+  });
+
+  audio.addEventListener("pause", () => {
+    button.textContent = "▶";
+  });
+
+  audio.addEventListener("loadedmetadata", () => {
+    duration.textContent = formatTime(audio.duration);
+  });
+
+  audio.addEventListener("timeupdate", () => {
+    current.textContent = formatTime(audio.currentTime);
+
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+      progress.value = (audio.currentTime / audio.duration) * 100;
+    }
+  });
+
+  progress.addEventListener("input", () => {
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+      audio.currentTime = (progress.value / 100) * audio.duration;
+    }
+  });
+
+  volume.addEventListener("input", () => {
+    audio.volume = Number(volume.value);
+  });
+
+  audio.addEventListener("ended", () => {
+    button.textContent = "▶";
+    progress.value = 0;
+    current.textContent = "0:00";
+  });
+});
+</script>
+
+</body>
+</html>
