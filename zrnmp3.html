@@ -226,7 +226,7 @@ body {
   border:1px solid var(--border);
   border-radius:27px;
   backdrop-filter:blur(20px);
-  box-shadow:0 20px 70px rgba(0,0,0,.22);
+  box-shadow:0 20px 50px rgba(0,0,0,.22);
   animation:appear .9s ease both;
   transition:background .5s,border .5s,transform .4s;
 }
@@ -302,7 +302,7 @@ body {
 
 .buffer-track {
   width:100%;
-  height:0.1px;
+  height:2px;
   overflow:hidden;
   border-radius:10px;
   background:var(--track);
@@ -428,18 +428,22 @@ body {
   background:rgba(160,120,220,.12);
 }
 
+/* VOLUME SLIDER */
+
 .volume-wrap {
   display:flex;
   align-items:center;
-  gap:7px;
+  gap:9px;
   color:var(--muted);
-  font-size:12px;
+  font-size:11px;
+  font-weight:600;
 }
 
 .volume {
-  width:72px;
+  width:100px;
   accent-color:var(--accent);
   cursor:pointer;
+  height:4px;
 }
 
 .player-message {
@@ -480,7 +484,15 @@ body {
     height:43px;
   }
 
-  .volume-wrap { display:none; }
+  .volume-wrap {
+    display:flex;
+    font-size:10px;
+    gap:6px;
+  }
+
+  .volume {
+    width:85px;
+  }
 
   .extra-controls { margin-top:13px; }
 }
@@ -531,8 +543,6 @@ body {
 <!-- SONGS -->
 
 <main class="container">
-
-  
 
   <!-- SONG ONE -->
 
@@ -589,15 +599,13 @@ body {
       <div class="extra-controls">
 
         <div class="control-group">
-          <button class="small-control mute-btn" title="Mute or unmute" aria-label="Mute">🔊</button>
-        </div>
-
-        <div class="control-group">
           <span class="volume-wrap">
             VOL
             <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
           </span>
+        </div>
 
+        <div class="control-group">
           <button class="small-control repeat-btn" title="Repeat song" aria-label="Repeat song">↻</button>
         </div>
 
@@ -667,15 +675,13 @@ body {
       <div class="extra-controls">
 
         <div class="control-group">
-          <button class="small-control mute-btn" title="Mute or unmute" aria-label="Mute">🔊</button>
-        </div>
-
-        <div class="control-group">
           <span class="volume-wrap">
             VOL
             <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
           </span>
+        </div>
 
+        <div class="control-group">
           <button class="small-control repeat-btn" title="Repeat song" aria-label="Repeat song">↻</button>
         </div>
 
@@ -839,8 +845,7 @@ const states = players.map(() => ({
   manuallyPaused:false,
   retryTimer:null,
   retries:0,
-  repeat:false,
-  lastVolume:.8
+  repeat:false
 }));
 
 const STALL_DELAY = 12000;
@@ -947,9 +952,6 @@ function update(i) {
 
   el(i, ".play-btn").textContent =
     audio.paused ? "▶" : "Ⅱ";
-
-  el(i, ".mute-btn").textContent =
-    audio.muted || audio.volume === 0 ? "🔇" : "🔊";
 
   el(i, ".repeat-btn").classList.toggle(
     "active",
@@ -1166,38 +1168,11 @@ players.forEach((player, i) => {
   });
 
 
+  /* VOLUME CONTROL */
+
   el(i, ".volume").addEventListener("input", e => {
 
     audio.volume = Number(e.target.value);
-
-    audio.muted = audio.volume === 0;
-
-    state.lastVolume = audio.volume;
-
-    update(i);
-
-  });
-
-
-  el(i, ".mute-btn").addEventListener("click", () => {
-
-    if (audio.muted || audio.volume === 0) {
-
-      audio.muted = false;
-
-      audio.volume = state.lastVolume || .8;
-
-      el(i, ".volume").value = String(audio.volume);
-
-    } else {
-
-      state.lastVolume = audio.volume;
-
-      audio.muted = true;
-
-    }
-
-    update(i);
 
   });
 
