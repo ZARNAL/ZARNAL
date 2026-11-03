@@ -11,379 +11,485 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --bg: #030308;
-  --card: rgba(255,255,255,.055);
-  --text: #fff;
-  --muted: #a3a3b5;
-  --accent: #d7b8ff;
-  --border: rgba(255,255,255,.12);
+  --bg:#030308;
+  --card:rgba(255,255,255,.055);
+  --text:#fff;
+  --muted:#a3a3b5;
+  --accent:#d7b8ff;
+  --border:rgba(255,255,255,.12);
+  --track:rgba(150,150,170,.24);
 }
 
 body.light {
-  --bg: #f4f1fa;
-  --card: rgba(255,255,255,.78);
-  --text: #171321;
-  --muted: #777184;
-  --accent: #8a5bd1;
-  --border: rgba(30,20,50,.12);
+  --bg:#f4f1fa;
+  --card:rgba(255,255,255,.78);
+  --text:#171321;
+  --muted:#777184;
+  --accent:#8a5bd1;
+  --border:rgba(30,20,50,.12);
+  --track:rgba(80,65,110,.18);
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior:smooth; }
 
 body {
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(74,52,120,.19), transparent 45%),
-    var(--bg);
-  color: var(--text);
-  font-family: Inter, sans-serif;
-  overflow-x: hidden;
-  transition: background .5s, color .5s;
+  min-height:100vh;
+  background:radial-gradient(ellipse at 50% 0%,rgba(74,52,120,.19),transparent 45%),var(--bg);
+  color:var(--text);
+  font-family:Inter,sans-serif;
+  overflow-x:hidden;
+  transition:background .5s,color .5s;
 }
 
-/* STAR BACKGROUND */
 #stars {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  pointer-events:none;
 }
 
 .shooting-star {
-  position: fixed;
-  width: 130px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, white, transparent);
-  opacity: 0;
-  transform: rotate(-35deg);
-  animation: shoot 5s linear infinite;
-  z-index: 0;
-  pointer-events: none;
+  position:fixed;
+  width:130px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,white,transparent);
+  opacity:0;
+  transform:rotate(-35deg);
+  animation:shoot 5s linear infinite;
+  z-index:0;
+  pointer-events:none;
 }
 
 .shooting-star.one {
-  top: 15%;
-  right: -150px;
-  animation-delay: 1s;
+  top:15%;
+  right:-150px;
+  animation-delay:1s;
 }
 
 .shooting-star.two {
-  top: 48%;
-  right: -150px;
-  animation-delay: 7s;
+  top:48%;
+  right:-150px;
+  animation-delay:7s;
 }
 
 @keyframes shoot {
-  0% { transform: translate(0,0) rotate(-35deg); opacity: 0; }
-  5% { opacity: 1; }
-  18% { transform: translate(-650px,420px) rotate(-35deg); opacity: 0; }
-  100% { opacity: 0; }
+  0% { transform:translate(0,0) rotate(-35deg);opacity:0; }
+  5% { opacity:1; }
+  18% { transform:translate(-650px,420px) rotate(-35deg);opacity:0; }
+  100% { opacity:0; }
 }
 
-/* SECRET CODE SCREEN */
+/* SECRET LOCK SCREEN */
+
 #lockScreen {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background: #030308;
-  transition: opacity .8s ease, visibility .8s ease;
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  background:#030308;
+  transition:opacity .8s,visibility .8s;
 }
 
 #lockScreen.unlocked {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
 }
 
 .lock-box {
-  width: 100%;
-  max-width: 370px;
-  padding: 40px 25px;
-  text-align: center;
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 25px;
-  background: rgba(255,255,255,.06);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 20px 70px rgba(0,0,0,.5);
-  animation: lockAppear 1s ease;
+  width:100%;
+  max-width:370px;
+  padding:40px 25px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:25px;
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(20px);
+  box-shadow:0 20px 70px rgba(0,0,0,.5);
+  animation:lockAppear 1s ease;
 }
 
 @keyframes lockAppear {
-  from { opacity: 0; transform: translateY(25px) scale(.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity:0;transform:translateY(25px) scale(.95); }
+  to { opacity:1;transform:translateY(0) scale(1); }
 }
 
 .lock-heart {
-  font-size: 1px;
-  color: #d7b8ff;
-  margin-bottom: 15px;
-  animation: heartbeat 1.5s infinite;
+  font-size:5px;
+  color:#d7b8ff;
+  margin-bottom:15px;
+  animation:heartbeat 1.5s infinite;
 }
 
 @keyframes heartbeat {
-  50% { transform: scale(1.15); }
+  50% { transform:scale(1.15); }
 }
 
 .lock-box h2 {
-  color: white;
-  font-size: 25px;
-  margin-bottom: 10px;
+  color:white;
+  font-size:25px;
+  margin-bottom:10px;
 }
 
 .lock-box p {
-  color: #aaa;
-  font-size: 13px;
-  margin-bottom: 20px;
+  color:#aaa;
+  font-size:13px;
+  margin-bottom:20px;
 }
 
 #secretInput {
-  width: 100%;
-  padding: 15px;
-  border-radius: 13px;
-  border: 1px solid rgba(255,255,255,.2);
-  background: rgba(255,255,255,.08);
-  color: white;
-  text-align: center;
-  font-size: 16px;
-  outline: none;
-  margin-bottom: 15px;
+  width:100%;
+  padding:15px;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);
+  color:white;
+  text-align:center;
+  font-size:16px;
+  outline:none;
+  margin-bottom:15px;
 }
 
-#secretInput:focus { border-color: #d7b8ff; }
+#secretInput:focus { border-color:#d7b8ff; }
 
 .lock-box button {
-  width: 100%;
-  padding: 15px;
-  border: none;
-  border-radius: 13px;
-  background: #d7b8ff;
-  color: #171020;
-  font-weight: 700;
-  font-size: 15px;
-  cursor: pointer;
-  transition: .3s;
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:13px;
+  background:#d7b8ff;
+  color:#171020;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  transition:.3s;
 }
 
-.lock-box button:hover { transform: scale(1.03); }
+.lock-box button:hover { transform:scale(1.03); }
 
 #errorMessage {
-  color: #ff8499;
-  margin: 15px 0 0;
-  min-height: 16px;
+  color:#ff8499;
+  margin:15px 0 0;
+  min-height:16px;
 }
 
-/* TOP BAR */
+/* TOP BAR AND THEME */
+
 .topbar {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: flex-end;
-  padding: 24px 7%;
+  position:relative;
+  z-index:2;
+  display:flex;
+  justify-content:flex-end;
+  padding:24px 7%;
 }
 
 .theme-toggle {
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  padding: 11px 17px;
-  border-radius: 30px;
-  font-size: 14px;
-  cursor: pointer;
-  backdrop-filter: blur(15px);
-  transition: .3s;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  padding:11px 17px;
+  border-radius:30px;
+  font-size:14px;
+  cursor:pointer;
+  backdrop-filter:blur(15px);
+  transition:.3s;
 }
 
-.theme-toggle:hover { transform: scale(1.05); }
+.theme-toggle:hover { transform:scale(1.05); }
 
-/* MAIN CONTENT */
+/* SONG CARDS */
+
 .container {
-  position: relative;
-  z-index: 1;
-  width: min(100% - 32px, 760px);
-  margin: 0 auto;
-  padding: 10px 0 80px;
+  position:relative;
+  z-index:1;
+  width:min(100% - 32px,760px);
+  margin:0 auto;
+  padding:10px 0 80px;
 }
 
 .song-card {
-  width: 100%;
-  margin: 0 auto 65px;
-  padding: 17px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 27px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 20px 70px rgba(0,0,0,.22);
-  animation: appear .9s ease both;
-  transition: background .5s, border .5s, transform .4s;
+  width:100%;
+  margin:0 auto 42px;
+  padding:17px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:27px;
+  backdrop-filter:blur(20px);
+  box-shadow:0 20px 70px rgba(0,0,0,.22);
+  animation:appear .9s ease both;
+  transition:background .5s,border .5s,transform .4s;
 }
 
-.song-card:hover { transform: translateY(-5px); }
+.song-card:hover { transform:translateY(-4px); }
 
 @keyframes appear {
-  from { opacity: 0; transform: translateY(35px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity:0;transform:translateY(35px); }
+  to { opacity:1;transform:translateY(0); }
 }
 
-/* PHOTOGRAPHS */
 .song-image {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain;
-  background: rgba(0,0,0,.18);
-  border-radius: 19px;
-  margin-bottom: 20px;
+  display:block;
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:contain;
+  background:rgba(0,0,0,.18);
+  border-radius:19px;
+  margin-bottom:20px;
 }
 
-/* MUSIC PLAYER */
-.player { padding: 7px 5px 5px; }
+.player { padding:7px 5px 5px; }
+
+.song-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:15px;
+}
 
 .song-title {
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -.3px;
-  margin-bottom: 17px;
+  font-size:17px;
+  font-weight:600;
+  letter-spacing:-.3px;
 }
 
+/* PLAYER CONTROLS */
+
 .player-controls {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
 .play-btn {
-  width: 49px;
-  height: 49px;
-  flex-shrink: 0;
-  border: none;
-  border-radius: 50%;
-  background: var(--accent);
-  color: #171020;
-  font-size: 19px;
-  cursor: pointer;
-  transition: .25s;
+  width:47px;
+  height:47px;
+  flex-shrink:0;
+  border:0;
+  border-radius:50%;
+  background:var(--accent);
+  color:#171020;
+  font-size:18px;
+  cursor:pointer;
+  transition:.25s;
 }
 
-.play-btn:hover { transform: scale(1.09); }
+.play-btn:hover { transform:scale(1.08); }
 
-/* MP3 LOADING SPINNER */
-.mp3-loader {
-  display: none;
-  width: 17px;
-  height: 17px;
-  flex-shrink: 0;
-  border: 2px solid rgba(215,184,255,.25);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: mp3Spin .7s linear infinite;
+.progress-area {
+  flex:1;
+  min-width:0;
 }
 
-.mp3-loader.active {
-  display: inline-block;
+.timeline {
+  display:flex;
+  flex-direction:column;
+  gap:7px;
 }
 
-@keyframes mp3Spin {
-  to { transform: rotate(360deg); }
+/* THIN BUFFER LINE */
+
+.buffer-track {
+  width:100%;
+  height:0.1px;
+  overflow:hidden;
+  border-radius:10px;
+  background:var(--track);
 }
 
-.progress-area { flex: 1; min-width: 0; }
+.buffer-fill {
+  display:block;
+  width:0%;
+  height:100%;
+  border-radius:inherit;
+  background:var(--accent);
+  opacity:.8;
+  transition:width .2s linear;
+}
+
+/* MAIN PROGRESS BAR */
 
 .progress {
-  width: 100%;
-  height: 5px;
-  appearance: none;
-  background: rgba(150,150,170,.3);
-  border-radius: 10px;
-  cursor: pointer;
-  outline: none;
+  display:block;
+  width:100%;
+  height:4px;
+  appearance:none;
+  background:var(--track);
+  border-radius:10px;
+  cursor:pointer;
+  outline:none;
+  touch-action:pan-y;
 }
 
 .progress::-webkit-slider-thumb {
-  appearance: none;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--accent);
+  appearance:none;
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 3px rgba(215,184,255,.13);
 }
 
 .progress::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  border: none;
-  border-radius: 50%;
-  background: var(--accent);
+  width:11px;
+  height:11px;
+  border:0;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 0 3px rgba(215,184,255,.13);
 }
 
 .time {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 9px;
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  color:var(--muted);
+  margin-top:1px;
+  font-variant-numeric:tabular-nums;
+}
+
+/* BUFFER STATUS */
+
+.buffer-status {
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:9px;
+  line-height:1.3;
+}
+
+.buffer-label.loading { color:var(--accent); }
+
+.mp3-loader {
+  display:none;
+  width:15px;
+  height:15px;
+  flex-shrink:0;
+  border:2px solid rgba(215,184,255,.25);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:mp3Spin .7s linear infinite;
+}
+
+.mp3-loader.active { display:inline-block; }
+
+@keyframes mp3Spin {
+  to { transform:rotate(360deg); }
+}
+
+/* REMAINING PLAYER OPTIONS */
+
+.extra-controls {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-top:17px;
+  flex-wrap:wrap;
+}
+
+.control-group {
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.small-control {
+  border:1px solid var(--border);
+  background:rgba(150,150,170,.08);
+  color:var(--text);
+  height:34px;
+  min-width:36px;
+  padding:0 9px;
+  border-radius:10px;
+  font-size:12px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.small-control:hover { transform:scale(1.08); }
+
+.small-control.active {
+  color:var(--accent);
+  border-color:var(--accent);
+  background:rgba(160,120,220,.12);
+}
+
+.volume-wrap {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--muted);
+  font-size:12px;
 }
 
 .volume {
-  width: 75px;
-  accent-color: var(--accent);
-  cursor: pointer;
+  width:72px;
+  accent-color:var(--accent);
+  cursor:pointer;
 }
 
-footer {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  color: var(--muted);
-  font-size: 11px;
-  padding: 10px 0 30px;
+.player-message {
+  min-height:14px;
+  margin-top:9px;
+  font-size:10px;
+  color:var(--muted);
+  overflow-wrap:anywhere;
 }
+
+.player-message.error { color:#ff8499; }
 
 /* MOBILE */
+
 @media(max-width:600px) {
-  .topbar { padding: 17px 18px; }
+  .topbar { padding:17px 18px; }
 
   .container {
-    width: calc(100% - 22px);
-    padding-top: 5px;
+    width:calc(100% - 22px);
+    padding-top:5px;
   }
 
   .song-card {
-    padding: 10px;
-    border-radius: 21px;
-    margin-bottom: 35px;
+    padding:10px;
+    border-radius:21px;
+    margin-bottom:25px;
   }
 
   .song-image {
-    border-radius: 14px;
-    margin-bottom: 15px;
+    border-radius:14px;
+    margin-bottom:15px;
   }
 
-  .song-title { font-size: 15px; }
+  .song-title { font-size:15px; }
 
   .play-btn {
-    width: 44px;
-    height: 44px;
+    width:43px;
+    height:43px;
   }
 
-  .volume { display: none; }
+  .volume-wrap { display:none; }
+
+  .extra-controls { margin-top:13px; }
 }
 
 @media(prefers-reduced-motion:reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
+  *,*::before,*::after {
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
   }
 }
 </style>
@@ -395,7 +501,8 @@ footer {
 <div class="shooting-star one"></div>
 <div class="shooting-star two"></div>
 
-<!-- SECRET CODE -->
+<!-- SECRET LOCK SCREEN -->
+
 <div id="lockScreen">
   <div class="lock-box">
     <div class="lock-heart">♡</div>
@@ -409,22 +516,28 @@ footer {
       autocomplete="off"
     >
 
-    <button id="unlockButton">Unlock </button>
+    <button id="unlockButton">Unlock</button>
 
     <p id="errorMessage" aria-live="polite"></p>
   </div>
 </div>
 
 <!-- THEME BUTTON -->
+
 <div class="topbar">
   <button class="theme-toggle" id="themeToggle">☀️ Light Mode</button>
 </div>
 
 <!-- SONGS -->
+
 <main class="container">
 
+  
+
   <!-- SONG ONE -->
-  <section class="song-card">
+
+  <section class="song-card" data-title="Meri Zarna">
+
     <img
       class="song-image"
       src="https://github.com/user-attachments/assets/f89cbe64-d971-494e-8cdd-a76acfd79386"
@@ -432,31 +545,77 @@ footer {
     >
 
     <div class="player">
-      <div class="song-title">Meri Zarna ♡</div>
+
+      <div class="song-heading">
+        <div class="song-title">Meri Zarna ♡</div>
+      </div>
 
       <div class="player-controls">
+
         <button class="play-btn" aria-label="Play Meri Zarna">▶</button>
+
         <span class="mp3-loader" aria-label="Loading song"></span>
 
         <div class="progress-area">
-          <input class="progress" type="range" min="0" max="100" value="0">
+
+          <div class="timeline">
+            <div class="buffer-track" title="Buffered audio">
+              <span class="buffer-fill"></span>
+            </div>
+
+            <input
+              class="progress"
+              type="range"
+              min="0"
+              max="1000"
+              value="0"
+              aria-label="Song progress"
+            >
+          </div>
+
           <div class="time">
             <span class="current">0:00</span>
             <span class="duration">0:00</span>
           </div>
-        </div>
 
-        <input class="volume" type="range" min="0" max="1" step="0.05" value="0.8" aria-label="Volume">
+        </div>
       </div>
 
-      <audio preload="metadata">
+      <div class="buffer-status">
+        <span class="buffer-label">Ready</span>
+        <span class="buffer-percent">0% buffered</span>
+      </div>
+
+      <div class="extra-controls">
+
+        <div class="control-group">
+          <button class="small-control mute-btn" title="Mute or unmute" aria-label="Mute">🔊</button>
+        </div>
+
+        <div class="control-group">
+          <span class="volume-wrap">
+            VOL
+            <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+          </span>
+
+          <button class="small-control repeat-btn" title="Repeat song" aria-label="Repeat song">↻</button>
+        </div>
+
+      </div>
+
+      <div class="player-message" aria-live="polite"></div>
+
+      <audio preload="metadata" playsinline>
         <source src="https://github.com/user-attachments/files/34280216/MeriZarna.mp3" type="audio/mpeg">
       </audio>
+
     </div>
   </section>
 
   <!-- SONG TWO -->
-  <section class="song-card">
+
+  <section class="song-card" data-title="Meri BooBoo">
+
     <img
       class="song-image"
       src="https://github.com/user-attachments/assets/f13c4366-e8d8-4423-896f-d6679bf06264"
@@ -464,35 +623,79 @@ footer {
     >
 
     <div class="player">
-      <div class="song-title">Meri BooBoo ♡</div>
+
+      <div class="song-heading">
+        <div class="song-title">Meri BooBoo ♡</div>
+      </div>
 
       <div class="player-controls">
+
         <button class="play-btn" aria-label="Play Meri BooBoo">▶</button>
+
         <span class="mp3-loader" aria-label="Loading song"></span>
 
         <div class="progress-area">
-          <input class="progress" type="range" min="0" max="100" value="0">
+
+          <div class="timeline">
+            <div class="buffer-track" title="Buffered audio">
+              <span class="buffer-fill"></span>
+            </div>
+
+            <input
+              class="progress"
+              type="range"
+              min="0"
+              max="1000"
+              value="0"
+              aria-label="Song progress"
+            >
+          </div>
+
           <div class="time">
             <span class="current">0:00</span>
             <span class="duration">0:00</span>
           </div>
-        </div>
 
-        <input class="volume" type="range" min="0" max="1" step="0.05" value="0.8" aria-label="Volume">
+        </div>
       </div>
 
-      <audio preload="metadata">
+      <div class="buffer-status">
+        <span class="buffer-label">Ready</span>
+        <span class="buffer-percent">0% buffered</span>
+      </div>
+
+      <div class="extra-controls">
+
+        <div class="control-group">
+          <button class="small-control mute-btn" title="Mute or unmute" aria-label="Mute">🔊</button>
+        </div>
+
+        <div class="control-group">
+          <span class="volume-wrap">
+            VOL
+            <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+          </span>
+
+          <button class="small-control repeat-btn" title="Repeat song" aria-label="Repeat song">↻</button>
+        </div>
+
+      </div>
+
+      <div class="player-message" aria-live="polite"></div>
+
+      <audio preload="metadata" playsinline>
         <source src="https://github.com/user-attachments/files/34280233/MeriBooBoo.mp3" type="audio/mpeg">
       </audio>
+
     </div>
   </section>
 
 </main>
 
-<footer>♡</footer>
-
 <script>
-// SECRET CODE
+
+/* SECRET CODE */
+
 const SECRET_CODE = "booboo";
 
 const lockScreen = document.getElementById("lockScreen");
@@ -500,7 +703,9 @@ const secretInput = document.getElementById("secretInput");
 const errorMessage = document.getElementById("errorMessage");
 
 function unlockPage() {
+
   if (secretInput.value === SECRET_CODE) {
+
     errorMessage.textContent = "";
     lockScreen.classList.add("unlocked");
 
@@ -509,179 +714,660 @@ function unlockPage() {
     }, 850);
 
   } else {
-    errorMessage.textContent = "Wrong code! Try again ";
+
+    errorMessage.textContent = "Wrong code! Try again";
     secretInput.value = "";
     secretInput.focus();
+
   }
 }
 
-document.getElementById("unlockButton").addEventListener("click", unlockPage);
+document.getElementById("unlockButton")
+  .addEventListener("click", unlockPage);
 
-secretInput.addEventListener("keydown", function(e) {
+secretInput.addEventListener("keydown", e => {
   if (e.key === "Enter") unlockPage();
 });
 
 
-// STARFIELD
+/* STAR BACKGROUND */
+
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 
 let stars = [];
-let width, height, dpr;
+let width = 0;
+let height = 0;
+let dpr = 1;
+let starAnimation = 0;
 
 function resizeStars() {
+
   dpr = Math.min(window.devicePixelRatio || 1, 2);
-  width = window.innerWidth;
-  height = window.innerHeight;
+
+  width = innerWidth;
+  height = innerHeight;
 
   canvas.width = width * dpr;
   canvas.height = height * dpr;
+
   canvas.style.width = width + "px";
   canvas.style.height = height + "px";
 
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  stars = Array.from({length:180}, () => ({
-    x: Math.random() * width,
-    y: Math.random() * height,
-    radius: Math.random() * 1.5 + .3,
-    alpha: Math.random(),
-    speed: Math.random() * .018 + .004
-  }));
+  stars = Array.from(
+    { length: Math.min(180, Math.floor(width * height / 7000)) },
+    () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 1.3 + .3,
+      a: Math.random(),
+      s: Math.random() * .018 + .004
+    })
+  );
 }
 
 function drawStars() {
+
   ctx.clearRect(0, 0, width, height);
 
-  stars.forEach(star => {
-    star.alpha += star.speed;
+  for (const star of stars) {
 
-    const opacity = .25 + Math.abs(Math.sin(star.alpha)) * .75;
+    star.a += star.s;
 
     ctx.beginPath();
-    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(220,220,255,${opacity})`;
-    ctx.shadowBlur = 8;
+    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+
+    ctx.fillStyle =
+      `rgba(220,220,255,${.25 + Math.abs(Math.sin(star.a)) * .75})`;
+
+    ctx.shadowBlur = 7;
     ctx.shadowColor = "#a9a9ff";
     ctx.fill();
-  });
+  }
 
-  requestAnimationFrame(drawStars);
+  starAnimation = requestAnimationFrame(drawStars);
 }
 
 window.addEventListener("resize", resizeStars);
+
 resizeStars();
 drawStars();
 
+document.addEventListener("visibilitychange", () => {
 
-// DAY / NIGHT MODE
+  if (document.hidden) {
+    cancelAnimationFrame(starAnimation);
+  } else {
+    cancelAnimationFrame(starAnimation);
+    drawStars();
+  }
+
+});
+
+
+/* DAY / NIGHT MODE */
+
 const themeToggle = document.getElementById("themeToggle");
 
 themeToggle.addEventListener("click", () => {
+
   document.body.classList.toggle("light");
 
-  const isLight = document.body.classList.contains("light");
+  const light = document.body.classList.contains("light");
 
-  themeToggle.textContent = isLight
-    ? "🌙 Dark Mode"
-    : "☀️ Light Mode";
+  themeToggle.textContent =
+    light ? "🌙 Dark Mode" : "☀️ Light Mode";
+
 });
 
 
-// CUSTOM MUSIC PLAYERS
-const players = document.querySelectorAll(".player");
+/* AUDIO PLAYERS */
 
-function formatTime(seconds) {
-  if (!Number.isFinite(seconds)) return "0:00";
+const cards = [...document.querySelectorAll(".song-card")];
 
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60);
+const players = cards.map(card =>
+  card.querySelector(".player")
+);
 
-  return `${mins}:${String(secs).padStart(2, "0")}`;
+const audios = players.map(player =>
+  player.querySelector("audio")
+);
+
+const states = players.map(() => ({
+  manuallyPaused:false,
+  retryTimer:null,
+  retries:0,
+  repeat:false,
+  lastVolume:.8
+}));
+
+const STALL_DELAY = 12000;
+const MAX_RECOVERIES = 2;
+
+
+function fmt(seconds) {
+
+  if (!Number.isFinite(seconds) || seconds < 0) {
+    return "0:00";
+  }
+
+  return `${Math.floor(seconds / 60)}:${String(
+    Math.floor(seconds % 60)
+  ).padStart(2, "0")}`;
 }
 
-players.forEach(player => {
-  const audio = player.querySelector("audio");
-  const button = player.querySelector(".play-btn");
-  const loader = player.querySelector(".mp3-loader");
-  const progress = player.querySelector(".progress");
-  const current = player.querySelector(".current");
-  const duration = player.querySelector(".duration");
-  const volume = player.querySelector(".volume");
 
-  // MP3 LOADING ANIMATION
-  function showLoader() {
-    loader.classList.add("active");
+function el(i, selector) {
+  return players[i].querySelector(selector);
+}
+
+
+function stopRetry(i) {
+
+  if (states[i].retryTimer) {
+    clearTimeout(states[i].retryTimer);
   }
 
-  function hideLoader() {
-    loader.classList.remove("active");
+  states[i].retryTimer = null;
+}
+
+
+function message(i, text, isError = false) {
+
+  const node = el(i, ".player-message");
+
+  node.textContent = text;
+  node.classList.toggle("error", isError);
+}
+
+
+function loading(i, text) {
+
+  el(i, ".mp3-loader").classList.add("active");
+
+  const label = el(i, ".buffer-label");
+
+  label.textContent = text;
+  label.classList.add("loading");
+
+  message(i, text);
+}
+
+
+function ready(i, text = "Ready") {
+
+  el(i, ".mp3-loader").classList.remove("active");
+
+  const label = el(i, ".buffer-label");
+
+  label.textContent = text;
+  label.classList.remove("loading");
+
+  stopRetry(i);
+}
+
+
+function bufferedPercent(audio) {
+
+  if (!Number.isFinite(audio.duration) || audio.duration <= 0) {
+    return 0;
   }
 
-  audio.addEventListener("waiting", showLoader);
-  audio.addEventListener("stalled", showLoader);
-  audio.addEventListener("canplay", hideLoader);
-  audio.addEventListener("playing", hideLoader);
-  audio.addEventListener("error", hideLoader);
-  audio.addEventListener("pause", hideLoader);
+  let total = 0;
 
-  button.addEventListener("click", async () => {
-    if (audio.paused) {
-      showLoader();
+  for (let n = 0; n < audio.buffered.length; n++) {
+    total += audio.buffered.end(n) - audio.buffered.start(n);
+  }
 
-      document.querySelectorAll("audio").forEach(other => {
-        if (other !== audio) other.pause();
-      });
+  return Math.max(0, Math.min(100, total / audio.duration * 100));
+}
+
+
+function update(i) {
+
+  const audio = audios[i];
+  const duration = audio.duration;
+
+  el(i, ".current").textContent = fmt(audio.currentTime);
+  el(i, ".duration").textContent = fmt(duration);
+
+  if (Number.isFinite(duration) && duration > 0) {
+    el(i, ".progress").value =
+      String(audio.currentTime / duration * 1000);
+  }
+
+  const percent = bufferedPercent(audio);
+
+  el(i, ".buffer-fill").style.width = percent + "%";
+
+  el(i, ".buffer-percent").textContent =
+    Math.round(percent) + "% buffered";
+
+  el(i, ".play-btn").textContent =
+    audio.paused ? "▶" : "Ⅱ";
+
+  el(i, ".mute-btn").textContent =
+    audio.muted || audio.volume === 0 ? "🔇" : "🔊";
+
+  el(i, ".repeat-btn").classList.toggle(
+    "active",
+    states[i].repeat
+  );
+
+  el(i, ".repeat-btn").textContent =
+    states[i].repeat ? "↻ 1" : "↻";
+}
+
+
+/* AUTOMATIC BUFFER RECOVERY */
+
+function scheduleRecovery(i) {
+
+  const state = states[i];
+  const audio = audios[i];
+
+  stopRetry(i);
+
+  if (state.manuallyPaused || audio.paused) return;
+
+  state.retryTimer = setTimeout(() => {
+
+    if (audio.paused || state.manuallyPaused) return;
+
+    if (state.retries >= MAX_RECOVERIES) {
+
+      ready(i, "Still buffering — tap reload");
+
+      message(
+        i,
+        "Connection is taking too long. Use the reload button below.",
+        true
+      );
+
+      return;
+    }
+
+    state.retries++;
+
+    reloadAudio(i, true, true);
+
+  }, STALL_DELAY);
+}
+
+
+/* ONLY ONE SONG PLAYS AT A TIME */
+
+function pauseOthers(current) {
+
+  audios.forEach((audio, i) => {
+
+    if (i !== current) {
+
+      audio.pause();
+
+      states[i].manuallyPaused = true;
+
+      stopRetry(i);
+
+      ready(i, "Paused");
+
+      update(i);
+    }
+
+  });
+}
+
+
+async function playAudio(i) {
+
+  const audio = audios[i];
+  const state = states[i];
+
+  pauseOthers(i);
+
+  state.manuallyPaused = false;
+
+  if (audio.error) {
+    reloadAudio(i, true, false);
+    return;
+  }
+
+  if (audio.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
+
+    loading(i, "Loading audio…");
+
+    scheduleRecovery(i);
+  }
+
+  try {
+
+    await audio.play();
+
+    update(i);
+
+  } catch (err) {
+
+    stopRetry(i);
+
+    if (err.name === "NotAllowedError") {
+
+      ready(i, "Tap play to start");
+
+      message(
+        i,
+        "Your browser blocked playback. Tap Play again.",
+        true
+      );
+
+    } else if (err.name !== "AbortError") {
+
+      ready(i, "Playback failed");
+
+      message(
+        i,
+        "Could not play this MP3. Check the link or connection.",
+        true
+      );
+
+      console.error(err);
+    }
+  }
+}
+
+
+function pauseAudio(i) {
+
+  states[i].manuallyPaused = true;
+
+  audios[i].pause();
+
+  stopRetry(i);
+
+  ready(i, "Paused");
+
+  update(i);
+}
+
+
+/* RELOAD AUDIO */
+
+function reloadAudio(i, resume = true, automatic = false) {
+
+  const audio = audios[i];
+  const state = states[i];
+
+  const position =
+    Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+
+  const shouldResume = resume && !state.manuallyPaused;
+
+  stopRetry(i);
+
+  if (!automatic) state.retries = 0;
+
+  loading(
+    i,
+    automatic ? "Recovering connection…" : "Reloading audio…"
+  );
+
+  audio.pause();
+
+  const restore = () => {
+
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
 
       try {
-        await audio.play();
-      } catch (error) {
-        hideLoader();
-        console.error("Audio could not be played:", error);
-      }
-    } else {
-      audio.pause();
+        audio.currentTime = Math.min(position, audio.duration);
+      } catch (e) {}
     }
+
+    update(i);
+
+    if (shouldResume && !state.manuallyPaused) {
+      playAudio(i);
+    } else {
+      ready(i, "Ready");
+    }
+  };
+
+  audio.addEventListener("loadedmetadata", restore, { once:true });
+
+  audio.load();
+
+  if (shouldResume) scheduleRecovery(i);
+}
+
+
+/* CONNECT PLAYER EVENTS */
+
+players.forEach((player, i) => {
+
+  const audio = audios[i];
+  const state = states[i];
+
+  el(i, ".play-btn").addEventListener("click", () => {
+
+    audio.paused ? playAudio(i) : pauseAudio(i);
+
   });
 
-  audio.addEventListener("play", () => {
-    button.textContent = "Ⅱ";
+
+  el(i, ".progress").addEventListener("input", e => {
+
+    if (Number.isFinite(audio.duration) && audio.duration > 0) {
+
+      audio.currentTime =
+        Number(e.target.value) / 1000 * audio.duration;
+
+    }
+
   });
+
+
+  el(i, ".volume").addEventListener("input", e => {
+
+    audio.volume = Number(e.target.value);
+
+    audio.muted = audio.volume === 0;
+
+    state.lastVolume = audio.volume;
+
+    update(i);
+
+  });
+
+
+  el(i, ".mute-btn").addEventListener("click", () => {
+
+    if (audio.muted || audio.volume === 0) {
+
+      audio.muted = false;
+
+      audio.volume = state.lastVolume || .8;
+
+      el(i, ".volume").value = String(audio.volume);
+
+    } else {
+
+      state.lastVolume = audio.volume;
+
+      audio.muted = true;
+
+    }
+
+    update(i);
+
+  });
+
+
+  el(i, ".repeat-btn").addEventListener("click", () => {
+
+    state.repeat = !state.repeat;
+
+    audio.loop = state.repeat;
+
+    update(i);
+
+    message(
+      i,
+      state.repeat ? "Repeat is on" : "Repeat is off"
+    );
+
+  });
+
+
+  audio.addEventListener("loadstart", () => {
+
+    if (!audio.paused) loading(i, "Connecting…");
+
+  });
+
+
+  [
+    "loadedmetadata",
+    "durationchange",
+    "progress",
+    "timeupdate",
+    "seeked",
+    "canplaythrough"
+  ].forEach(event => {
+
+    audio.addEventListener(event, () => update(i));
+
+  });
+
+
+  audio.addEventListener("canplay", () => {
+
+    if (!audio.paused) {
+      ready(i, "Playing");
+    } else if (!state.retryTimer) {
+      ready(i, "Ready");
+    }
+
+    update(i);
+
+  });
+
+
+  audio.addEventListener("playing", () => {
+
+    state.retries = 0;
+
+    ready(i, "Playing");
+
+    message(i, "");
+
+    update(i);
+
+  });
+
+
+  audio.addEventListener("waiting", () => {
+
+    if (!audio.paused) {
+
+      loading(i, "Buffering…");
+
+      scheduleRecovery(i);
+
+    }
+
+  });
+
+
+  audio.addEventListener("stalled", () => {
+
+    if (!audio.paused) {
+
+      loading(i, "Connection stalled…");
+
+      scheduleRecovery(i);
+
+    }
+
+  });
+
 
   audio.addEventListener("pause", () => {
-    button.textContent = "▶";
+
+    stopRetry(i);
+
+    update(i);
+
   });
 
-  audio.addEventListener("loadedmetadata", () => {
-    duration.textContent = formatTime(audio.duration);
-  });
-
-  audio.addEventListener("timeupdate", () => {
-    current.textContent = formatTime(audio.currentTime);
-
-    if (Number.isFinite(audio.duration) && audio.duration > 0) {
-      progress.value = (audio.currentTime / audio.duration) * 100;
-    }
-  });
-
-  progress.addEventListener("input", () => {
-    if (Number.isFinite(audio.duration) && audio.duration > 0) {
-      audio.currentTime = (progress.value / 100) * audio.duration;
-    }
-  });
-
-  volume.addEventListener("input", () => {
-    audio.volume = Number(volume.value);
-  });
 
   audio.addEventListener("ended", () => {
-    button.textContent = "▶";
-    progress.value = 0;
-    current.textContent = "0:00";
-    hideLoader();
-  });
-});
-</script>
 
+    stopRetry(i);
+
+    if (!state.repeat) {
+
+      state.manuallyPaused = true;
+
+      ready(i, "Finished");
+
+      message(i, "Song finished ♡");
+
+      update(i);
+
+    }
+
+  });
+
+
+  audio.addEventListener("error", () => {
+
+    stopRetry(i);
+
+    const code = audio.error?.code;
+
+    let errorText =
+      "Audio could not be loaded. Check the MP3 link or internet connection.";
+
+    if (code === MediaError.MEDIA_ERR_NETWORK) {
+      errorText = "Network error. Check your internet and try again.";
+    }
+
+    if (code === MediaError.MEDIA_ERR_DECODE) {
+      errorText = "This MP3 could not be decoded by the browser.";
+    }
+
+    if (code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+      errorText = "Audio source unavailable or unsupported.";
+    }
+
+    ready(i, "Could not load");
+
+    message(i, errorText, true);
+
+    console.error(errorText);
+
+  });
+
+
+  update(i);
+
+});
+
+
+/* CLEAN UP WHEN PAGE IS LEFT */
+
+window.addEventListener("pagehide", () => {
+
+  audios.forEach((audio, i) => {
+
+    audio.pause();
+
+    stopRetry(i);
+
+  });
+
+});
+
+</script>
 </body>
 </html>
