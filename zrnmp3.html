@@ -278,6 +278,26 @@ body {
 
 .play-btn:hover { transform: scale(1.09); }
 
+/* MP3 LOADING SPINNER */
+.mp3-loader {
+  display: none;
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  border: 2px solid rgba(215,184,255,.25);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: mp3Spin .7s linear infinite;
+}
+
+.mp3-loader.active {
+  display: inline-block;
+}
+
+@keyframes mp3Spin {
+  to { transform: rotate(360deg); }
+}
+
 .progress-area { flex: 1; min-width: 0; }
 
 .progress {
@@ -416,6 +436,7 @@ footer {
 
       <div class="player-controls">
         <button class="play-btn" aria-label="Play Meri Zarna">▶</button>
+        <span class="mp3-loader" aria-label="Loading song"></span>
 
         <div class="progress-area">
           <input class="progress" type="range" min="0" max="100" value="0">
@@ -447,6 +468,7 @@ footer {
 
       <div class="player-controls">
         <button class="play-btn" aria-label="Play Meri BooBoo">▶</button>
+        <span class="mp3-loader" aria-label="Loading song"></span>
 
         <div class="progress-area">
           <input class="progress" type="range" min="0" max="100" value="0">
@@ -581,13 +603,32 @@ function formatTime(seconds) {
 players.forEach(player => {
   const audio = player.querySelector("audio");
   const button = player.querySelector(".play-btn");
+  const loader = player.querySelector(".mp3-loader");
   const progress = player.querySelector(".progress");
   const current = player.querySelector(".current");
   const duration = player.querySelector(".duration");
   const volume = player.querySelector(".volume");
 
+  // MP3 LOADING ANIMATION
+  function showLoader() {
+    loader.classList.add("active");
+  }
+
+  function hideLoader() {
+    loader.classList.remove("active");
+  }
+
+  audio.addEventListener("waiting", showLoader);
+  audio.addEventListener("stalled", showLoader);
+  audio.addEventListener("canplay", hideLoader);
+  audio.addEventListener("playing", hideLoader);
+  audio.addEventListener("error", hideLoader);
+  audio.addEventListener("pause", hideLoader);
+
   button.addEventListener("click", async () => {
     if (audio.paused) {
+      showLoader();
+
       document.querySelectorAll("audio").forEach(other => {
         if (other !== audio) other.pause();
       });
@@ -595,6 +636,7 @@ players.forEach(player => {
       try {
         await audio.play();
       } catch (error) {
+        hideLoader();
         console.error("Audio could not be played:", error);
       }
     } else {
@@ -636,6 +678,7 @@ players.forEach(player => {
     button.textContent = "▶";
     progress.value = 0;
     current.textContent = "0:00";
+    hideLoader();
   });
 });
 </script>
