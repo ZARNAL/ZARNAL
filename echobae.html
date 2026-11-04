@@ -295,7 +295,7 @@ button:hover { background-color: var(--pink-hover); transform: translateY(-2px);
   border-radius: 12px;
   transition: transform 0.2s;
 }
-#birthdayImage:hover, #anniversaryImage:hover, #birthdayVideo:hover, #anniversaryVideo:hover { transform: scale(1.05); }
+#birthdayImage:hover, #anniversaryImage:hover, #birthdayVideo:hover, #birthdayVideo:hover { transform: scale(1.05); }
 #birthdayAudio, #anniversaryAudio { margin: 10px auto; display: block; }
 
 #birthdayCountdownMessage, #anniversaryCountdownMessage, #birthdayMessage, #anniversaryMessage {
@@ -336,7 +336,7 @@ button:hover { background-color: var(--pink-hover); transform: translateY(-2px);
 <div id="codeOverlay">
   <h3>🔒 Enter Secret Code</h3>
   <input type="password" id="codeInput" placeholder="Enter code...">
-  <button onclick="checkSecret()">Unlock a 💌</button>
+  <button onclick="checkSecret()">Unlock 💌</button>
   <div id="codeError">❌ Wrong code. Try again.</div>
 </div>
 
@@ -417,7 +417,6 @@ function toggleDark() {
 
 let gifs = [];
 
-// Load GIFs from gifs.json
 async function loadGifs() {
   try {
     const response = await fetch('./gifs.json');
@@ -527,8 +526,8 @@ function checkSecret() {
       anniversaryContainer.style.display = "none";
       sendToAlexaBtn.style.display = "none";
       textarea.value = "";
-    } else if (input === "booboo") {
-      presetButtons.forEach(btn => btn.style.display = "inline-block");
+    } else if (input === "booboo" || input === "baby") {
+      presetButtons.forEach(btn => btn.style.display = (input === "booboo") ? "inline-block" : "none");
       gifGalleryContainer.style.display = "none";
       randomGifContainer.style.display = "block";
       changeGif();
@@ -536,20 +535,8 @@ function checkSecret() {
       backArrow.style.display = "flex";
       switchContainer.style.display = "block";
       secretMessageBtn.style.display = "inline-block";
-      sendToAlexaBtn.style.display = "block";
-      textarea.value = "";
-      displaySpecialEvents();
-    } else if (input === "baby") {
-      presetButtons.forEach(btn => btn.style.display = "none");
-      gifGalleryContainer.style.display = "none";
-      randomGifContainer.style.display = "block";
-      changeGif();
-      container.style.display = "block";
-      backArrow.style.display = "flex";
-      switchContainer.style.display = "block";
-      secretMessageBtn.style.display = "inline-block";
-      sendToAlexaBtn.style.display = "none";
-      textarea.value = "Good Morning!! It's OVER NOW...All the best for your life...";
+      sendToAlexaBtn.style.display = (input === "booboo") ? "block" : "none";
+      textarea.value = (input === "baby") ? "Good Morning!! It's OVER NOW...All the best for your life..." : "";
       displaySpecialEvents();
     }
   } else {
@@ -602,7 +589,8 @@ async function displaySpecialEvents() {
     birthdayContainer.style.display = "none";
     anniversaryContainer.style.display = "none";
 
-    if (currentCode !== "booboo" && currentCode !== "babygirl") return;
+    // ONLY show countdown if code is strictly "booboo"
+    if (currentCode !== "booboo") return;
 
     const today = new Date();
     const currentYear = today.getFullYear();
