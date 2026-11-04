@@ -26,6 +26,9 @@
   --unlock-gradient: linear-gradient(135deg, #5856D6 0%, #8583F2 100%);
   --unlock-glow: rgba(88, 86, 214, 0.35);
 
+  --music-gradient: linear-gradient(135deg, #00C7BE 0%, #30B0C7 50%, #32ADE6 100%);
+  --music-glow: rgba(50, 173, 230, 0.35);
+
   --chip-bg: rgba(255, 255, 255, 0.82);
   --chip-hover: rgba(255, 45, 85, 0.1);
   --chip-border: rgba(255, 122, 162, 0.2);
@@ -53,6 +56,9 @@
   
   --unlock-gradient: linear-gradient(135deg, #5E5CE6 0%, #AD46FF 100%);
   --unlock-glow: rgba(94, 92, 230, 0.4);
+
+  --music-gradient: linear-gradient(135deg, #32D74B 0%, #64D2FF 100%);
+  --music-glow: rgba(50, 215, 75, 0.35);
 
   --chip-bg: rgba(255, 255, 255, 0.08);
   --chip-hover: rgba(255, 55, 95, 0.2);
@@ -359,7 +365,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-inner-glow), var(--glass-shadow);
   text-align: center;
-  max-width: 480px;
+  max-width: 520px;
   margin: 48px auto 10px;
   z-index: 2;
   position: relative;
@@ -426,42 +432,65 @@ textarea:focus {
 
 .clear-text-btn:hover { background: var(--accent); color: #fff; opacity: 1; transform: scale(1.1); }
 
+/* Flexbox Soundboard Container so buttons wrap naturally with text-based sizing */
 .preset-buttons {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
   margin: 6px 0 10px;
 }
 
-.preset-buttons button, .preset-buttons a {
+.preset-buttons button {
   margin-top: 0;
   background: var(--chip-bg);
   color: var(--text-primary);
-  padding: 6px 4px;
+  padding: 6px 10px;
   border: 1px solid var(--chip-border);
   border-radius: 10px;
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
-  text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: fit-content;
   box-shadow: var(--glass-inner-glow);
   transition: transform 0.2s var(--spring), background 0.2s ease, color 0.2s ease;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .preset-buttons button:hover,
-.preset-buttons button.active-chip,
-.preset-buttons a:hover {
+.preset-buttons button.active-chip {
   background: var(--accent-gradient);
   color: #fff;
   border-color: transparent;
   transform: translateY(-1px) scale(1.02);
   box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+/* Music Button Sized per Text */
+.music-btn {
+  background: var(--music-gradient) !important;
+  color: #fff !important;
+  border: none !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px var(--music-glow) !important;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  white-space: nowrap;
+  transition: transform 0.2s var(--spring), filter 0.2s ease;
+}
+
+.music-btn:hover {
+  transform: translateY(-1px) scale(1.02);
+  filter: brightness(1.1);
 }
 
 button {
@@ -680,7 +709,8 @@ button:active { transform: scale(0.96); }
     <button onclick="setText('Jaleebiiieeeeee… yummyyy yummm!', event)">🌀Jalebi</button>
     <button onclick="setText('Poppp popppp POPCORN!!', event)">🍿popcorn</button>
     <button onclick="setText('Gulaaaablaaaablaaaablaaa Jummmmuuuuuuun!!', event)">🧆gulab</button>
-    <a href="https://zarnal.github.io/ZARNAL/zrnmp3" target="_blank">🎵 Music</a>
+    <!-- Sized per text Music Button -->
+    <a href="https://zarnal.github.io/ZARNAL/zrnmp3" target="_blank" class="music-btn">🎵 Music</a>
     <button id="secretMessageBtn" onclick="showSecretMessageOverlay()">🔒</button>
   </div>
 
