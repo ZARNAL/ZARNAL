@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>💖 Alexa Cute Whisper</title>
+<title>💖 Alexa Cute Soundboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -432,7 +432,6 @@ textarea:focus {
 
 .clear-text-btn:hover { background: var(--accent); color: #fff; opacity: 1; transform: scale(1.1); }
 
-/* Flexbox Soundboard Container so buttons wrap naturally with text-based sizing */
 .preset-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -469,7 +468,6 @@ textarea:focus {
   box-shadow: 0 4px 12px var(--accent-glow);
 }
 
-/* Music Button Sized per Text */
 .music-btn {
   background: var(--music-gradient) !important;
   color: #fff !important;
@@ -493,27 +491,32 @@ textarea:focus {
   filter: brightness(1.1);
 }
 
-button {
-  padding: 10px 20px;
-  font-size: 14px;
-  font-weight: 600;
+/* Optimized, Larger, Easier-to-Touch Send Button */
+#sendToAlexaBtn {
+  width: 100%;
+  max-width: 280px;
+  margin: 4px auto 2px;
+  padding: 13px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   background: var(--accent-gradient);
   color: white;
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 6px 16px var(--accent-glow);
-  transition: transform 0.25s var(--spring), filter 0.2s ease;
+  box-shadow: 0 8px 24px var(--accent-glow), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  transition: transform 0.2s var(--spring), filter 0.2s ease, box-shadow 0.2s ease;
 }
 
-button:hover { transform: translateY(-1px) scale(1.01); filter: brightness(1.05); }
-button:active { transform: scale(0.96); }
+#sendToAlexaBtn:hover {
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.08);
+  box-shadow: 0 12px 28px var(--accent-glow);
+}
 
-#sendToAlexaBtn {
-  width: 100%;
-  max-width: 240px;
-  margin: 2px auto 0;
-  padding: 9px 20px;
+#sendToAlexaBtn:active {
+  transform: scale(0.95);
 }
 
 #status {
@@ -682,10 +685,10 @@ button:active { transform: scale(0.96); }
 </div>
 
 <div class="container">
-  <div id="boobooTitle" class="booboo-title">✨ Alexa Cute Whisper</div>
+  <div id="boobooTitle" class="booboo-title">✨ Alexa Cute Soundboard</div>
 
   <div class="textarea-wrapper">
-    <textarea id="text" placeholder="Whisper something cute... 💌"></textarea>
+    <textarea id="text" placeholder="Write something cute... 💌"></textarea>
     <button type="button" class="clear-text-btn" onclick="clearText()" title="Clear">✕</button>
   </div>
 
@@ -709,12 +712,11 @@ button:active { transform: scale(0.96); }
     <button onclick="setText('Jaleebiiieeeeee… yummyyy yummm!', event)">🌀Jalebi</button>
     <button onclick="setText('Poppp popppp POPCORN!!', event)">🍿popcorn</button>
     <button onclick="setText('Gulaaaablaaaablaaaablaaa Jummmmuuuuuuun!!', event)">🧆gulab</button>
-    <!-- Sized per text Music Button -->
     <a href="https://zarnal.github.io/ZARNAL/zrnmp3" target="_blank" class="music-btn">🎵 Music</a>
     <button id="secretMessageBtn" onclick="showSecretMessageOverlay()">🔒</button>
   </div>
 
-  <button id="sendToAlexaBtn" onclick="sendToAlexa(event)">✨ Whisper to Alexa</button>
+  <button id="sendToAlexaBtn" onclick="sendToAlexa(event)">✨ Send to Alexa</button>
   <p id="status"></p>
 
   <div class="widgets-row">
@@ -879,7 +881,7 @@ async function sendToAlexa(evt) {
     });
 
     if (response.ok) {
-      status.innerText = "💖 Whisper delivered!";
+      status.innerText = "💖 Message delivered!";
     } else {
       status.innerText = "❌ Error sending.";
     }
@@ -887,7 +889,7 @@ async function sendToAlexa(evt) {
     status.innerText = "❌ Network error.";
   } finally {
     btn.disabled = false;
-    btn.innerText = "✨ Whisper to Alexa";
+    btn.innerText = "✨ Send to Alexa";
   }
 }
 
