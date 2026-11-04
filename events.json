@@ -2,7 +2,7 @@
   "birthday": {
     "month": 10,
     "day": 31,
-    "countdownDays": 364,
+    "countdownDays": 75,
     "content": [
       {
         "year": 2025,
@@ -29,7 +29,7 @@
   "anniversary": {
     "month": 6,
     "day": 14,
-    "countdownDays": 364,
+    "countdownDays": 75,
     "content": [
       {
         "year": 2025,
