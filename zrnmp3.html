@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +29,7 @@ body.light {
   --track:rgba(80,65,110,.18);
 }
 
-* {
+*, *::before, *::after {
   margin:0;
   padding:0;
   box-sizing:border-box;
@@ -149,6 +148,7 @@ body {
 }
 
 #secretInput {
+  display:block;
   width:100%;
   padding:15px;
   border-radius:13px;
@@ -156,6 +156,7 @@ body {
   background:rgba(255,255,255,.08);
   color:white;
   text-align:center;
+  font-family:inherit;
   font-size:16px;
   outline:none;
   margin-bottom:15px;
@@ -164,12 +165,14 @@ body {
 #secretInput:focus { border-color:#d7b8ff; }
 
 .lock-box button {
+  display:block;
   width:100%;
   padding:15px;
   border:0;
   border-radius:13px;
   background:#d7b8ff;
   color:#171020;
+  font-family:inherit;
   font-weight:700;
   font-size:15px;
   cursor:pointer;
@@ -191,16 +194,23 @@ body {
   z-index:2;
   display:flex;
   justify-content:flex-end;
+  align-items:center;
   padding:24px 7%;
 }
 
 .theme-toggle {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
   border:1px solid var(--border);
   background:var(--card);
   color:var(--text);
   padding:11px 17px;
   border-radius:30px;
+  font-family:inherit;
   font-size:14px;
+  line-height:1;
   cursor:pointer;
   backdrop-filter:blur(15px);
   transition:.3s;
@@ -273,6 +283,9 @@ body {
 }
 
 .play-btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   width:47px;
   height:47px;
   flex-shrink:0;
@@ -280,7 +293,9 @@ body {
   border-radius:50%;
   background:var(--accent);
   color:#171020;
+  font-family:inherit;
   font-size:18px;
+  line-height:1;
   cursor:pointer;
   transition:.25s;
 }
@@ -290,6 +305,9 @@ body {
 .progress-area {
   flex:1;
   min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
 .timeline {
@@ -324,6 +342,7 @@ body {
   display:block;
   width:100%;
   height:4px;
+  margin:0;
   appearance:none;
   background:var(--track);
   border-radius:10px;
@@ -353,9 +372,10 @@ body {
 .time {
   display:flex;
   justify-content:space-between;
+  align-items:center;
   font-size:10px;
   color:var(--muted);
-  margin-top:1px;
+  margin-top:4px;
   font-variant-numeric:tabular-nums;
 }
 
@@ -364,6 +384,7 @@ body {
 .buffer-status {
   display:flex;
   justify-content:space-between;
+  align-items:center;
   gap:8px;
   margin-top:8px;
   color:var(--muted);
@@ -408,6 +429,10 @@ body {
 }
 
 .small-control {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
   border:1px solid var(--border);
   background:rgba(150,150,170,.08);
   color:var(--text);
@@ -415,7 +440,9 @@ body {
   min-width:36px;
   padding:0 9px;
   border-radius:10px;
+  font-family:inherit;
   font-size:12px;
+  line-height:1;
   cursor:pointer;
   transition:.2s;
 }
@@ -431,16 +458,19 @@ body {
 /* VOLUME SLIDER */
 
 .volume-wrap {
-  display:flex;
+  display:inline-flex;
   align-items:center;
   gap:9px;
   color:var(--muted);
   font-size:11px;
   font-weight:600;
+  line-height:1;
 }
 
 .volume {
+  display:block;
   width:100px;
+  margin:0;
   accent-color:var(--accent);
   cursor:pointer;
   height:4px;
@@ -455,6 +485,24 @@ body {
 }
 
 .player-message.error { color:#ff8499; }
+
+/* BOTTOM ICON */
+
+.bottom-icon-wrap {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:100%;
+  margin-top:10px;
+}
+
+.bottom-icon {
+  display:block;
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  border-radius:12px;
+}
 
 /* MOBILE */
 
@@ -485,7 +533,7 @@ body {
   }
 
   .volume-wrap {
-    display:flex;
+    display:inline-flex;
     font-size:10px;
     gap:6px;
   }
@@ -607,6 +655,13 @@ body {
 
         <div class="control-group">
           <button class="small-control repeat-btn" title="Repeat song" aria-label="Repeat song">↻</button>
+          <a
+            class="small-control download-btn"
+            href="https://github.com/user-attachments/files/34280216/MeriZarna.mp3"
+            download="MeriZarna.mp3"
+            title="Download MP3"
+            aria-label="Download Meri Zarna MP3"
+          >⬇</a>
         </div>
 
       </div>
@@ -683,6 +738,13 @@ body {
 
         <div class="control-group">
           <button class="small-control repeat-btn" title="Repeat song" aria-label="Repeat song">↻</button>
+          <a
+            class="small-control download-btn"
+            href="https://github.com/user-attachments/files/34280233/MeriBooBoo.mp3"
+            download="MeriBooBoo.mp3"
+            title="Download MP3"
+            aria-label="Download Meri BooBoo MP3"
+          >⬇</a>
         </div>
 
       </div>
@@ -695,6 +757,16 @@ body {
 
     </div>
   </section>
+
+  <!-- BOTTOM ICON -->
+
+  <div class="bottom-icon-wrap">
+    <img
+      class="bottom-icon"
+      src="https://github.com/user-attachments/assets/e0a5b704-28d6-4d0b-81cc-6a9b0175c8f0"
+      alt="Icon"
+    >
+  </div>
 
 </main>
 
