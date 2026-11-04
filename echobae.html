@@ -7,51 +7,49 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Light Mode — Apple Rose Quartz & Liquid Glass */
   --bg-base: #fff6f9;
   --orb-1: #ff9ebb;
   --orb-2: #ffc2d4;
   --orb-3: #d0bfff;
   --orb-4: #ffd8be;
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-bg-strong: rgba(255, 255, 255, 0.86);
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-bg-strong: rgba(255, 255, 255, 0.9);
   --glass-border: rgba(255, 255, 255, 0.9);
   --glass-inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.95);
-  --glass-shadow: 0 24px 60px rgba(255, 77, 128, 0.14), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --glass-shadow: 0 20px 50px rgba(255, 77, 128, 0.12), 0 4px 12px rgba(0, 0, 0, 0.03);
   --text-primary: #1d1d1f;
   --text-secondary: #6e6e73;
   --accent: #ff2d55;
   --accent-gradient: linear-gradient(135deg, #ff2d55 0%, #ff5c8a 55%, #ff85a1 100%);
-  --accent-glow: rgba(255, 45, 85, 0.32);
-  --chip-bg: rgba(255, 255, 255, 0.78);
+  --accent-glow: rgba(255, 45, 85, 0.28);
+  --chip-bg: rgba(255, 255, 255, 0.82);
   --chip-hover: rgba(255, 45, 85, 0.1);
-  --chip-border: rgba(255, 122, 162, 0.22);
-  --input-bg: rgba(255, 255, 255, 0.9);
+  --chip-border: rgba(255, 122, 162, 0.2);
+  --input-bg: rgba(255, 255, 255, 0.92);
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dark {
-  /* Dark Mode — Apple Midnight Velvet & Crimson Glow */
   --bg-base: #09080d;
   --orb-1: #590d22;
   --orb-2: #3c096c;
   --orb-3: #800f2f;
   --orb-4: #240046;
-  --glass-bg: rgba(26, 23, 33, 0.68);
-  --glass-bg-strong: rgba(32, 28, 42, 0.86);
+  --glass-bg: rgba(26, 23, 33, 0.72);
+  --glass-bg-strong: rgba(32, 28, 42, 0.9);
   --glass-border: rgba(255, 255, 255, 0.12);
   --glass-inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  --glass-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 45px rgba(255, 45, 85, 0.12);
+  --glass-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(255, 45, 85, 0.1);
   --text-primary: #f5f5f7;
   --text-secondary: #a1a1a6;
   --accent: #ff375f;
   --accent-gradient: linear-gradient(135deg, #ff2d55 0%, #ff5c8a 50%, #c77dff 100%);
-  --accent-glow: rgba(255, 55, 95, 0.45);
-  --chip-bg: rgba(255, 255, 255, 0.07);
-  --chip-hover: rgba(255, 55, 95, 0.22);
+  --accent-glow: rgba(255, 55, 95, 0.4);
+  --chip-bg: rgba(255, 255, 255, 0.08);
+  --chip-hover: rgba(255, 55, 95, 0.2);
   --chip-border: rgba(255, 255, 255, 0.1);
-  --input-bg: rgba(14, 12, 18, 0.75);
+  --input-bg: rgba(14, 12, 18, 0.8);
 }
 
 * {
@@ -62,7 +60,7 @@
 }
 
 body {
-  padding: 20px;
+  padding: 10px;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
   background-color: var(--bg-base);
   color: var(--text-primary);
@@ -85,34 +83,33 @@ body {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.62;
+  opacity: 0.55;
   animation: drift 20s infinite alternate ease-in-out;
-  transition: background 0.8s ease;
 }
 
-.orb-1 { width: 440px; height: 440px; background: var(--orb-1); top: -12%; left: -10%; animation-duration: 17s; }
-.orb-2 { width: 400px; height: 400px; background: var(--orb-2); bottom: -12%; right: -8%; animation-duration: 22s; animation-delay: -5s; }
-.orb-3 { width: 340px; height: 340px; background: var(--orb-3); top: 32%; left: 58%; animation-duration: 19s; animation-delay: -9s; }
-.orb-4 { width: 300px; height: 300px; background: var(--orb-4); bottom: 20%; left: 8%; animation-duration: 25s; animation-delay: -3s; }
+.orb-1 { width: 380px; height: 380px; background: var(--orb-1); top: -10%; left: -10%; }
+.orb-2 { width: 340px; height: 340px; background: var(--orb-2); bottom: -10%; right: -8%; animation-delay: -5s; }
+.orb-3 { width: 300px; height: 300px; background: var(--orb-3); top: 30%; left: 55%; animation-delay: -9s; }
+.orb-4 { width: 260px; height: 260px; background: var(--orb-4); bottom: 15%; left: 5%; animation-delay: -3s; }
 
 @keyframes drift {
   0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(50px, -40px) scale(1.12); }
-  100% { transform: translate(-40px, 45px) scale(0.93); }
+  50% { transform: translate(40px, -30px) scale(1.1); }
+  100% { transform: translate(-30px, 35px) scale(0.95); }
 }
 
 /* Floating Ambient Hearts */
 .heart {
   position: fixed;
   bottom: -30px;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   background: var(--accent-gradient);
   transform: rotate(45deg);
   animation: floatUp linear infinite;
   z-index: 1;
   pointer-events: none;
-  filter: drop-shadow(0 0 8px var(--accent-glow));
+  filter: drop-shadow(0 0 6px var(--accent-glow));
 }
 
 .heart::before, .heart::after {
@@ -123,15 +120,14 @@ body {
   background: inherit;
   border-radius: 50%;
 }
-
 .heart::before { top: -50%; left: 0; }
 .heart::after { left: -50%; top: 0; }
 
 @keyframes floatUp {
-  0% { transform: translateY(0) rotate(45deg) scale(0.6); opacity: 0; }
-  15% { opacity: 0.5; }
-  85% { opacity: 0.4; }
-  100% { transform: translateY(-112vh) rotate(90deg) scale(1.1); opacity: 0; }
+  0% { transform: translateY(0) rotate(45deg) scale(0.5); opacity: 0; }
+  15% { opacity: 0.4; }
+  85% { opacity: 0.3; }
+  100% { transform: translateY(-108vh) rotate(90deg) scale(1); opacity: 0; }
 }
 
 /* Sparkle Particle Burst */
@@ -139,114 +135,97 @@ body {
   position: fixed;
   pointer-events: none;
   z-index: 99999;
-  font-size: 16px;
+  font-size: 15px;
   user-select: none;
-  animation: particleFly 0.85s var(--smooth) forwards;
+  animation: particleFly 0.75s var(--smooth) forwards;
 }
 
 @keyframes particleFly {
   0% { transform: translate(-50%, -50%) scale(0.3) rotate(0deg); opacity: 1; }
-  100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.25) rotate(var(--rot)); opacity: 0; }
+  100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.15) rotate(var(--rot)); opacity: 0; }
 }
 
-/* Apple Dynamic Island Notification Pill */
+/* Dynamic Island */
 .dynamic-island {
   position: fixed;
-  top: 18px;
+  top: 12px;
   left: 50%;
   transform: translateX(-50%) scale(0.92);
   background: rgba(18, 18, 22, 0.9);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   color: #fff;
-  padding: 9px 18px;
+  padding: 7px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28), 0 0 20px var(--accent-glow);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
-  gap: 9px;
-  font-size: 13px;
+  gap: 7px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: -0.01em;
   z-index: 10002;
   opacity: 0;
   pointer-events: none;
-  white-space: nowrap;
-  transition: transform 0.45s var(--spring), opacity 0.3s ease, padding 0.35s var(--spring);
+  transition: transform 0.4s var(--spring), opacity 0.25s ease;
 }
 
 .dynamic-island.active {
   opacity: 1;
   transform: translateX(-50%) scale(1);
-  padding: 10px 22px;
 }
 
 .island-pulse {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #ff2d55;
-  box-shadow: 0 0 10px #ff2d55;
+  box-shadow: 0 0 6px #ff2d55;
   animation: pulseDot 1.2s infinite ease-in-out;
 }
 
 @keyframes pulseDot {
   0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.4); opacity: 0.6; }
+  50% { transform: scale(1.35); opacity: 0.6; }
 }
 
-/* Top Navigation: Apple Glass Back Button */
+/* Top Navigation */
 .back-arrow {
   position: fixed;
-  top: 18px;
-  left: 18px;
-  width: 44px;
-  height: 44px;
+  top: 12px;
+  left: 12px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-inner-glow), 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--glass-inner-glow), 0 4px 14px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  transition: transform 0.35s var(--spring), background 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s var(--spring), background 0.25s ease;
   z-index: 10001;
 }
 
-.back-arrow:hover {
-  transform: scale(1.1) translateX(-2px);
-  background: var(--accent);
-  box-shadow: 0 10px 25px var(--accent-glow);
-}
-
-.back-arrow:active { transform: scale(0.92); }
-
-.back-arrow svg {
-  width: 20px;
-  height: 20px;
-  fill: var(--text-primary);
-  transition: fill 0.3s ease;
-}
-
+.back-arrow:hover { transform: scale(1.08); background: var(--accent); }
+.back-arrow svg { width: 16px; height: 16px; fill: var(--text-primary); transition: fill 0.25s; }
 .back-arrow:hover svg { fill: #fff; }
 
-/* Apple iOS Dark Mode Toggle Switch */
 .switch-container {
   position: fixed;
-  top: 18px;
-  right: 18px;
+  top: 12px;
+  right: 12px;
   z-index: 10000;
 }
 
 .switch {
   position: relative;
   display: inline-block;
-  width: 62px;
-  height: 34px;
+  width: 50px;
+  height: 28px;
 }
 
 .switch input { opacity: 0; width: 0; height: 0; }
@@ -256,315 +235,247 @@ body {
   cursor: pointer;
   inset: 0;
   background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
-  border-radius: 34px;
-  box-shadow: var(--glass-inner-glow), 0 8px 24px rgba(0, 0, 0, 0.08);
-  transition: 0.4s var(--smooth);
+  border-radius: 28px;
+  box-shadow: var(--glass-inner-glow), 0 4px 14px rgba(0, 0, 0, 0.06);
+  transition: 0.35s var(--smooth);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 7px;
-  font-size: 13px;
+  padding: 0 5px;
+  font-size: 11px;
 }
 
-.slider::after {
-  content: "☀️";
-  margin-left: auto;
-  opacity: 0.8;
-}
-
-input:checked + .slider::after {
-  content: "🌙";
-  margin-left: 0;
-  margin-right: auto;
-}
+.slider::after { content: "☀️"; margin-left: auto; }
+input:checked + .slider::after { content: "🌙"; margin-left: 0; margin-right: auto; }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 20px;
+  width: 20px;
   left: 3px;
   bottom: 3px;
   background: var(--accent-gradient);
   border-radius: 50%;
-  box-shadow: 0 3px 10px var(--accent-glow);
-  transition: transform 0.45s var(--spring);
+  box-shadow: 0 2px 6px var(--accent-glow);
+  transition: transform 0.35s var(--spring);
   z-index: 2;
 }
 
-input:checked + .slider:before {
-  transform: translateX(28px);
-}
+input:checked + .slider:before { transform: translateX(22px); }
 
-/* Simple & Elegant Secret Code Overlays */
+/* Minimalist Secret Code Overlay */
 #codeOverlay, #secretMessageOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(255, 244, 248, 0.45);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  background: rgba(255, 244, 248, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  padding: 20px;
-  transition: opacity 0.4s var(--smooth), transform 0.4s var(--smooth);
+  padding: 16px;
 }
 
 .dark #codeOverlay, .dark #secretMessageOverlay {
-  background: rgba(9, 8, 13, 0.65);
+  background: rgba(9, 8, 13, 0.75);
 }
 
 .lock-card {
   background: var(--glass-bg-strong);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-inner-glow), var(--glass-shadow);
-  border-radius: 28px;
-  padding: 34px 28px 30px;
+  border-radius: 20px;
+  padding: 22px 18px 18px;
   width: 100%;
-  max-width: 320px;
+  max-width: 260px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  animation: cardPopIn 0.55s var(--spring);
+  animation: cardPopIn 0.4s var(--spring);
 }
 
 .lock-card h3 {
-  font-size: 21px;
-  font-weight: 700;
-  margin-bottom: 18px;
-  letter-spacing: -0.02em;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 @keyframes cardPopIn {
-  0% { opacity: 0; transform: scale(0.92) translateY(14px); }
+  0% { opacity: 0; transform: scale(0.94) translateY(8px); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 #codeOverlay input, #secretMessageOverlay input {
-  width: 220px;
-  padding: 13px 16px;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 14px;
-  border: 1.5px solid var(--chip-border);
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid var(--chip-border);
   background: var(--input-bg);
   color: var(--text-primary);
   text-align: center;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   outline: none;
-  transition: all 0.25s var(--smooth);
-}
-
-#codeOverlay input::placeholder, #secretMessageOverlay input::placeholder {
-  color: var(--text-secondary);
-  font-weight: 400;
+  transition: all 0.2s var(--smooth);
 }
 
 #codeOverlay input:focus, #secretMessageOverlay input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-glow);
-  transform: translateY(-1px);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 #codeOverlay button, #secretMessageOverlay button {
-  margin-top: 2px;
-  padding: 11px 28px;
-  font-size: 15.5px;
+  padding: 8px 20px;
+  font-size: 14px;
   font-weight: 600;
   border-radius: 999px;
+  width: 100%;
 }
 
-.shake {
-  animation: appleShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-}
-
+.shake { animation: appleShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
 @keyframes appleShake {
-  10%, 90% { transform: translateX(-4px); }
-  20%, 80% { transform: translateX(8px); }
-  30%, 50%, 70% { transform: translateX(-10px); }
-  40%, 60% { transform: translateX(10px); }
+  10%, 90% { transform: translateX(-3px); }
+  20%, 80% { transform: translateX(6px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
 }
 
 #codeError, #secretMessageError {
   color: #ff3b30;
-  margin-top: 12px;
+  margin-top: 8px;
   display: none;
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 600;
 }
 
 #secretMessageDisplay {
   display: none;
-  margin-top: 16px;
-  padding: 14px;
-  border-radius: 16px;
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 10px;
   background: var(--chip-bg);
   border: 1px solid var(--chip-border);
-  font-size: 14.5px;
+  font-size: 12.5px;
   color: var(--accent);
   font-weight: 600;
   word-break: break-word;
-  line-height: 1.5;
-  animation: cardPopIn 0.4s var(--spring);
 }
 
-/* Main Apple Frosted Glass Card */
+/* Main Container */
 .container {
   background: var(--glass-bg);
-  backdrop-filter: blur(36px) saturate(190%);
-  -webkit-backdrop-filter: blur(36px) saturate(190%);
-  border-radius: 34px;
-  padding: 32px 26px;
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-radius: 24px;
+  padding: 14px 14px;
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-inner-glow), var(--glass-shadow);
   text-align: center;
-  max-width: 580px;
-  margin: 68px auto 22px;
+  max-width: 480px;
+  margin: 48px auto 10px;
   z-index: 2;
   position: relative;
   display: none;
-  animation: cardPopIn 0.65s var(--spring);
+  animation: cardPopIn 0.5s var(--spring);
 }
 
-.header-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 13px;
-  border-radius: 999px;
-  background: var(--chip-hover);
-  border: 1px solid var(--chip-border);
-  color: var(--accent);
-  font-size: 11px;
+/* Small Alexa Title Header (Only for booboo) */
+.booboo-title {
+  font-size: 14px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 10px;
-}
-
-.live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #30d158;
-  box-shadow: 0 0 8px #30d158;
-}
-
-h2, h3 {
-  font-size: 27px;
-  letter-spacing: -0.03em;
-  margin-bottom: 18px;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+  display: none;
 }
 
-/* Sleek Textarea Input with Quick Clear Button */
+/* Compact Textarea */
 .textarea-wrapper {
   position: relative;
-  margin: 10px 0 18px;
+  margin: 4px 0 8px;
 }
 
 textarea {
   width: 100%;
-  height: 108px;
-  padding: 16px 40px 16px 18px;
-  font-size: 16px;
+  height: 65px;
+  padding: 10px 32px 10px 12px;
+  font-size: 14px;
   font-family: inherit;
   font-weight: 500;
-  line-height: 1.45;
   color: var(--text-primary);
-  border: 1.5px solid var(--chip-border);
-  border-radius: 22px;
+  border: 1px solid var(--chip-border);
+  border-radius: 14px;
   background: var(--input-bg);
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.03);
   resize: none;
   outline: none;
-  transition: all 0.3s var(--smooth);
-}
-
-textarea::placeholder {
-  color: var(--text-secondary);
-  font-weight: 400;
+  transition: all 0.2s var(--smooth);
 }
 
 textarea:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-glow), inset 0 2px 6px rgba(0, 0, 0, 0.02);
-  transform: translateY(-1px);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 .clear-text-btn {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 24px;
-  height: 24px;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   padding: 0;
-  margin: 0;
   background: rgba(142, 142, 147, 0.2);
   color: var(--text-secondary);
   border: none;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: none;
   opacity: 0.7;
-  transition: all 0.25s var(--spring);
+  transition: all 0.2s;
 }
 
-.clear-text-btn:hover {
-  background: var(--accent);
-  color: #fff;
-  opacity: 1;
-  transform: scale(1.1);
-  box-shadow: none;
-}
+.clear-text-btn:hover { background: var(--accent); color: #fff; opacity: 1; transform: scale(1.1); }
 
-/* Tactile Apple Soundboard Pills */
-.preset-section-label {
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  margin-bottom: 10px;
-}
-
+/* Scroll-Free Compact Grid Soundboard */
 .preset-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin: 10px 0 22px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin: 6px 0 10px;
 }
 
 .preset-buttons button, .preset-buttons a {
   margin-top: 0;
   background: var(--chip-bg);
   color: var(--text-primary);
-  padding: 9px 15px;
+  padding: 6px 4px;
   border: 1px solid var(--chip-border);
-  border-radius: 999px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  box-shadow: var(--glass-inner-glow), 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: transform 0.3s var(--spring), background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  justify-content: center;
+  box-shadow: var(--glass-inner-glow);
+  transition: transform 0.2s var(--spring), background 0.2s ease, color 0.2s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .preset-buttons button:hover,
@@ -573,129 +484,96 @@ textarea:focus {
   background: var(--accent-gradient);
   color: #fff;
   border-color: transparent;
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 20px var(--accent-glow);
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 12px var(--accent-glow);
 }
 
-.preset-buttons button:active, .preset-buttons a:active {
-  transform: scale(0.92);
-}
-
-/* Primary Whisper Action Button */
+/* Primary Action Button */
 button {
-  margin-top: 8px;
-  padding: 14px 32px;
-  font-size: 16px;
+  padding: 10px 20px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: -0.01em;
   background: var(--accent-gradient);
   color: white;
   border: none;
   border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 10px 25px var(--accent-glow), inset 0 1px 1px rgba(255, 255, 255, 0.35);
-  transition: transform 0.35s var(--spring), box-shadow 0.3s ease, filter 0.3s ease;
+  box-shadow: 0 6px 16px var(--accent-glow);
+  transition: transform 0.25s var(--spring), filter 0.2s ease;
 }
 
-button:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 14px 30px var(--accent-glow), inset 0 1px 1px rgba(255, 255, 255, 0.45);
-  filter: brightness(1.05);
-}
-
-button:active {
-  transform: scale(0.95);
-}
+button:hover { transform: translateY(-1px) scale(1.01); filter: brightness(1.05); }
+button:active { transform: scale(0.96); }
 
 #sendToAlexaBtn {
   width: 100%;
-  max-width: 310px;
-  margin: 4px auto 0;
+  max-width: 240px;
+  margin: 2px auto 0;
+  padding: 9px 20px;
 }
 
 #status {
-  margin-top: 12px;
-  font-size: 13.5px;
+  margin-top: 6px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--text-secondary);
-  min-height: 20px;
-  transition: all 0.3s ease;
+  min-height: 16px;
 }
 
-/* Apple iOS Lock Screen Widget Countdowns */
+/* Widgets & Containers */
 .widgets-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
-  gap: 12px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 6px;
+  margin-top: 8px;
 }
 
 #birthdayCountdownContainer, #anniversaryCountdownContainer {
   display: none;
   background: var(--chip-bg);
   border: 1px solid var(--chip-border);
-  border-radius: 22px;
-  padding: 15px 16px;
+  border-radius: 12px;
+  padding: 8px;
   text-align: center;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--glass-inner-glow), 0 8px 20px rgba(0, 0, 0, 0.04);
-  transition: transform 0.35s var(--spring), box-shadow 0.3s ease;
-}
-
-#birthdayCountdownContainer:hover, #anniversaryCountdownContainer:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 26px var(--accent-glow);
 }
 
 #birthdayCountdownMessage, #anniversaryCountdownMessage, #birthdayMessage, #anniversaryMessage {
-  font-size: 14.5px;
+  font-size: 12.5px;
   color: var(--accent);
   font-weight: 700;
-  line-height: 1.45;
 }
 
-/* Special Event Media Cards */
 #birthdayContainer, #anniversaryContainer {
   text-align: center;
-  margin-top: 18px;
-  padding: 18px;
+  margin-top: 10px;
+  padding: 10px;
   background: var(--chip-bg);
   border: 1px solid var(--chip-border);
-  border-radius: 26px;
-  box-shadow: var(--glass-inner-glow), 0 12px 28px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
   display: none;
-  animation: cardPopIn 0.6s var(--spring);
 }
 
-#birthdayImage, #anniversaryImage, #birthdayVideo, #birthdayVideo {
+#birthdayImage, #anniversaryImage, #birthdayVideo {
   max-width: 100%;
-  max-height: 360px;
+  max-height: 180px;
   height: auto;
-  margin: 10px auto;
+  margin: 4px auto;
   display: none;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
-  border-radius: 18px;
-  transition: transform 0.35s var(--spring);
+  border-radius: 10px;
   object-fit: cover;
 }
 
-#birthdayImage:hover, #anniversaryImage:hover, #birthdayVideo:hover {
-  transform: scale(1.02);
-}
-
 #birthdayAudio, #anniversaryAudio {
-  margin: 12px auto;
+  margin: 6px auto;
   width: 100%;
-  max-width: 320px;
+  max-width: 220px;
   display: none;
-  border-radius: 999px;
 }
 
-/* Interactive Apple Live Sticker Random GIF Frame */
+/* Random GIF Frame */
 #randomGifContainer {
   text-align: center;
-  margin: 20px auto 34px;
+  margin: 10px auto 14px;
   display: none;
   position: relative;
   z-index: 2;
@@ -704,105 +582,74 @@ button:active {
 
 .gif-glass-frame {
   background: var(--glass-bg);
-  backdrop-filter: blur(28px) saturate(190%);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-inner-glow), var(--glass-shadow);
-  padding: 15px 15px 11px;
-  border-radius: 30px;
+  padding: 8px 8px 6px;
+  border-radius: 18px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   user-select: none;
-  transition: transform 0.4s var(--spring), box-shadow 0.3s ease;
+  transition: transform 0.25s var(--spring);
 }
 
-.gif-glass-frame:hover {
-  transform: translateY(-6px) scale(1.04) rotate(1deg);
-  box-shadow: 0 24px 48px var(--accent-glow);
-}
-
-.gif-glass-frame:active {
-  transform: scale(0.93);
-}
+.gif-glass-frame:hover { transform: translateY(-3px) scale(1.02); }
 
 #randomGif {
-  width: 150px;
-  height: 150px;
-  border-radius: 20px;
+  width: 95px;
+  height: 95px;
+  border-radius: 12px;
   object-fit: contain;
-  transition: transform 0.32s var(--spring), opacity 0.22s ease, filter 0.22s ease;
+  transition: opacity 0.2s ease, filter 0.2s ease;
 }
 
 .gif-tap-hint {
-  margin-top: 9px;
-  font-size: 11.5px;
+  margin-top: 4px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--text-secondary);
   background: var(--chip-bg);
-  padding: 4px 11px;
+  padding: 2px 6px;
   border-radius: 999px;
   border: 1px solid var(--chip-border);
-  display: flex;
-  align-items: center;
-  gap: 5px;
 }
 
-/* Bento Grid GIF Gallery (For payal5295 code) */
+/* GIF Gallery */
 #gifGalleryContainer {
   text-align: center;
-  margin: 72px auto 30px;
-  max-width: 1160px;
+  margin: 40px auto 14px;
+  max-width: 900px;
   background: var(--glass-bg);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
-  border-radius: 34px;
-  padding: 24px;
-  box-shadow: var(--glass-inner-glow), var(--glass-shadow);
+  border-radius: 20px;
+  padding: 12px;
   display: none;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
   position: relative;
   z-index: 2;
 }
 
 #gifGalleryContainer img {
   width: 100%;
-  height: 180px;
+  height: 120px;
   object-fit: contain;
   background: var(--chip-bg);
-  padding: 10px;
-  border-radius: 22px;
+  padding: 4px;
+  border-radius: 12px;
   border: 1px solid var(--chip-border);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  transition: transform 0.35s var(--spring), box-shadow 0.3s ease;
+  transition: transform 0.2s var(--spring);
 }
-
-#gifGalleryContainer img:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 14px 28px var(--accent-glow);
-}
-
-@media (max-width: 768px) {
-  h2 { font-size: 23px; }
-  .container { padding: 24px 18px; margin-top: 66px; border-radius: 28px; }
-  .preset-buttons button, .preset-buttons a { font-size: 13px; padding: 8px 13px; }
-  textarea { height: 95px; font-size: 15px; }
-  #randomGif { width: 130px; height: 130px; }
-  #gifGalleryContainer {
-    grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
-    gap: 12px;
-    padding: 16px;
-  }
-  #gifGalleryContainer img { height: 135px; }
-}
+#gifGalleryContainer img:hover { transform: scale(1.03); }
 </style>
 </head>
 <body>
 
-<!-- Romantic Living Aurora Background -->
 <div class="ambient-canvas">
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
@@ -810,18 +657,15 @@ button:active {
   <div class="orb orb-4"></div>
 </div>
 
-<!-- Apple Dynamic Island Toast -->
 <div id="dynamicIsland" class="dynamic-island">
   <span class="island-pulse"></span>
-  <span id="islandText">✨ Ready to whisper</span>
+  <span id="islandText">✨ Ready</span>
 </div>
 
-<!-- Apple Glass Back Button -->
 <a href="https://zarnalhome.odoo.com/" class="back-arrow" aria-label="Back">
   <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
 </a>
 
-<!-- iOS Dark/Light Mode Switch -->
 <div class="switch-container">
   <label class="switch">
     <input type="checkbox" id="darkToggle" onchange="toggleDark()">
@@ -829,39 +673,35 @@ button:active {
   </label>
 </div>
 
-<!-- Simple & Elegant Secret Code Overlay -->
+<!-- Minimalist Secret Code Overlay -->
 <div id="codeOverlay">
   <div class="lock-card" id="mainLockCard">
-    <h3>🔒 Enter Secret Code</h3>
-    <input type="password" id="codeInput" placeholder="Enter code..." autocomplete="off">
-    <button onclick="checkSecret()">Unlock 💌</button>
-    <div id="codeError">❌ Wrong code. Try again.</div>
+    <h3>Enter Secret Code</h3>
+    <input type="password" id="codeInput" placeholder="Code..." autocomplete="off">
+    <button onclick="checkSecret()">Unlock</button>
+    <div id="codeError">Wrong code.</div>
   </div>
 </div>
 
-<!-- Simple & Elegant Secret Message Overlay -->
 <div id="secretMessageOverlay" style="display: none;">
   <div class="lock-card" id="secretVaultCard">
-    <h3>🔐 Enter Secret Code for Message</h3>
-    <input type="password" id="secretMessageInput" placeholder="Enter code..." autocomplete="off">
-    <button onclick="checkSecretMessage()">Unlock Message 💌</button>
-    <button onclick="document.getElementById('secretMessageOverlay').style.display='none'" style="background: var(--chip-bg); color: var(--text-primary); box-shadow: none; border: 1px solid var(--chip-border); margin-top: 10px;">Close ✖</button>
-    <div id="secretMessageError">❌ Wrong code. Try again.</div>
+    <h3>Secret Vault</h3>
+    <input type="password" id="secretMessageInput" placeholder="Code..." autocomplete="off">
+    <button onclick="checkSecretMessage()">Unlock</button>
+    <button onclick="document.getElementById('secretMessageOverlay').style.display='none'" style="background: var(--chip-bg); color: var(--text-primary); box-shadow: none; border: 1px solid var(--chip-border); margin-top: 6px;">Close</button>
+    <div id="secretMessageError">Wrong code.</div>
     <div id="secretMessageDisplay"></div>
   </div>
 </div>
 
-<!-- Main Glassmorphic Whisper Card -->
 <div class="container">
-  <div class="header-badge"><span class="live-dot"></span> Connected to Echo</div>
-  <h2>💘 Alexa Cute Whisper 💬</h2>
+  <div id="boobooTitle" class="booboo-title">✨ Alexa Cute Whisper</div>
 
   <div class="textarea-wrapper">
-    <textarea id="text" placeholder="Write a cute or funny sound to whisper to Alexa... 💌"></textarea>
-    <button type="button" class="clear-text-btn" onclick="clearText()" title="Clear text">✕</button>
+    <textarea id="text" placeholder="Whisper something cute... 💌"></textarea>
+    <button type="button" class="clear-text-btn" onclick="clearText()" title="Clear">✕</button>
   </div>
 
-  <div class="preset-section-label">Quick Soundboard ✨</div>
   <div class="preset-buttons">
     <button onclick="setText('meow meow meooooow nya nya nyaaa~', event)">🐱</button>
     <button onclick="setText('woof woof arf arf awooooo', event)">🐶</button>
@@ -881,8 +721,7 @@ button:active {
     <button onclick="setText('Mango Frooti, Fresh and Juicy!', event)">🧃Frooti</button>
     <button onclick="setText('Jaleebiiieeeeee… yummyyy yummm!', event)">🌀Jalebi</button>
     <button onclick="setText('Poppp popppp POPCORN!!', event)">🍿popcorn</button>
-    <button onclick="setText('Gulaaaablaaaablaaaablaaa Jummmmuuuuuuun!!', event)">🧆gulabjamun</button>
-    <!-- New Music Page Button -->
+    <button onclick="setText('Gulaaaablaaaablaaaablaaa Jummmmuuuuuuun!!', event)">🧆gulab</button>
     <a href="https://zarnal.github.io/ZARNAL/zrnmp3" target="_blank">🎵 Music</a>
     <button id="secretMessageBtn" onclick="showSecretMessageOverlay()">🔒</button>
   </div>
@@ -890,97 +729,85 @@ button:active {
   <button id="sendToAlexaBtn" onclick="sendToAlexa(event)">✨ Whisper to Alexa</button>
   <p id="status"></p>
 
-  <!-- Apple Widget Style Countdowns -->
   <div class="widgets-row">
     <div id="birthdayCountdownContainer"><p id="birthdayCountdownMessage"></p></div>
     <div id="anniversaryCountdownContainer"><p id="anniversaryCountdownMessage"></p></div>
   </div>
 
-  <!-- Special Day Media Containers -->
   <div id="birthdayContainer">
-    <img id="birthdayImage" alt="Birthday Image">
+    <img id="birthdayImage" alt="Birthday">
     <video id="birthdayVideo" muted autoplay loop playsinline></video>
     <audio id="birthdayAudio" controls></audio>
     <p id="birthdayMessage"></p>
   </div>
 
   <div id="anniversaryContainer">
-    <img id="anniversaryImage" alt="Anniversary Event">
+    <img id="anniversaryImage" alt="Anniversary">
     <p id="anniversaryMessage"></p>
   </div>
 </div>
 
-<!-- Apple Live Sticker Style Random GIF -->
 <div id="randomGifContainer">
   <div class="gif-glass-frame" onclick="changeGif(event)">
-    <img id="randomGif" alt="Cute Alexa Gif">
-    <span class="gif-tap-hint">✨ Tap to shuffle mood</span>
+    <img id="randomGif" alt="Cute Gif">
+    <span class="gif-tap-hint">✨ Tap to shuffle</span>
   </div>
 </div>
 
-<!-- Full GIF Gallery Grid -->
 <div id="gifGalleryContainer"></div>
 
 <script>
-// Create ambient floating hearts
-for (let i = 0; i < 14; i++) {
+for (let i = 0; i < 10; i++) {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.style.left = (Math.random() * 96 + 2) + "vw";
-  heart.style.animationDuration = (9 + Math.random() * 8) + "s";
-  heart.style.animationDelay = (-Math.random() * 14) + "s";
-  const size = 10 + Math.random() * 8;
+  heart.style.animationDuration = (8 + Math.random() * 6) + "s";
+  heart.style.animationDelay = (-Math.random() * 10) + "s";
+  const size = 8 + Math.random() * 5;
   heart.style.width = size + "px";
   heart.style.height = size + "px";
   document.body.appendChild(heart);
 }
 
-// Apple Dynamic Island Notification Controller
 let islandTimer = null;
-function showIsland(message, duration = 2200) {
+function showIsland(message, duration = 1600) {
   const island = document.getElementById("dynamicIsland");
   const textEl = document.getElementById("islandText");
   if (!island || !textEl) return;
   textEl.innerText = message;
   island.classList.add("active");
   clearTimeout(islandTimer);
-  islandTimer = setTimeout(() => {
-    island.classList.remove("active");
-  }, duration);
+  islandTimer = setTimeout(() => { island.classList.remove("active"); }, duration);
 }
 
-// Romantic Sparkle/Heart Burst on Tap
 function spawnBurst(x, y) {
   if (!x || !y) return;
-  const symbols = ["💖", "✨", "🌸", "💕", "💘", "🎀"];
-  for (let i = 0; i < 7; i++) {
+  const symbols = ["💖", "✨", "🌸", "💕"];
+  for (let i = 0; i < 4; i++) {
     const el = document.createElement("div");
     el.className = "sparkle-particle";
     el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
     el.style.left = x + "px";
     el.style.top = y + "px";
     const angle = Math.random() * Math.PI * 2;
-    const distance = 35 + Math.random() * 55;
+    const distance = 25 + Math.random() * 35;
     el.style.setProperty("--tx", Math.cos(angle) * distance + "px");
-    el.style.setProperty("--ty", (Math.sin(angle) * distance - 20) + "px");
-    el.style.setProperty("--rot", (Math.random() * 90 - 45) + "deg");
+    el.style.setProperty("--ty", (Math.sin(angle) * distance - 12) + "px");
+    el.style.setProperty("--rot", (Math.random() * 60 - 30) + "deg");
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 850);
+    setTimeout(() => el.remove(), 700);
   }
 }
 
 function setText(message, evt) {
   const textarea = document.getElementById("text");
   textarea.value = message;
-  textarea.style.transform = "scale(1.015)";
-  setTimeout(() => textarea.style.transform = "", 180);
-
   document.querySelectorAll(".preset-buttons button").forEach(btn => btn.classList.remove("active-chip"));
   if (evt && evt.currentTarget) {
     evt.currentTarget.classList.add("active-chip");
     spawnBurst(evt.clientX, evt.clientY);
   }
-  showIsland("🎵 Sound loaded!", 1600);
+  showIsland("🎵 Loaded!", 1200);
 }
 
 function clearText() {
@@ -993,7 +820,7 @@ function clearText() {
 function toggleDark() {
   const isDark = document.body.classList.toggle('dark');
   localStorage.setItem('darkMode', isDark);
-  showIsland(isDark ? "🌙 Dark velvet mode" : "☀️ Rose quartz mode", 1600);
+  showIsland(isDark ? "🌙 Dark mode" : "☀️ Light mode", 1200);
 }
 
 let gifs = [];
@@ -1002,17 +829,16 @@ let lastGifIndex = -1;
 async function loadGifs() {
   try {
     const response = await fetch('./gifs.json');
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) throw new Error();
     const data = await response.json();
     gifs = (data.files || []).map(file => data.baseUrl + file);
 
     const gifGalleryContainer = document.getElementById("gifGalleryContainer");
     gifGalleryContainer.innerHTML = "";
-    gifs.forEach((gif, index) => {
+    gifs.forEach((gif) => {
       const img = document.createElement("img");
       img.src = gif;
       img.loading = "lazy";
-      img.alt = `Cute Gif ${index + 1}`;
       gifGalleryContainer.appendChild(img);
     });
 
@@ -1020,9 +846,7 @@ async function loadGifs() {
     if (gifElement && !gifElement.getAttribute("src") && gifs.length > 0) {
       changeGif();
     }
-  } catch (error) {
-    console.error("Error loading gifs.json:", error);
-  }
+  } catch (error) {}
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -1032,37 +856,27 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   loadGifs();
 
-  document.getElementById("codeInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") checkSecret();
-  });
-  document.getElementById("secretMessageInput").addEventListener("keydown", (e) => {
-    if (e.key === "Enter") checkSecretMessage();
-  });
+  document.getElementById("codeInput").addEventListener("keydown", (e) => { if (e.key === "Enter") checkSecret(); });
+  document.getElementById("secretMessageInput").addEventListener("keydown", (e) => { if (e.key === "Enter") checkSecretMessage(); });
 });
 
 function changeGif(evt) {
   if (gifs.length === 0) return;
   const gifElement = document.getElementById("randomGif");
-  gifElement.style.opacity = "0.25";
-  gifElement.style.transform = "scale(0.88)";
-  gifElement.style.filter = "blur(6px)";
+  gifElement.style.opacity = "0.2";
 
   let nextIndex = Math.floor(Math.random() * gifs.length);
-  if (gifs.length > 1 && nextIndex === lastGifIndex) {
-    nextIndex = (nextIndex + 1) % gifs.length;
-  }
+  if (gifs.length > 1 && nextIndex === lastGifIndex) nextIndex = (nextIndex + 1) % gifs.length;
   lastGifIndex = nextIndex;
 
   setTimeout(() => {
     gifElement.src = gifs[nextIndex];
     gifElement.style.opacity = "1";
-    gifElement.style.transform = "scale(1)";
-    gifElement.style.filter = "blur(0px)";
-  }, 140);
+  }, 100);
 
   if (evt) {
     spawnBurst(evt.clientX, evt.clientY);
-    showIsland("🐼 New cute mood!", 1400);
+    showIsland("🐼 New mood!", 1000);
   }
 }
 
@@ -1073,15 +887,14 @@ async function sendToAlexa(evt) {
   const btn = document.getElementById("sendToAlexaBtn");
 
   if (!text) {
-    status.innerText = "🌸 Please enter a cute message first!";
-    showIsland("🌸 Write a message first!", 2000);
+    status.innerText = "🌸 Enter a message first!";
+    showIsland("🌸 Write a message first!", 1600);
     return;
   }
 
-  status.innerText = "💌 Sending love to Alexa...";
+  status.innerText = "💌 Sending...";
   btn.disabled = true;
-  btn.innerText = "🎙️ Whispering...";
-  showIsland("💌 Sending whisper to Echo...", 2500);
+  showIsland("💌 Whispering...", 2000);
 
   try {
     const response = await fetch("https://api-v2.voicemonkey.io/announcement", {
@@ -1094,21 +907,15 @@ async function sendToAlexa(evt) {
     });
 
     if (response.ok) {
-      status.innerText = "💖 Alexa is whispering your sweet message!";
-      showIsland("💖 Whisper delivered to Alexa!", 2800);
+      status.innerText = "💖 Whisper delivered!";
+      showIsland("💖 Delivered!", 2000);
     } else {
-      let errorMsg = "Something went wrong";
-      try {
-        const errorData = await response.json();
-        if (errorData && errorData.error) errorMsg = errorData.error;
-      } catch (_) {}
-      status.innerText = "❌ Error: " + errorMsg;
-      showIsland("❌ Could not send whisper", 2500);
+      status.innerText = "❌ Error sending.";
+      showIsland("❌ Failed", 1800);
     }
   } catch (error) {
-    status.innerText = "❌ Network Error: Unable to reach VoiceMonkey.";
-    showIsland("❌ Network connection error", 2500);
-    console.error("Error in sendToAlexa:", error);
+    status.innerText = "❌ Network error.";
+    showIsland("❌ Network error", 1800);
   } finally {
     btn.disabled = false;
     btn.innerText = "✨ Whisper to Alexa";
@@ -1143,14 +950,14 @@ function checkSecret() {
   const secretMessageBtn = document.getElementById("secretMessageBtn");
   const sendToAlexaBtn = document.getElementById("sendToAlexaBtn");
   const textarea = document.getElementById("text");
+  const boobooTitle = document.getElementById("boobooTitle");
 
   if (validCodes.includes(input)) {
     error.style.display = "none";
     overlay.style.opacity = "0";
-    overlay.style.transform = "scale(1.04)";
-    setTimeout(() => overlay.style.display = "none", 380);
+    setTimeout(() => overlay.style.display = "none", 250);
     currentCode = input;
-    showIsland("🔓 Unlocked with love 💖", 2400);
+    showIsland("🔓 Unlocked 💖", 1800);
 
     if (input === "payal5295") {
       presetButtons.forEach(btn => btn.style.display = "none");
@@ -1159,12 +966,8 @@ function checkSecret() {
       container.style.display = "none";
       backArrow.style.display = "none";
       switchContainer.style.display = "none";
-      birthdayCountdownContainer.style.display = "none";
-      anniversaryCountdownContainer.style.display = "none";
-      birthdayContainer.style.display = "none";
-      anniversaryContainer.style.display = "none";
       sendToAlexaBtn.style.display = "none";
-      textarea.value = "";
+      boobooTitle.style.display = "none";
     } else if (input === "booboo" || input === "baby") {
       presetButtons.forEach(btn => btn.style.display = (input === "booboo") ? "inline-flex" : "none");
       gifGalleryContainer.style.display = "none";
@@ -1175,6 +978,7 @@ function checkSecret() {
       switchContainer.style.display = "block";
       secretMessageBtn.style.display = "inline-flex";
       sendToAlexaBtn.style.display = (input === "booboo") ? "block" : "none";
+      boobooTitle.style.display = (input === "booboo") ? "block" : "none";
       textarea.value = (input === "baby") ? "Good Morning!! It's OVER NOW...All the best for your life..." : "";
       displaySpecialEvents();
     }
@@ -1200,7 +1004,7 @@ function checkSecretMessage() {
     secretMessageDisplay.innerText = "app SMARTeefi email zrnhl@proton.me password Zarna@2006 ";
     secretMessageDisplay.style.display = "block";
     secretMessageError.style.display = "none";
-    showIsland("🔐 Secret note unlocked!", 2200);
+    showIsland("🔐 Unlocked note!", 1600);
   } else {
     secretMessageError.style.display = "block";
     secretMessageDisplay.style.display = "none";
@@ -1210,29 +1014,9 @@ function checkSecretMessage() {
 
 async function displaySpecialEvents() {
   try {
-    const birthdayCountdownContainer = document.getElementById("birthdayCountdownContainer");
-    const birthdayCountdownMessage = document.getElementById("birthdayCountdownMessage");
-    const anniversaryCountdownContainer = document.getElementById("anniversaryCountdownContainer");
-    const anniversaryCountdownMessage = document.getElementById("anniversaryCountdownMessage");
-    const birthdayContainer = document.getElementById("birthdayContainer");
-    const birthdayImage = document.getElementById("birthdayImage");
-    const birthdayVideo = document.getElementById("birthdayVideo");
-    const birthdayAudio = document.getElementById("birthdayAudio");
-    const birthdayMessage = document.getElementById("birthdayMessage");
-    const anniversaryContainer = document.getElementById("anniversaryContainer");
-    const anniversaryImage = document.getElementById("anniversaryImage");
-    const anniversaryMessage = document.getElementById("anniversaryMessage");
-
-    birthdayCountdownContainer.style.display = "none";
-    anniversaryCountdownContainer.style.display = "none";
-    birthdayContainer.style.display = "none";
-    anniversaryContainer.style.display = "none";
-
-    // Strictly show events & countdowns only when unlocked with "booboo"
     if (currentCode !== "booboo") return;
-
     const response = await fetch('./events.json');
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) return;
     const events = await response.json();
 
     const now = new Date();
@@ -1240,16 +1024,12 @@ async function displaySpecialEvents() {
     const currentYear = today.getFullYear();
 
     const birthday = new Date(currentYear, events.birthday.month - 1, events.birthday.day);
-    if (today > birthday) {
-      birthday.setFullYear(currentYear + 1);
-    }
+    if (today > birthday) birthday.setFullYear(currentYear + 1);
 
     const anniversary = new Date(currentYear, events.anniversary.month - 1, events.anniversary.day);
-    if (today > anniversary) {
-      anniversary.setFullYear(currentYear + 1);
-    }
+    if (today > anniversary) anniversary.setFullYear(currentYear + 1);
 
-    const emojis = ["😊", "🎉", "💖", "🐻", "🌸", "🍦", "🍧", "🍨", "🍩", "🍪", "🧁", "🥧", "🍫", "🍮", "🍾", "🥂", "🧋", "🌹", "🌷", "🎀", "👑", "💘", "💞", "🍀"];
+    const emojis = ["😊", "🎉", "💖", "🐻", "🌸", "🧁", "🌹", "🎀", "💘", "💞"];
     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
     const daysUntilBirthday = Math.round((birthday - today) / (1000 * 60 * 60 * 24));
@@ -1257,52 +1037,26 @@ async function displaySpecialEvents() {
 
     if (daysUntilBirthday === 0) {
       const content = (events.birthday.content || []).find(c => c.year === currentYear) || events.birthday.defaultContent;
-      birthdayContainer.style.display = "block";
-      if (content.image) {
-        birthdayImage.src = content.image;
-        birthdayImage.style.display = "block";
-      } else {
-        birthdayImage.removeAttribute("src");
-        birthdayImage.style.display = "none";
-      }
-      if (content.video) {
-        birthdayVideo.src = content.video;
-        birthdayVideo.style.display = "block";
-      } else {
-        birthdayVideo.removeAttribute("src");
-        birthdayVideo.style.display = "none";
-      }
-      if (content.audio) {
-        birthdayAudio.src = content.audio;
-        birthdayAudio.style.display = "block";
-      } else {
-        birthdayAudio.removeAttribute("src");
-        birthdayAudio.style.display = "none";
-      }
-      birthdayMessage.innerText = content.message || "";
+      document.getElementById("birthdayContainer").style.display = "block";
+      if (content.image) { document.getElementById("birthdayImage").src = content.image; document.getElementById("birthdayImage").style.display = "block"; }
+      if (content.video) { document.getElementById("birthdayVideo").src = content.video; document.getElementById("birthdayVideo").style.display = "block"; }
+      if (content.audio) { document.getElementById("birthdayAudio").src = content.audio; document.getElementById("birthdayAudio").style.display = "block"; }
+      document.getElementById("birthdayMessage").innerText = content.message || "";
     } else if (daysUntilBirthday > 0 && daysUntilBirthday <= events.birthday.countdownDays) {
-      birthdayCountdownContainer.style.display = "block";
-      birthdayCountdownMessage.innerText = `🎂 Birthday in ${daysUntilBirthday} day${daysUntilBirthday === 1 ? '' : 's'}! ${randomEmoji}`;
+      document.getElementById("birthdayCountdownContainer").style.display = "block";
+      document.getElementById("birthdayCountdownMessage").innerText = `🎂 Birthday in ${daysUntilBirthday} day${daysUntilBirthday === 1 ? '' : 's'}! ${randomEmoji}`;
     }
 
     if (daysUntilAnniversary === 0) {
       const content = (events.anniversary.content || []).find(c => c.year === currentYear) || events.anniversary.defaultContent;
-      anniversaryContainer.style.display = "block";
-      if (content.image) {
-        anniversaryImage.src = content.image;
-        anniversaryImage.style.display = "block";
-      } else {
-        anniversaryImage.removeAttribute("src");
-        anniversaryImage.style.display = "none";
-      }
-      anniversaryMessage.innerText = content.message || "";
+      document.getElementById("anniversaryContainer").style.display = "block";
+      if (content.image) { document.getElementById("anniversaryImage").src = content.image; document.getElementById("anniversaryImage").style.display = "block"; }
+      document.getElementById("anniversaryMessage").innerText = content.message || "";
     } else if (daysUntilAnniversary > 0 && daysUntilAnniversary <= events.anniversary.countdownDays) {
-      anniversaryCountdownContainer.style.display = "block";
-      anniversaryCountdownMessage.innerText = `💞 ${daysUntilAnniversary} day${daysUntilAnniversary === 1 ? '' : 's'} left to our anniversary! ${randomEmoji}`;
+      document.getElementById("anniversaryCountdownContainer").style.display = "block";
+      document.getElementById("anniversaryCountdownMessage").innerText = `💞 ${daysUntilAnniversary} day${daysUntilAnniversary === 1 ? '' : 's'} to anniversary! ${randomEmoji}`;
     }
-  } catch (error) {
-    console.error("Error loading events.json:", error);
-  }
+  } catch (error) {}
 }
 </script>
 </body>
