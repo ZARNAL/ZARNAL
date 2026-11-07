@@ -66,7 +66,7 @@
   --input-bg: rgba(14, 12, 18, 0.8);
 }
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -693,25 +693,26 @@ textarea:focus {
   </div>
 
   <div class="preset-buttons">
-    <button onclick="setText('meow meow meooooow nya nya nyaaa~', event)">🐱</button>
-    <button onclick="setText('woof woof arf arf awooooo', event)">🐶</button>
+    <button onclick="setText('meow meow meooooow meow', event)">🐱</button>
+    <button onclick="setText('woof woof woof', event)">🐶</button>
     <button onclick="setText('raaawrrr grrrr roooaaarrr', event)">🦁</button>
     <button onclick="setText('oooooo ooooooo woooooo', event)">👻</button>
     <button onclick="setText('quack quack quaaaaaack wacka wacka', event)">🦆</button>
     <button onclick="setText('ooh ooh aah aah eee eee eee', event)">🐵</button>
-    <button onclick="setText('ssssssss sss ssss hissssss', event)">🐍</button>
-    <button onclick="setText('baaaa baaa baaaaah meh meh', event)">🐐</button>
+    <button onclick="setText('ssssssss sss ssss ssssssss', event)">🐍</button>
+   
     <button onclick="setText('waddle waddle brrrrr waddle brrrr', event)">🐧</button>
     <button onclick="setText('squeak squeak eek eek eek eek', event)">🐭</button>
-    <button onclick="setText('hattt', event)">𝓱𝓪𝓽𝓽𝓽😏</button>
+    <button onclick="setText('haaattt', event)">𝓱𝓪𝓽𝓽𝓽😏</button>
     <button onclick="setText('hellow', event)">нєℓℓσ😘</button>
     <button onclick="setText('bekaarrrr', event)">bekar😑</button>
     <button onclick="setText('naiii kevu', event)">nay kevu😏</button>
-    <button onclick="setText('duttthsss ruuppe teee turrrturreee', event)">😋 kurkure</button>
+    <button onclick="setText('das rupee te tur ture', event)">😋 kurkure</button>
     <button onclick="setText('Mango Frooti, Fresh and Juicy!', event)">🧃Frooti</button>
     <button onclick="setText('Jaleebiiieeeeee… yummyyy yummm!', event)">🌀Jalebi</button>
     <button onclick="setText('Poppp popppp POPCORN!!', event)">🍿popcorn</button>
     <button onclick="setText('Gulaaaablaaaablaaaablaaa Jummmmuuuuuuun!!', event)">🧆gulab</button>
+     <button onclick="setText('sutarfearni yeeeyyyy yummmy yummyy yumm yumm!!', event)">☁️🍬cottoncandy</button>
     <a href="https://zarnal.github.io/ZARNAL/zrnmp3" target="_blank" class="music-btn">🎵🧸 Music</a>
     <button id="secretMessageBtn" onclick="showSecretMessageOverlay()">🔒</button>
   </div>
@@ -903,9 +904,21 @@ function triggerShake(cardId) {
   card.classList.add("shake");
 }
 
+
+const ENCODED_CODES = ["Ym9vYm9v", "cGF5YWw1Mjk1", "YmFieQ=="];
+
+function decodeBase64(str) {
+  try {
+    return decodeURIComponent(atob(str).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  } catch (e) {
+    return atob(str);
+  }
+}
+
 function checkSecret() {
   const input = document.getElementById("codeInput").value.trim().toLowerCase();
-  const validCodes = ["booboo", "payal5295", "baby"];
   const overlay = document.getElementById("codeOverlay");
   const error = document.getElementById("codeError");
   const randomGifContainer = document.getElementById("randomGifContainer");
@@ -923,13 +936,16 @@ function checkSecret() {
   const textarea = document.getElementById("text");
   const boobooTitle = document.getElementById("boobooTitle");
 
-  if (validCodes.includes(input)) {
+  const matchedCode = ENCODED_CODES.find(enc => decodeBase64(enc).toLowerCase() === input);
+
+  if (matchedCode) {
+    const decodedInput = decodeBase64(matchedCode).toLowerCase();
     error.style.display = "none";
     overlay.style.opacity = "0";
     setTimeout(() => overlay.style.display = "none", 250);
-    currentCode = input;
+    currentCode = decodedInput;
 
-    if (input === "payal5295") {
+    if (decodedInput === "payal5295") {
       presetButtons.forEach(btn => btn.style.display = "none");
       gifGalleryContainer.style.display = "grid";
       randomGifContainer.style.display = "none";
@@ -938,8 +954,8 @@ function checkSecret() {
       switchContainer.style.display = "none";
       sendToAlexaBtn.style.display = "none";
       boobooTitle.style.display = "none";
-    } else if (input === "booboo" || input === "baby") {
-      presetButtons.forEach(btn => btn.style.display = (input === "booboo") ? "inline-flex" : "none");
+    } else if (decodedInput === "booboo" || decodedInput === "baby") {
+      presetButtons.forEach(btn => btn.style.display = (decodedInput === "booboo") ? "inline-flex" : "none");
       gifGalleryContainer.style.display = "none";
       randomGifContainer.style.display = "block";
       changeGif();
@@ -947,9 +963,9 @@ function checkSecret() {
       backArrow.style.display = "flex";
       switchContainer.style.display = "block";
       secretMessageBtn.style.display = "inline-flex";
-      sendToAlexaBtn.style.display = (input === "booboo") ? "block" : "none";
-      boobooTitle.style.display = (input === "booboo") ? "block" : "none";
-      textarea.value = (input === "baby") ? "Good Morning!! It's OVER NOW...All the best for your life..." : "";
+      sendToAlexaBtn.style.display = (decodedInput === "booboo") ? "block" : "none";
+      boobooTitle.style.display = (decodedInput === "booboo") ? "block" : "none";
+      textarea.value = (decodedInput === "baby") ? "Good Morning!! It's OVER NOW...All the best for your life..." : "";
       displaySpecialEvents();
     }
   } else {
