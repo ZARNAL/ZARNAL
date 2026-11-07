@@ -115,6 +115,7 @@ body {
   border-radius:25px;
   background:rgba(255,255,255,.06);
   backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
   box-shadow:0 20px 70px rgba(0,0,0,.5);
   animation:lockAppear 1s ease;
 }
@@ -160,6 +161,7 @@ body {
   font-size:16px;
   outline:none;
   margin-bottom:15px;
+  -webkit-appearance:none;
 }
 
 #secretInput:focus { border-color:#d7b8ff; }
@@ -177,6 +179,7 @@ body {
   font-size:15px;
   cursor:pointer;
   transition:.3s;
+  -webkit-appearance:none;
 }
 
 .lock-box button:hover { transform:scale(1.03); }
@@ -195,8 +198,8 @@ body {
   display:flex;
   justify-content:flex-end;
   align-items:center;
-  gap:12px;
-  padding:24px 7%;
+  gap:10px;
+  padding:18px 5%;
 }
 
 .icon-btn {
@@ -204,31 +207,33 @@ body {
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:44px;
-  height:44px;
+  width:36px;
+  height:36px;
   border:1px solid var(--border);
   background:var(--card);
   color:var(--text);
   border-radius:50%;
   font-family:inherit;
-  font-size:19px;
+  font-size:15px;
   text-decoration:none;
   line-height:1;
   cursor:pointer;
   backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
   overflow:hidden;
-  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
   transition:
     transform .4s cubic-bezier(0.34, 1.56, 0.64, 1),
     background .5s ease,
     border-color .5s ease,
     box-shadow .4s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .icon-btn:hover {
   transform:scale(1.1) translateY(-2px);
   border-color:var(--accent);
-  box-shadow:0 10px 28px rgba(215, 184, 255, .22);
+  box-shadow:0 8px 24px rgba(215, 184, 255, .22);
 }
 
 .icon-btn:active {
@@ -249,7 +254,6 @@ body {
   will-change:transform, opacity;
 }
 
-/* Default (Dark Mode): Show Sun icon to switch to Light, hide Moon */
 .theme-toggle .icon-sun {
   opacity:1;
   transform:rotate(0deg) scale(1);
@@ -260,7 +264,6 @@ body {
   transform:rotate(-135deg) scale(0.3);
 }
 
-/* Light Mode Active: Hide Sun, smoothly spin in Moon icon */
 body.light .theme-toggle .icon-sun {
   opacity:0;
   transform:rotate(135deg) scale(0.3);
@@ -271,7 +274,6 @@ body.light .theme-toggle .icon-moon {
   transform:rotate(0deg) scale(1);
 }
 
-/* MEGAPHONE LINK HOVER WIGGLE */
 .announce-btn span {
   display:inline-block;
   transition:transform .4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -299,6 +301,7 @@ body.light .theme-toggle .icon-moon {
   border:1px solid var(--border);
   border-radius:27px;
   backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
   box-shadow:0 20px 50px rgba(0,0,0,.22);
   animation:appear .9s ease both;
   transition:background .5s,border .5s,transform .4s;
@@ -361,6 +364,8 @@ body.light .theme-toggle .icon-moon {
   line-height:1;
   cursor:pointer;
   transition:.25s;
+  -webkit-appearance:none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .play-btn:hover { transform:scale(1.08); }
@@ -406,6 +411,7 @@ body.light .theme-toggle .icon-moon {
   width:100%;
   height:4px;
   margin:0;
+  -webkit-appearance:none;
   appearance:none;
   background:var(--track);
   border-radius:10px;
@@ -415,6 +421,7 @@ body.light .theme-toggle .icon-moon {
 }
 
 .progress::-webkit-slider-thumb {
+  -webkit-appearance:none;
   appearance:none;
   width:11px;
   height:11px;
@@ -508,6 +515,7 @@ body.light .theme-toggle .icon-moon {
   line-height:1;
   cursor:pointer;
   transition:.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .small-control:hover { transform:scale(1.08); }
@@ -537,6 +545,28 @@ body.light .theme-toggle .icon-moon {
   accent-color:var(--accent);
   cursor:pointer;
   height:4px;
+  -webkit-appearance:none;
+  appearance:none;
+  background:var(--track);
+  border-radius:10px;
+  outline:none;
+}
+
+.volume::-webkit-slider-thumb {
+  -webkit-appearance:none;
+  appearance:none;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--accent);
+}
+
+.volume::-moz-range-thumb {
+  width:10px;
+  height:10px;
+  border:0;
+  border-radius:50%;
+  background:var(--accent);
 }
 
 .player-message {
@@ -570,12 +600,12 @@ body.light .theme-toggle .icon-moon {
 /* MOBILE */
 
 @media(max-width:600px) {
-  .topbar { padding:17px 18px; gap:10px; }
+  .topbar { padding:14px 16px; gap:8px; }
 
   .icon-btn {
-    width:40px;
-    height:40px;
-    font-size:17px;
+    width:34px;
+    height:34px;
+    font-size:14px;
   }
 
   .container {
@@ -643,6 +673,8 @@ body.light .theme-toggle .icon-moon {
       id="secretInput"
       placeholder="Enter secret code"
       autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
     >
 
     <button id="unlockButton">Unlock</button>
@@ -751,7 +783,7 @@ body.light .theme-toggle .icon-moon {
 
       <div class="player-message" aria-live="polite"></div>
 
-      <audio preload="metadata" playsinline>
+      <audio preload="metadata" playsinline webkit-playsinline>
         <source src="https://github.com/user-attachments/files/34280216/MeriZarna.mp3" type="audio/mpeg">
       </audio>
 
@@ -834,7 +866,7 @@ body.light .theme-toggle .icon-moon {
 
       <div class="player-message" aria-live="polite"></div>
 
-      <audio preload="metadata" playsinline>
+      <audio preload="metadata" playsinline webkit-playsinline>
         <source src="https://github.com/user-attachments/files/34280233/MeriBooBoo.mp3" type="audio/mpeg">
       </audio>
 
@@ -855,18 +887,29 @@ body.light .theme-toggle .icon-moon {
 
 <script>
 
-/* SECRET CODE */
 
-const SECRET_CODE = "booboo";
+
+const ENCODED_SECRET = "Ym9vYm9v"; 
+
+function decodeBase64(str) {
+  try {
+    return decodeURIComponent(atob(str).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  } catch (e) {
+    return atob(str);
+  }
+}
 
 const lockScreen = document.getElementById("lockScreen");
 const secretInput = document.getElementById("secretInput");
 const errorMessage = document.getElementById("errorMessage");
 
 function unlockPage() {
+  const actualSecret = decodeBase64(ENCODED_SECRET);
+  const enteredValue = secretInput.value.trim().toLowerCase();
 
-  if (secretInput.value === SECRET_CODE) {
-
+  if (enteredValue === actualSecret) {
     errorMessage.textContent = "";
     lockScreen.classList.add("unlocked");
 
@@ -875,11 +918,9 @@ function unlockPage() {
     }, 850);
 
   } else {
-
     errorMessage.textContent = "Wrong code! Try again";
     secretInput.value = "";
     secretInput.focus();
-
   }
 }
 
@@ -903,11 +944,10 @@ let dpr = 1;
 let starAnimation = 0;
 
 function resizeStars() {
-
   dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  width = innerWidth;
-  height = innerHeight;
+  width = window.innerWidth;
+  height = window.innerHeight;
 
   canvas.width = width * dpr;
   canvas.height = height * dpr;
@@ -930,11 +970,9 @@ function resizeStars() {
 }
 
 function drawStars() {
-
   ctx.clearRect(0, 0, width, height);
 
   for (const star of stars) {
-
     star.a += star.s;
 
     ctx.beginPath();
@@ -957,14 +995,12 @@ resizeStars();
 drawStars();
 
 document.addEventListener("visibilitychange", () => {
-
   if (document.hidden) {
     cancelAnimationFrame(starAnimation);
   } else {
     cancelAnimationFrame(starAnimation);
     drawStars();
   }
-
 });
 
 
@@ -990,10 +1026,10 @@ const audios = players.map(player =>
 );
 
 const states = players.map(() => ({
-  manuallyPaused:false,
-  retryTimer:null,
-  retries:0,
-  repeat:false
+  manuallyPaused: false,
+  retryTimer: null,
+  retries: 0,
+  repeat: false
 }));
 
 const STALL_DELAY = 12000;
@@ -1001,7 +1037,6 @@ const MAX_RECOVERIES = 2;
 
 
 function fmt(seconds) {
-
   if (!Number.isFinite(seconds) || seconds < 0) {
     return "0:00";
   }
@@ -1018,30 +1053,24 @@ function el(i, selector) {
 
 
 function stopRetry(i) {
-
   if (states[i].retryTimer) {
     clearTimeout(states[i].retryTimer);
   }
-
   states[i].retryTimer = null;
 }
 
 
 function message(i, text, isError = false) {
-
   const node = el(i, ".player-message");
-
   node.textContent = text;
   node.classList.toggle("error", isError);
 }
 
 
 function loading(i, text) {
-
   el(i, ".mp3-loader").classList.add("active");
 
   const label = el(i, ".buffer-label");
-
   label.textContent = text;
   label.classList.add("loading");
 
@@ -1050,11 +1079,9 @@ function loading(i, text) {
 
 
 function ready(i, text = "Ready") {
-
   el(i, ".mp3-loader").classList.remove("active");
 
   const label = el(i, ".buffer-label");
-
   label.textContent = text;
   label.classList.remove("loading");
 
@@ -1063,13 +1090,11 @@ function ready(i, text = "Ready") {
 
 
 function bufferedPercent(audio) {
-
-  if (!Number.isFinite(audio.duration) || audio.duration <= 0) {
+  if (!audio.buffered || audio.buffered.length === 0 || !Number.isFinite(audio.duration) || audio.duration <= 0) {
     return 0;
   }
 
   let total = 0;
-
   for (let n = 0; n < audio.buffered.length; n++) {
     total += audio.buffered.end(n) - audio.buffered.start(n);
   }
@@ -1079,7 +1104,6 @@ function bufferedPercent(audio) {
 
 
 function update(i) {
-
   const audio = audios[i];
   const duration = audio.duration;
 
@@ -1114,7 +1138,6 @@ function update(i) {
 /* AUTOMATIC BUFFER RECOVERY */
 
 function scheduleRecovery(i) {
-
   const state = states[i];
   const audio = audios[i];
 
@@ -1123,24 +1146,19 @@ function scheduleRecovery(i) {
   if (state.manuallyPaused || audio.paused) return;
 
   state.retryTimer = setTimeout(() => {
-
     if (audio.paused || state.manuallyPaused) return;
 
     if (state.retries >= MAX_RECOVERIES) {
-
       ready(i, "Still buffering — tap reload");
-
       message(
         i,
         "Connection is taking too long. Use the reload button below.",
         true
       );
-
       return;
     }
 
     state.retries++;
-
     reloadAudio(i, true, true);
 
   }, STALL_DELAY);
@@ -1150,33 +1168,23 @@ function scheduleRecovery(i) {
 /* ONLY ONE SONG PLAYS AT A TIME */
 
 function pauseOthers(current) {
-
   audios.forEach((audio, i) => {
-
     if (i !== current) {
-
       audio.pause();
-
       states[i].manuallyPaused = true;
-
       stopRetry(i);
-
       ready(i, "Paused");
-
       update(i);
     }
-
   });
 }
 
 
 async function playAudio(i) {
-
   const audio = audios[i];
   const state = states[i];
 
   pauseOthers(i);
-
   state.manuallyPaused = false;
 
   if (audio.error) {
@@ -1184,43 +1192,31 @@ async function playAudio(i) {
     return;
   }
 
-  if (audio.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
-
+  if (audio.readyState < 2) {
     loading(i, "Loading audio…");
-
     scheduleRecovery(i);
   }
 
   try {
-
     await audio.play();
-
     update(i);
-
   } catch (err) {
-
     stopRetry(i);
 
     if (err.name === "NotAllowedError") {
-
       ready(i, "Tap play to start");
-
       message(
         i,
         "Your browser blocked playback. Tap Play again.",
         true
       );
-
     } else if (err.name !== "AbortError") {
-
       ready(i, "Playback failed");
-
       message(
         i,
         "Could not play this MP3. Check the link or connection.",
         true
       );
-
       console.error(err);
     }
   }
@@ -1228,15 +1224,10 @@ async function playAudio(i) {
 
 
 function pauseAudio(i) {
-
   states[i].manuallyPaused = true;
-
   audios[i].pause();
-
   stopRetry(i);
-
   ready(i, "Paused");
-
   update(i);
 }
 
@@ -1244,7 +1235,6 @@ function pauseAudio(i) {
 /* RELOAD AUDIO */
 
 function reloadAudio(i, resume = true, automatic = false) {
-
   const audio = audios[i];
   const state = states[i];
 
@@ -1265,9 +1255,7 @@ function reloadAudio(i, resume = true, automatic = false) {
   audio.pause();
 
   const restore = () => {
-
     if (Number.isFinite(audio.duration) && audio.duration > 0) {
-
       try {
         audio.currentTime = Math.min(position, audio.duration);
       } catch (e) {}
@@ -1282,8 +1270,7 @@ function reloadAudio(i, resume = true, automatic = false) {
     }
   };
 
-  audio.addEventListener("loadedmetadata", restore, { once:true });
-
+  audio.addEventListener("loadedmetadata", restore, { once: true });
   audio.load();
 
   if (shouldResume) scheduleRecovery(i);
@@ -1293,60 +1280,38 @@ function reloadAudio(i, resume = true, automatic = false) {
 /* CONNECT PLAYER EVENTS */
 
 players.forEach((player, i) => {
-
   const audio = audios[i];
   const state = states[i];
 
   el(i, ".play-btn").addEventListener("click", () => {
-
     audio.paused ? playAudio(i) : pauseAudio(i);
-
   });
-
 
   el(i, ".progress").addEventListener("input", e => {
-
     if (Number.isFinite(audio.duration) && audio.duration > 0) {
-
       audio.currentTime =
         Number(e.target.value) / 1000 * audio.duration;
-
     }
-
   });
-
-
-  /* VOLUME CONTROL */
 
   el(i, ".volume").addEventListener("input", e => {
-
     audio.volume = Number(e.target.value);
-
   });
 
-
   el(i, ".repeat-btn").addEventListener("click", () => {
-
     state.repeat = !state.repeat;
-
     audio.loop = state.repeat;
-
     update(i);
 
     message(
       i,
       state.repeat ? "Repeat is on" : "Repeat is off"
     );
-
   });
-
 
   audio.addEventListener("loadstart", () => {
-
     if (!audio.paused) loading(i, "Connecting…");
-
   });
-
 
   [
     "loadedmetadata",
@@ -1356,139 +1321,86 @@ players.forEach((player, i) => {
     "seeked",
     "canplaythrough"
   ].forEach(event => {
-
     audio.addEventListener(event, () => update(i));
-
   });
 
-
   audio.addEventListener("canplay", () => {
-
     if (!audio.paused) {
       ready(i, "Playing");
     } else if (!state.retryTimer) {
       ready(i, "Ready");
     }
-
     update(i);
-
   });
-
 
   audio.addEventListener("playing", () => {
-
     state.retries = 0;
-
     ready(i, "Playing");
-
     message(i, "");
-
     update(i);
-
   });
-
 
   audio.addEventListener("waiting", () => {
-
     if (!audio.paused) {
-
       loading(i, "Buffering…");
-
       scheduleRecovery(i);
-
     }
-
   });
-
 
   audio.addEventListener("stalled", () => {
-
     if (!audio.paused) {
-
       loading(i, "Connection stalled…");
-
       scheduleRecovery(i);
-
     }
-
   });
-
 
   audio.addEventListener("pause", () => {
-
     stopRetry(i);
-
     update(i);
-
   });
 
-
   audio.addEventListener("ended", () => {
-
     stopRetry(i);
 
     if (!state.repeat) {
-
       state.manuallyPaused = true;
-
       ready(i, "Finished");
-
       message(i, "Song finished ♡");
-
       update(i);
-
     }
-
   });
 
-
   audio.addEventListener("error", () => {
-
     stopRetry(i);
-
     const code = audio.error?.code;
 
     let errorText =
       "Audio could not be loaded. Check the MP3 link or internet connection.";
 
-    if (code === MediaError.MEDIA_ERR_NETWORK) {
+    if (code === 2) {
       errorText = "Network error. Check your internet and try again.";
-    }
-
-    if (code === MediaError.MEDIA_ERR_DECODE) {
+    } else if (code === 3) {
       errorText = "This MP3 could not be decoded by the browser.";
-    }
-
-    if (code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
+    } else if (code === 4) {
       errorText = "Audio source unavailable or unsupported.";
     }
 
     ready(i, "Could not load");
-
     message(i, errorText, true);
-
     console.error(errorText);
-
   });
 
-
   update(i);
-
 });
 
 
 /* CLEAN UP WHEN PAGE IS LEFT */
 
 window.addEventListener("pagehide", () => {
-
   audios.forEach((audio, i) => {
-
     audio.pause();
-
     stopRetry(i);
-
   });
-
 });
 
 </script>
