@@ -43,7 +43,7 @@ body {
   color:var(--text);
   font-family:Inter,sans-serif;
   overflow-x:hidden;
-  transition:background .5s,color .5s;
+  transition:background .6s cubic-bezier(0.22, 1, 0.36, 1), color .6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 #stars {
@@ -187,7 +187,7 @@ body {
   min-height:16px;
 }
 
-/* TOP BAR AND THEME */
+/* TOP BAR AND ICON BUTTONS */
 
 .topbar {
   position:relative;
@@ -195,28 +195,91 @@ body {
   display:flex;
   justify-content:flex-end;
   align-items:center;
+  gap:12px;
   padding:24px 7%;
 }
 
-.theme-toggle {
+.icon-btn {
+  position:relative;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
+  width:44px;
+  height:44px;
   border:1px solid var(--border);
   background:var(--card);
   color:var(--text);
-  padding:11px 17px;
-  border-radius:30px;
+  border-radius:50%;
   font-family:inherit;
-  font-size:14px;
+  font-size:19px;
+  text-decoration:none;
   line-height:1;
   cursor:pointer;
   backdrop-filter:blur(15px);
-  transition:.3s;
+  overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+  transition:
+    transform .4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background .5s ease,
+    border-color .5s ease,
+    box-shadow .4s ease;
 }
 
-.theme-toggle:hover { transform:scale(1.05); }
+.icon-btn:hover {
+  transform:scale(1.1) translateY(-2px);
+  border-color:var(--accent);
+  box-shadow:0 10px 28px rgba(215, 184, 255, .22);
+}
+
+.icon-btn:active {
+  transform:scale(0.92);
+}
+
+/* SMOOTH SUN / MOON ICON ANIMATION */
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  position:absolute;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:
+    transform .65s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity .45s ease;
+  will-change:transform, opacity;
+}
+
+/* Default (Dark Mode): Show Sun icon to switch to Light, hide Moon */
+.theme-toggle .icon-sun {
+  opacity:1;
+  transform:rotate(0deg) scale(1);
+}
+
+.theme-toggle .icon-moon {
+  opacity:0;
+  transform:rotate(-135deg) scale(0.3);
+}
+
+/* Light Mode Active: Hide Sun, smoothly spin in Moon icon */
+body.light .theme-toggle .icon-sun {
+  opacity:0;
+  transform:rotate(135deg) scale(0.3);
+}
+
+body.light .theme-toggle .icon-moon {
+  opacity:1;
+  transform:rotate(0deg) scale(1);
+}
+
+/* MEGAPHONE LINK HOVER WIGGLE */
+.announce-btn span {
+  display:inline-block;
+  transition:transform .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.announce-btn:hover span {
+  transform:rotate(-14deg) scale(1.12);
+}
 
 /* SONG CARDS */
 
@@ -507,7 +570,13 @@ body {
 /* MOBILE */
 
 @media(max-width:600px) {
-  .topbar { padding:17px 18px; }
+  .topbar { padding:17px 18px; gap:10px; }
+
+  .icon-btn {
+    width:40px;
+    height:40px;
+    font-size:17px;
+  }
 
   .container {
     width:calc(100% - 22px);
@@ -582,10 +651,24 @@ body {
   </div>
 </div>
 
-<!-- THEME BUTTON -->
+<!-- TOP BAR: THEME BUTTON & MEGAPHONE LINK -->
 
 <div class="topbar">
-  <button class="theme-toggle" id="themeToggle">☀️ Light Mode</button>
+  <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle Dark / Light Mode">
+    <span class="icon-sun">☀️</span>
+    <span class="icon-moon">🌙</span>
+  </button>
+
+  <a
+    class="icon-btn announce-btn"
+    href="https://zarnal.github.io/ZARNAL/echobae"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Open link"
+    title="Open EchoBae"
+  >
+    <span>📣</span>
+  </a>
 </div>
 
 <!-- SONGS -->
@@ -890,14 +973,7 @@ document.addEventListener("visibilitychange", () => {
 const themeToggle = document.getElementById("themeToggle");
 
 themeToggle.addEventListener("click", () => {
-
   document.body.classList.toggle("light");
-
-  const light = document.body.classList.contains("light");
-
-  themeToggle.textContent =
-    light ? "🌙 Dark Mode" : "☀️ Light Mode";
-
 });
 
 
