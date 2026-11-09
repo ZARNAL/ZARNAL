@@ -9,7 +9,6 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-  
 :root {
   --bg:#030308;
   --card:rgba(255,255,255,.055);
@@ -239,6 +238,26 @@ body {
 
 .icon-btn:active {
   transform:scale(0.92);
+}
+
+/* ADJUSTED PILL LENGTH FOR ☁️🍬 BUTTON */
+
+.yt-channel-btn {
+  width:auto;
+  padding:0 13px;
+  border-radius:999px;
+}
+
+.yt-channel-btn span {
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  white-space:nowrap;
+  transition:transform .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.yt-channel-btn:hover span {
+  transform:scale(1.08);
 }
 
 /* SMOOTH SUN / MOON ICON ANIMATION */
@@ -609,6 +628,11 @@ body.light .theme-toggle .icon-moon {
     font-size:14px;
   }
 
+  .yt-channel-btn {
+    width:auto;
+    padding:0 11px;
+  }
+
   .container {
     width:calc(100% - 22px);
     padding-top:5px;
@@ -684,13 +708,24 @@ body.light .theme-toggle .icon-moon {
   </div>
 </div>
 
-<!-- TOP BAR: THEME BUTTON & MEGAPHONE LINK -->
+<!-- TOP BAR: THEME BUTTON, YOUTUBE CHANNEL & MEGAPHONE LINK -->
 
 <div class="topbar">
   <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle Dark / Light Mode">
     <span class="icon-sun">☀️</span>
     <span class="icon-moon">🌙</span>
   </button>
+
+  <a
+    class="icon-btn yt-channel-btn"
+    href="https://www.youtube.com/@ZNHL14625"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Open YouTube Channel"
+    title="Visit YouTube Channel"
+  >
+    <span>☁️🍬</span>
+  </a>
 
   <a
     class="icon-btn announce-btn"
@@ -903,9 +938,6 @@ body.light .theme-toggle .icon-moon {
 </main>
 
 <script>
-
-
-
 const ENCODED_SECRET = "Ym9vYm9v"; 
 
 function decodeBase64(str) {
@@ -1419,7 +1451,6 @@ window.addEventListener("pagehide", () => {
     stopRetry(i);
   });
 });
-
 </script>
 </body>
 </html>
