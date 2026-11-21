@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +44,7 @@ body {
   color:var(--text);
   font-family:Inter,sans-serif;
   overflow-x:hidden;
-  transition:background .6s cubic-bezier(0.22, 1, 0.36, 1), color .6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:background .6s,color .6s;
 }
 
 #stars {
@@ -190,7 +191,7 @@ body {
   min-height:16px;
 }
 
-/* TOP BAR AND ICON BUTTONS */
+/* TOP BAR */
 
 .topbar {
   position:relative;
@@ -222,25 +223,16 @@ body {
   -webkit-backdrop-filter:blur(15px);
   overflow:hidden;
   box-shadow:0 6px 18px rgba(0,0,0,.15);
-  transition:
-    transform .4s cubic-bezier(0.34, 1.56, 0.64, 1),
-    background .5s ease,
-    border-color .5s ease,
-    box-shadow .4s ease;
-  -webkit-tap-highlight-color: transparent;
+  transition:transform .4s,background .5s,border-color .5s;
 }
 
 .icon-btn:hover {
   transform:scale(1.1) translateY(-2px);
   border-color:var(--accent);
-  box-shadow:0 8px 24px rgba(215, 184, 255, .22);
+  box-shadow:0 8px 24px rgba(215,184,255,.22);
 }
 
-.icon-btn:active {
-  transform:scale(0.92);
-}
-
-/* ADJUSTED PILL LENGTH FOR ☁️🍬 BUTTON */
+.icon-btn:active { transform:scale(.92); }
 
 .yt-channel-btn {
   width:auto;
@@ -253,14 +245,10 @@ body {
   align-items:center;
   gap:4px;
   white-space:nowrap;
-  transition:transform .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:transform .4s;
 }
 
-.yt-channel-btn:hover span {
-  transform:scale(1.08);
-}
-
-/* SMOOTH SUN / MOON ICON ANIMATION */
+.yt-channel-btn:hover span { transform:scale(1.08); }
 
 .theme-toggle .icon-sun,
 .theme-toggle .icon-moon {
@@ -268,10 +256,8 @@ body {
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:
-    transform .65s cubic-bezier(0.34, 1.56, 0.64, 1),
-    opacity .45s ease;
-  will-change:transform, opacity;
+  transition:transform .65s,opacity .45s;
+  will-change:transform,opacity;
 }
 
 .theme-toggle .icon-sun {
@@ -281,12 +267,12 @@ body {
 
 .theme-toggle .icon-moon {
   opacity:0;
-  transform:rotate(-135deg) scale(0.3);
+  transform:rotate(-135deg) scale(.3);
 }
 
 body.light .theme-toggle .icon-sun {
   opacity:0;
-  transform:rotate(135deg) scale(0.3);
+  transform:rotate(135deg) scale(.3);
 }
 
 body.light .theme-toggle .icon-moon {
@@ -296,12 +282,10 @@ body.light .theme-toggle .icon-moon {
 
 .announce-btn span {
   display:inline-block;
-  transition:transform .4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:transform .4s;
 }
 
-.announce-btn:hover span {
-  transform:rotate(-14deg) scale(1.12);
-}
+.announce-btn:hover span { transform:rotate(-14deg) scale(1.12); }
 
 /* SONG CARDS */
 
@@ -385,7 +369,7 @@ body.light .theme-toggle .icon-moon {
   cursor:pointer;
   transition:.25s;
   -webkit-appearance:none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color:transparent;
 }
 
 .play-btn:hover { transform:scale(1.08); }
@@ -404,8 +388,6 @@ body.light .theme-toggle .icon-moon {
   gap:7px;
 }
 
-/* THIN BUFFER LINE */
-
 .buffer-track {
   width:100%;
   height:2px;
@@ -423,8 +405,6 @@ body.light .theme-toggle .icon-moon {
   opacity:.8;
   transition:width .2s linear;
 }
-
-/* MAIN PROGRESS BAR */
 
 .progress {
   display:block;
@@ -469,8 +449,6 @@ body.light .theme-toggle .icon-moon {
   font-variant-numeric:tabular-nums;
 }
 
-/* BUFFER STATUS */
-
 .buffer-status {
   display:flex;
   justify-content:space-between;
@@ -500,8 +478,6 @@ body.light .theme-toggle .icon-moon {
 @keyframes mp3Spin {
   to { transform:rotate(360deg); }
 }
-
-/* REMAINING PLAYER OPTIONS */
 
 .extra-controls {
   display:flex;
@@ -535,7 +511,7 @@ body.light .theme-toggle .icon-moon {
   line-height:1;
   cursor:pointer;
   transition:.2s;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color:transparent;
 }
 
 .small-control:hover { transform:scale(1.08); }
@@ -546,7 +522,7 @@ body.light .theme-toggle .icon-moon {
   background:rgba(160,120,220,.12);
 }
 
-/* VOLUME SLIDER */
+/* VOLUME */
 
 .volume-wrap {
   display:inline-flex;
@@ -599,6 +575,31 @@ body.light .theme-toggle .icon-moon {
 
 .player-message.error { color:#ff8499; }
 
+/* YOUTUBE VIDEOS */
+
+.youtube-embed {
+  position:relative;
+  width:100%;
+  aspect-ratio:16 / 9;
+  overflow:hidden;
+  border-radius:19px;
+  background:rgba(0,0,0,.25);
+}
+
+.youtube-embed iframe {
+  display:block;
+  width:100%;
+  height:100%;
+  border:0;
+}
+
+.youtube-card-title {
+  font-size:17px;
+  font-weight:600;
+  letter-spacing:-.3px;
+  margin:4px 5px 14px;
+}
+
 /* BOTTOM ICON */
 
 .bottom-icon-wrap {
@@ -649,7 +650,10 @@ body.light .theme-toggle .icon-moon {
     margin-bottom:15px;
   }
 
-  .song-title { font-size:15px; }
+  .song-title,
+  .youtube-card-title { font-size:15px; }
+
+  .youtube-embed { border-radius:14px; }
 
   .play-btn {
     width:43px;
@@ -662,9 +666,7 @@ body.light .theme-toggle .icon-moon {
     gap:6px;
   }
 
-  .volume {
-    width:85px;
-  }
+  .volume { width:85px; }
 
   .extra-controls { margin-top:13px; }
 }
@@ -708,35 +710,34 @@ body.light .theme-toggle .icon-moon {
   </div>
 </div>
 
-<!-- TOP BAR: THEME BUTTON, YOUTUBE CHANNEL & MEGAPHONE LINK -->
+<!-- TOP BAR -->
 
 <div class="topbar">
-  <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle Dark / Light Mode">
+
+  <button class="icon-btn theme-toggle" id="themeToggle"
+    aria-label="Toggle theme" title="Toggle Dark / Light Mode">
     <span class="icon-sun">☀️</span>
     <span class="icon-moon">🌙</span>
   </button>
 
-  <a
-    class="icon-btn yt-channel-btn"
-    href="https://www.youtube.com/@ZNHL14625"
+  <a class="icon-btn yt-channel-btn"
+    href="https://www.youtube.com/@ZHL14625"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Open YouTube Channel"
-    title="Visit YouTube Channel"
-  >
+    title="Visit YouTube Channel">
     <span>☁️🍬</span>
   </a>
 
-  <a
-    class="icon-btn announce-btn"
+  <a class="icon-btn announce-btn"
     href="https://zarnal.github.io/ZARNAL/echobae"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Open link"
-    title="Open EchoBae"
-  >
+    title="Open EchoBae">
     <span>📣</span>
   </a>
+
 </div>
 
 <!-- SONGS -->
@@ -800,35 +801,39 @@ body.light .theme-toggle .icon-moon {
         <div class="control-group">
           <span class="volume-wrap">
             VOL
-            <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+            <input class="volume" type="range"
+              min="0" max="1" step="0.01" value="0.8"
+              aria-label="Volume">
           </span>
         </div>
 
         <div class="control-group">
-          <button class="small-control repeat-btn" title="Repeat song" aria-label="Repeat song">↻</button>
-          <a
-            class="small-control download-btn"
+
+          <button class="small-control repeat-btn"
+            title="Repeat song" aria-label="Repeat song">↻</button>
+
+          <a class="small-control download-btn"
             href="https://github.com/user-attachments/files/34280216/MeriZarna.mp3"
             download="MeriZarna.mp3"
             title="Download MP3"
-            aria-label="Download Meri Zarna MP3"
-          >⬇</a>
-          <a
-            class="small-control youtube-btn"
+            aria-label="Download Meri Zarna MP3">⬇</a>
+
+          <a class="small-control youtube-btn"
             href="https://youtu.be/1IbaC-I4t7Y"
             target="_blank"
             rel="noopener noreferrer"
             title="Watch on YouTube"
-            aria-label="Watch Meri Zarna on YouTube"
-          >🎬</a>
-        </div>
+            aria-label="Watch Meri Zarna on YouTube">🎬</a>
 
+        </div>
       </div>
 
       <div class="player-message" aria-live="polite"></div>
 
       <audio preload="metadata" playsinline webkit-playsinline>
-        <source src="https://github.com/user-attachments/files/34280216/MeriZarna.mp3" type="audio/mpeg">
+        <source
+          src="https://github.com/user-attachments/files/34280216/MeriZarna.mp3"
+          type="audio/mpeg">
       </audio>
 
     </div>
@@ -891,38 +896,80 @@ body.light .theme-toggle .icon-moon {
         <div class="control-group">
           <span class="volume-wrap">
             VOL
-            <input class="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+            <input class="volume" type="range"
+              min="0" max="1" step="0.01" value="0.8"
+              aria-label="Volume">
           </span>
         </div>
 
         <div class="control-group">
-          <button class="small-control repeat-btn" title="Repeat song" aria-label="Repeat song">↻</button>
-          <a
-            class="small-control download-btn"
+
+          <button class="small-control repeat-btn"
+            title="Repeat song" aria-label="Repeat song">↻</button>
+
+          <a class="small-control download-btn"
             href="https://github.com/user-attachments/files/34280233/MeriBooBoo.mp3"
             download="MeriBooBoo.mp3"
             title="Download MP3"
-            aria-label="Download Meri BooBoo MP3"
-          >⬇</a>
-          <a
-            class="small-control youtube-btn"
+            aria-label="Download Meri BooBoo MP3">⬇</a>
+
+          <a class="small-control youtube-btn"
             href="https://youtu.be/5m8WQMXo9QM"
             target="_blank"
             rel="noopener noreferrer"
             title="Watch on YouTube"
-            aria-label="Watch Meri BooBoo on YouTube"
-          >🎬</a>
-        </div>
+            aria-label="Watch Meri BooBoo on YouTube">🎬</a>
 
+        </div>
       </div>
 
       <div class="player-message" aria-live="polite"></div>
 
       <audio preload="metadata" playsinline webkit-playsinline>
-        <source src="https://github.com/user-attachments/files/34280233/MeriBooBoo.mp3" type="audio/mpeg">
+        <source
+          src="https://github.com/user-attachments/files/34280233/MeriBooBoo.mp3"
+          type="audio/mpeg">
       </audio>
 
     </div>
+  </section>
+
+  
+
+  <section class="song-card youtube-card">
+
+    
+
+    <div class="youtube-embed">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/IL5UfpMJdaQ"
+        title="YouTube video 1"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+  </section>
+
+
+
+  <section class="song-card youtube-card">
+
+  
+
+    <div class="youtube-embed">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/pFO-afBcDEs"
+        title="YouTube video 2"
+        loading="lazy"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </div>
+
   </section>
 
   <!-- BOTTOM ICON -->
@@ -938,7 +985,10 @@ body.light .theme-toggle .icon-moon {
 </main>
 
 <script>
-const ENCODED_SECRET = "Ym9vYm9v"; 
+
+
+
+const ENCODED_SECRET = "Ym9vYm9v";
 
 function decodeBase64(str) {
   try {
@@ -1064,7 +1114,7 @@ themeToggle.addEventListener("click", () => {
 
 /* AUDIO PLAYERS */
 
-const cards = [...document.querySelectorAll(".song-card")];
+const cards = [...document.querySelectorAll(".song-card:not(.youtube-card)")];
 
 const players = cards.map(card =>
   card.querySelector(".player")
@@ -1139,11 +1189,13 @@ function ready(i, text = "Ready") {
 
 
 function bufferedPercent(audio) {
-  if (!audio.buffered || audio.buffered.length === 0 || !Number.isFinite(audio.duration) || audio.duration <= 0) {
+  if (!audio.buffered || audio.buffered.length === 0 ||
+      !Number.isFinite(audio.duration) || audio.duration <= 0) {
     return 0;
   }
 
   let total = 0;
+
   for (let n = 0; n < audio.buffered.length; n++) {
     total += audio.buffered.end(n) - audio.buffered.start(n);
   }
@@ -1198,10 +1250,10 @@ function scheduleRecovery(i) {
     if (audio.paused || state.manuallyPaused) return;
 
     if (state.retries >= MAX_RECOVERIES) {
-      ready(i, "Still buffering — tap reload");
+      ready(i, "Still buffering — tap play again");
       message(
         i,
-        "Connection is taking too long. Use the reload button below.",
+        "Connection is taking too long. Try playing again.",
         true
       );
       return;
@@ -1451,6 +1503,7 @@ window.addEventListener("pagehide", () => {
     stopRetry(i);
   });
 });
+
 </script>
 </body>
 </html>
