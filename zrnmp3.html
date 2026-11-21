@@ -819,7 +819,7 @@ body.light .theme-toggle .icon-moon {
             aria-label="Download Meri Zarna MP3">⬇</a>
 
           <a class="small-control youtube-btn"
-            href="https://youtu.be/1IbaC-I4t7Y"
+            href="https://youtu.be/IL5UfpMJdaQ"
             target="_blank"
             rel="noopener noreferrer"
             title="Watch on YouTube"
@@ -914,7 +914,7 @@ body.light .theme-toggle .icon-moon {
             aria-label="Download Meri BooBoo MP3">⬇</a>
 
           <a class="small-control youtube-btn"
-            href="https://youtu.be/5m8WQMXo9QM"
+            href="https://youtu.be/pFO-afBcDEs"
             target="_blank"
             rel="noopener noreferrer"
             title="Watch on YouTube"
@@ -934,15 +934,12 @@ body.light .theme-toggle .icon-moon {
     </div>
   </section>
 
-  
+  <!-- YOUTUBE VIDEO ONE -->
 
   <section class="song-card youtube-card">
-
-    
-
     <div class="youtube-embed">
       <iframe
-        src="https://www.youtube-nocookie.com/embed/IL5UfpMJdaQ"
+        src="https://www.youtube-nocookie.com/embed/IL5UfpMJdaQ?enablejsapi=1"
         title="YouTube video 1"
         loading="lazy"
         referrerpolicy="strict-origin-when-cross-origin"
@@ -950,18 +947,14 @@ body.light .theme-toggle .icon-moon {
         allowfullscreen>
       </iframe>
     </div>
-
   </section>
 
-
+  <!-- YOUTUBE VIDEO TWO -->
 
   <section class="song-card youtube-card">
-
-  
-
     <div class="youtube-embed">
       <iframe
-        src="https://www.youtube-nocookie.com/embed/pFO-afBcDEs"
+        src="https://www.youtube-nocookie.com/embed/pFO-afBcDEs?enablejsapi=1"
         title="YouTube video 2"
         loading="lazy"
         referrerpolicy="strict-origin-when-cross-origin"
@@ -969,7 +962,6 @@ body.light .theme-toggle .icon-moon {
         allowfullscreen>
       </iframe>
     </div>
-
   </section>
 
   <!-- BOTTOM ICON -->
@@ -986,7 +978,7 @@ body.light .theme-toggle .icon-moon {
 
 <script>
 
-
+/* PASSWORD LOCK */
 
 const ENCODED_SECRET = "Ym9vYm9v";
 
@@ -1112,7 +1104,7 @@ themeToggle.addEventListener("click", () => {
 });
 
 
-/* AUDIO PLAYERS */
+/* MP3 AUDIO PLAYERS */
 
 const cards = [...document.querySelectorAll(".song-card:not(.youtube-card)")];
 
@@ -1134,7 +1126,6 @@ const states = players.map(() => ({
 const STALL_DELAY = 12000;
 const MAX_RECOVERIES = 2;
 
-
 function fmt(seconds) {
   if (!Number.isFinite(seconds) || seconds < 0) {
     return "0:00";
@@ -1145,11 +1136,9 @@ function fmt(seconds) {
   ).padStart(2, "0")}`;
 }
 
-
 function el(i, selector) {
   return players[i].querySelector(selector);
 }
-
 
 function stopRetry(i) {
   if (states[i].retryTimer) {
@@ -1158,13 +1147,11 @@ function stopRetry(i) {
   states[i].retryTimer = null;
 }
 
-
 function message(i, text, isError = false) {
   const node = el(i, ".player-message");
   node.textContent = text;
   node.classList.toggle("error", isError);
 }
-
 
 function loading(i, text) {
   el(i, ".mp3-loader").classList.add("active");
@@ -1176,7 +1163,6 @@ function loading(i, text) {
   message(i, text);
 }
 
-
 function ready(i, text = "Ready") {
   el(i, ".mp3-loader").classList.remove("active");
 
@@ -1186,7 +1172,6 @@ function ready(i, text = "Ready") {
 
   stopRetry(i);
 }
-
 
 function bufferedPercent(audio) {
   if (!audio.buffered || audio.buffered.length === 0 ||
@@ -1202,7 +1187,6 @@ function bufferedPercent(audio) {
 
   return Math.max(0, Math.min(100, total / audio.duration * 100));
 }
-
 
 function update(i) {
   const audio = audios[i];
@@ -1266,7 +1250,7 @@ function scheduleRecovery(i) {
 }
 
 
-/* ONLY ONE SONG PLAYS AT A TIME */
+/* ONLY ONE MP3 SONG PLAYS AT A TIME */
 
 function pauseOthers(current) {
   audios.forEach((audio, i) => {
@@ -1279,7 +1263,6 @@ function pauseOthers(current) {
     }
   });
 }
-
 
 async function playAudio(i) {
   const audio = audios[i];
@@ -1322,7 +1305,6 @@ async function playAudio(i) {
     }
   }
 }
-
 
 function pauseAudio(i) {
   states[i].manuallyPaused = true;
@@ -1378,7 +1360,7 @@ function reloadAudio(i, resume = true, automatic = false) {
 }
 
 
-/* CONNECT PLAYER EVENTS */
+/* CONNECT MP3 PLAYER EVENTS */
 
 players.forEach((player, i) => {
   const audio = audios[i];
@@ -1503,6 +1485,42 @@ window.addEventListener("pagehide", () => {
     stopRetry(i);
   });
 });
+
+
+/* ONLY ONE YOUTUBE VIDEO PLAYS AT A TIME */
+
+const youtubeFrames = [
+  ...document.querySelectorAll(".youtube-card iframe")
+];
+
+let youtubePlayers = [];
+
+function onYouTubeIframeAPIReady() {
+  youtubePlayers = youtubeFrames.map((frame, index) => {
+    return new YT.Player(frame, {
+      events: {
+        onStateChange: event => {
+          if (event.data === YT.PlayerState.PLAYING) {
+            youtubePlayers.forEach((player, otherIndex) => {
+              if (
+                otherIndex !== index &&
+                player &&
+                typeof player.pauseVideo === "function"
+              ) {
+                player.pauseVideo();
+              }
+            });
+          }
+        }
+      }
+    });
+  });
+}
+
+// Load YouTube's official IFrame Player API.
+const youtubeApiScript = document.createElement("script");
+youtubeApiScript.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(youtubeApiScript);
 
 </script>
 </body>
