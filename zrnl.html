@@ -47,7 +47,11 @@ body.night .card .label{color:#f7efff}
 body.night #random-gif{border-color:rgba(255,255,255,.12);box-shadow:0 5px 22px rgba(0,0,0,.22)}
 body.night #loader{background:#030308}
 body.night .spinner{border-color:rgba(255,255,255,.12);border-top-color:#d7b8ff}
-#night-stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0;transition:opacity .65s ease}
+#night-stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0;transition:opacity .65s ease}
+body.night header,body.night main{position:relative;z-index:2}
+body.night .card{background:rgba(24,22,34,.72);border-color:rgba(255,255,255,.075)}
+body.night .card .icon{background:rgba(255,255,255,.075)}
+@media(max-width:600px){body.night .card{background:rgba(18,17,29,.66);backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px)}}
 body.night #night-stars{opacity:1}
 .night-shooting-star{position:fixed;z-index:0;top:-5%;left:70%;width:120px;height:1px;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.9));filter:drop-shadow(0 0 3px rgba(215,184,255,.5));transform:rotate(-35deg);animation:zarnal-shoot 8s ease-in infinite}
 .night-shooting-star:after{content:"";position:absolute;right:0;top:-1px;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(255,255,255,.7)}
@@ -150,9 +154,9 @@ var canvas=document.getElementById("night-stars"),ctx=canvas&&canvas.getContext(
 if(!ctx)return;
 var stars=[],w=0,h=0,dpr=1,raf=0,last=0,active=false,comet=null,nextComet=0,reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 function rand(a,b){return a+Math.random()*(b-a);}
-function resize(){dpr=Math.min(window.devicePixelRatio||1,2);w=window.innerWidth;h=window.innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);stars=[];var count=Math.min(95,Math.max(28,Math.floor(w*h/14000)));for(var i=0;i<count;i++){stars.push({x:Math.random()*w,y:Math.random()*h,r:rand(.35,.95),phase:rand(0,6.28),speed:rand(.00025,.0008),base:rand(.16,.42),tone:Math.random()})}}
-function drawStars(t){for(var i=0;i<stars.length;i++){var s=stars[i],a=s.base+Math.sin(t*s.speed+s.phase)*.14;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.tone>.82?"rgba(222,207,255,"+a+")":"rgba(235,237,255,"+a+")";ctx.fill();}}
-function launchComet(t){if(comet||t<nextComet)return;var startX=rand(w*.62,w*1.08),startY=rand(h*.05,h*.48),length=rand(125,190),speed=rand(210,290);comet={x:startX,y:startY,vx:-speed,vy:speed*.48,life:0,duration:rand(1.05,1.55),length:length};nextComet=t+rand(9,17)*1000;}
+function resize(){dpr=Math.min(window.devicePixelRatio||1,2);w=window.innerWidth;h=window.innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+"px";canvas.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);stars=[];var count=Math.min(220,Math.max(65,Math.floor(w*h/6500)));for(var i=0;i<count;i++){stars.push({x:Math.random()*w,y:Math.random()*h,r:rand(.55,1.35),phase:rand(0,6.28),speed:rand(.0011,.0032),base:rand(.38,.72),tone:Math.random()})}}
+function drawStars(t){for(var i=0;i<stars.length;i++){var s=stars[i],blink=(Math.sin(t*s.speed+s.phase)+1)/2,a=s.base+blink*.26,r=s.r*(.82+blink*.3);ctx.beginPath();ctx.arc(s.x,s.y,r,0,Math.PI*2);ctx.fillStyle=s.tone>.78?"rgba(225,207,255,"+Math.min(.98,a)+")":"rgba(242,244,255,"+Math.min(.96,a)+")";ctx.shadowBlur=s.tone>.78?4:2;ctx.shadowColor=s.tone>.78?"rgba(207,180,255,.65)":"rgba(210,225,255,.5)";ctx.fill();}ctx.shadowBlur=0;}
+function launchComet(t){if(comet||t<nextComet)return;var startX=rand(w*.62,w*1.08),startY=rand(h*.04,h*.52),length=rand(105,165),speed=rand(180,245);comet={x:startX,y:startY,vx:-speed,vy:speed*.48,life:0,duration:rand(.85,1.15),length:length};nextComet=t+rand(1.8,2.4)*1000;}
 function drawComet(dt,t){launchComet(t);if(!comet)return;comet.life+=dt;var p=Math.min(1,comet.life/comet.duration),fade=Math.sin(Math.PI*p);var x=comet.x+comet.vx*comet.life,y=comet.y+comet.vy*comet.life,tailScale=comet.length/Math.sqrt(comet.vx*comet.vx+comet.vy*comet.vy),tx=x-comet.vx*tailScale,ty=y-comet.vy*tailScale;ctx.save();ctx.globalAlpha=fade*.78;var g=ctx.createLinearGradient(tx,ty,x,y);g.addColorStop(0,"rgba(210,190,255,0)");g.addColorStop(.7,"rgba(220,208,255,.2)");g.addColorStop(1,"rgba(255,255,255,.9)");ctx.strokeStyle=g;ctx.lineWidth=1.25;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(x,y);ctx.stroke();ctx.beginPath();ctx.arc(x,y,1.7,0,Math.PI*2);ctx.fillStyle="#fff";ctx.shadowBlur=9;ctx.shadowColor="#d6c1ff";ctx.fill();ctx.restore();if(p>=1)comet=null;}
 
 function frame(t){if(!active)return;var dt=last?Math.min((t-last)/1000,.05):0;last=t;ctx.clearRect(0,0,w,h);drawStars(t);if(!reduced)drawComet(dt,t);raf=requestAnimationFrame(frame);}
