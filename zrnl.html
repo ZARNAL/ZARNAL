@@ -22,9 +22,6 @@ header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-
 .header-title{line-height:1}
 main{width:100%;max-width:1160px;margin:0 auto;padding:clamp(14px,3.5vw,30px);display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:clamp(12px,2.2vw,20px);align-content:start}
 @media(max-width:600px){main{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px;gap:12px}}
-.intro{grid-column:1/-1;padding:clamp(8px,2vw,18px) 2px clamp(5px,1.5vw,12px);animation:softReveal .7s cubic-bezier(.2,.7,.2,1) both}
-.intro h1{margin:0;color:#3a2930;font-size:clamp(1.65rem,5.6vw,2.5rem);font-weight:720;letter-spacing:-.055em;line-height:1.12}
-.intro p{margin:9px 0 0;color:var(--muted);font-size:clamp(.88rem,2.5vw,.98rem);font-weight:450;line-height:1.55;letter-spacing:.005em}
 .card{min-width:0;width:100%;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,2.4vw,14px);padding:clamp(12px,3vw,22px);border:1px solid var(--border);border-radius:clamp(20px,3.2vw,27px);background:linear-gradient(150deg,rgba(255,255,255,.98),rgba(255,250,251,.96));box-shadow:0 2px 9px rgba(88,44,60,.025),0 8px 26px rgba(88,44,60,.035);text-decoration:none;color:inherit;text-align:center;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;transition:transform .32s cubic-bezier(.2,.7,.2,1),box-shadow .32s ease,border-color .32s ease,background .32s ease;animation:softReveal .55s cubic-bezier(.2,.7,.2,1) both}
 .card:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(247,220,230,.42),transparent 65%);opacity:.65;pointer-events:none}
 .card:after{content:"";position:absolute;top:-80%;left:-50%;width:55%;height:250%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.62),transparent);transform:rotate(24deg);opacity:0;transition:opacity .3s ease,left .65s ease;pointer-events:none}
@@ -45,7 +42,7 @@ main{width:100%;max-width:1160px;margin:0 auto;padding:clamp(14px,3.5vw,30px);di
 <div id="loader" role="status" aria-label="Loading"><div class="spinner" aria-hidden="true"></div></div>
 <header><img class="header-logo" src="https://github.com/user-attachments/assets/e0a5b704-28d6-4d0b-81cc-6a9b0175c8f0" alt="Zarnal icon"><span class="header-title">ZARNAL</span></header>
 <main>
-<div class="intro"><h1>A little world of love.</h1><p>Small moments, sweet words, and things made to make you smile.</p></div>
+
 <a class="card" href="https://zarnal.odoo.com/shayari"><span class="icon">💌</span><span class="label">Shayari</span></a>
 <a class="card" href="https://zarnal.odoo.com/babyname"><span class="icon">👶</span><span class="label">Baby Name</span></a>
 <a class="card" href="https://zarnal.odoo.com/lovequotes"><span class="icon">💬</span><span class="label">Love Quotes</span></a>
