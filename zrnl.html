@@ -106,6 +106,18 @@ body.night .theme-toggle{background:rgba(255,255,255,.055);border-color:rgba(255
 body.night #random-gif{border-color:rgba(255,255,255,.065);box-shadow:0 8px 26px rgba(0,0,0,.2)}
 @media(max-width:390px){.card{border-radius:22px;gap:12px}.card .icon{border-radius:19px}.card .label{font-size:.86rem}}
 @media(prefers-reduced-motion:reduce){.card{animation:none!important}}
+/* Fix theme-toggle placement and refine the night-sky rhythm */
+header{position:sticky;isolation:isolate;padding-left:62px;padding-right:62px}
+.theme-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(80,55,70,.08);border-radius:50%;background:rgba(255,255,255,.7);color:#9a5d73;font-size:17px;line-height:1;cursor:pointer;box-shadow:0 1px 5px rgba(40,25,35,.035);-webkit-tap-highlight-color:transparent;transition:background .35s ease,border-color .35s ease,color .35s ease,box-shadow .35s ease,transform .22s cubic-bezier(.2,.7,.2,1)}
+.theme-toggle:active{transform:translateY(-50%) scale(.92)}
+.theme-toggle:focus-visible{outline:2px solid #c17a94;outline-offset:3px}
+.theme-toggle .toggle-moon,.theme-toggle .toggle-sun{position:absolute;display:block;line-height:1;transition:opacity .35s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
+.theme-toggle .toggle-moon{opacity:1;transform:rotate(0) scale(1)}
+.theme-toggle .toggle-sun{opacity:0;transform:rotate(-65deg) scale(.72)}
+body.night .theme-toggle{background:rgba(255,255,255,.065);border-color:rgba(255,255,255,.09);color:#e4c9f4;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+body.night .theme-toggle .toggle-moon{opacity:0;transform:rotate(65deg) scale(.72)}
+body.night .theme-toggle .toggle-sun{opacity:1;transform:rotate(0) scale(1)}
+@media(max-width:360px){header{padding-left:54px;padding-right:54px}.theme-toggle{right:9px;width:36px;height:36px}}
 </style>
 </head>
 <body>
@@ -140,9 +152,9 @@ var stars=[],w=0,h=0,dpr=1,raf=0,last=0,active=false,comet=null,nextComet=0,redu
 function rand(a,b){return a+Math.random()*(b-a);}
 function resize(){dpr=Math.min(window.devicePixelRatio||1,2);w=window.innerWidth;h=window.innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);stars=[];var count=Math.min(95,Math.max(28,Math.floor(w*h/14000)));for(var i=0;i<count;i++){stars.push({x:Math.random()*w,y:Math.random()*h,r:rand(.35,.95),phase:rand(0,6.28),speed:rand(.00025,.0008),base:rand(.16,.42),tone:Math.random()})}}
 function drawStars(t){for(var i=0;i<stars.length;i++){var s=stars[i],a=s.base+Math.sin(t*s.speed+s.phase)*.14;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=s.tone>.82?"rgba(222,207,255,"+a+")":"rgba(235,237,255,"+a+")";ctx.fill();}}
-function launchComet(t){if(comet||t<nextComet)return;var startX=rand(w*.58,w*1.12),startY=rand(h*.04,h*.42),length=rand(115,175),speed=rand(230,330);comet={x:startX,y:startY,vx:-speed,vy:speed*.52,life:0,duration:rand(.8,1.25),length:length};nextComet=t+rand(18,36)*1000;}
-function drawComet(dt,t){launchComet(t);if(!comet)return;comet.life+=dt;var p=Math.min(1,comet.life/comet.duration),fade=Math.sin(Math.PI*p);var x=comet.x+comet.vx*comet.life,y=comet.y+comet.vy*comet.life,tx=x-comet.vx/speedFix()*comet.length,ty=y-comet.vy/speedFix()*comet.length;ctx.save();ctx.globalAlpha=fade*.78;var g=ctx.createLinearGradient(tx,ty,x,y);g.addColorStop(0,"rgba(210,190,255,0)");g.addColorStop(.7,"rgba(220,208,255,.2)");g.addColorStop(1,"rgba(255,255,255,.9)");ctx.strokeStyle=g;ctx.lineWidth=1.25;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(x,y);ctx.stroke();ctx.beginPath();ctx.arc(x,y,1.7,0,Math.PI*2);ctx.fillStyle="#fff";ctx.shadowBlur=9;ctx.shadowColor="#d6c1ff";ctx.fill();ctx.restore();if(p>=1)comet=null;}
-function speedFix(){return 330;}
+function launchComet(t){if(comet||t<nextComet)return;var startX=rand(w*.62,w*1.08),startY=rand(h*.05,h*.48),length=rand(125,190),speed=rand(210,290);comet={x:startX,y:startY,vx:-speed,vy:speed*.48,life:0,duration:rand(1.05,1.55),length:length};nextComet=t+rand(9,17)*1000;}
+function drawComet(dt,t){launchComet(t);if(!comet)return;comet.life+=dt;var p=Math.min(1,comet.life/comet.duration),fade=Math.sin(Math.PI*p);var x=comet.x+comet.vx*comet.life,y=comet.y+comet.vy*comet.life,tailScale=comet.length/Math.sqrt(comet.vx*comet.vx+comet.vy*comet.vy),tx=x-comet.vx*tailScale,ty=y-comet.vy*tailScale;ctx.save();ctx.globalAlpha=fade*.78;var g=ctx.createLinearGradient(tx,ty,x,y);g.addColorStop(0,"rgba(210,190,255,0)");g.addColorStop(.7,"rgba(220,208,255,.2)");g.addColorStop(1,"rgba(255,255,255,.9)");ctx.strokeStyle=g;ctx.lineWidth=1.25;ctx.beginPath();ctx.moveTo(tx,ty);ctx.lineTo(x,y);ctx.stroke();ctx.beginPath();ctx.arc(x,y,1.7,0,Math.PI*2);ctx.fillStyle="#fff";ctx.shadowBlur=9;ctx.shadowColor="#d6c1ff";ctx.fill();ctx.restore();if(p>=1)comet=null;}
+
 function frame(t){if(!active)return;var dt=last?Math.min((t-last)/1000,.05):0;last=t;ctx.clearRect(0,0,w,h);drawStars(t);if(!reduced)drawComet(dt,t);raf=requestAnimationFrame(frame);}
 function update(){active=document.body.classList.contains("night")&&!document.hidden&&!reduced;if(active){last=0;cancelAnimationFrame(raf);raf=requestAnimationFrame(frame)}else{cancelAnimationFrame(raf);ctx.clearRect(0,0,w,h)}}
 resize();window.addEventListener("resize",resize);document.addEventListener("visibilitychange",update);document.addEventListener("zarnal-theme-change",update);update();
