@@ -77,7 +77,36 @@ body.night #loader{background:#080810}
 body.night .spinner{border-color:rgba(255,255,255,.1);border-top-color:#c9a9ee}
 .theme-toggle{background:rgba(255,255,255,.52);border-color:rgba(184,75,105,.07);box-shadow:0 1px 4px rgba(90,40,54,.025)}
 body.night .theme-toggle{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.075);color:#d9c5f2;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-@media(prefers-reduced-motion:reduce){#night-stars{display:none!important;transition:none!important}}</style>
+@media(prefers-reduced-motion:reduce){#night-stars{display:none!important;transition:none!important}}/* Apple-inspired visual polish */
+:root{--rose:#bf718b;--rose-deep:#a65b76;--rose-soft:#f8edf1;--bg:#f5f5f7;--text:#29272c;--muted:#8a858e;--card:#fff;--border:rgba(60,50,65,.07);--shadow:0 2px 6px rgba(30,20,35,.025),0 12px 36px rgba(30,20,35,.045);--radius:26px}
+body{background:#f5f5f7;background-image:radial-gradient(ellipse at 12% 0%,rgba(255,231,239,.65),transparent 38%),radial-gradient(ellipse at 92% 10%,rgba(255,245,229,.55),transparent 35%);transition:background 1s ease,color .5s ease}
+header{height:64px;padding:10px 20px;background:rgba(255,255,255,.76);border-bottom:1px solid rgba(45,35,50,.045);box-shadow:0 1px 8px rgba(30,20,35,.025);letter-spacing:.055em;font-size:clamp(1.05rem,3vw,1.2rem);font-weight:700}
+.header-logo{width:34px;height:34px;border-radius:10px;box-shadow:0 1px 4px rgba(20,15,25,.06)}
+main{max-width:1280px;padding:clamp(20px,3.5vw,38px);grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:clamp(14px,2vw,22px)}
+@media(max-width:600px){main{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px;gap:12px}}
+.card{aspect-ratio:1/1;border-radius:26px;padding:clamp(14px,2vw,24px);gap:15px;background:#fff;border:1px solid rgba(30,25,35,.055);box-shadow:0 1px 3px rgba(30,20,35,.025),0 9px 24px rgba(30,20,35,.035);animation:softReveal .48s cubic-bezier(.22,.65,.25,1) both}
+.card:before{background:radial-gradient(circle at 50% 0%,rgba(250,231,239,.45),transparent 68%);opacity:.5}
+.card:after{display:none}
+.card .icon{width:clamp(58px,5.2vw,72px);height:clamp(58px,5.2vw,72px);font-size:clamp(1.85rem,3.4vw,2.4rem);border-radius:22px;background:#f7f5f7;box-shadow:none}
+.card .label{font-size:clamp(.88rem,1.35vw,.98rem);font-weight:600;letter-spacing:-.02em;color:#39353c}
+@media(hover:hover){.card:hover{transform:translateY(-3px);box-shadow:0 4px 10px rgba(30,20,35,.035),0 16px 36px rgba(30,20,35,.065);border-color:rgba(60,50,65,.08);background:#fff}.card:hover .icon{transform:scale(1.035)}}
+.card:active{transform:scale(.975);transition-duration:.15s}
+.theme-toggle{width:38px;height:38px;border:1px solid rgba(50,40,55,.055);background:rgba(245,245,247,.8);box-shadow:0 1px 4px rgba(25,20,30,.03);font-size:16px}
+#gif-box{margin:8px 0 24px}
+#random-gif{border-radius:26px;border:1px solid rgba(30,25,35,.055);box-shadow:0 4px 20px rgba(30,20,35,.045)}
+/* Quiet, romantic night appearance */
+body.night{background:#090910;color:#f4f0f8;--text:#f4f0f8;--muted:#a9a4b4;--bg:#090910;--card:rgba(255,255,255,.045);--border:rgba(255,255,255,.075);--shadow:0 12px 34px rgba(0,0,0,.18);background-image:radial-gradient(ellipse at 16% 0%,rgba(72,54,106,.22),transparent 42%),radial-gradient(ellipse at 92% 32%,rgba(77,46,80,.13),transparent 40%)}
+body.night:before{background:radial-gradient(ellipse at 20% 0%,rgba(110,88,160,.11),transparent 40%),radial-gradient(ellipse at 80% 65%,rgba(90,58,112,.09),transparent 42%)}
+body.night header{background:rgba(12,12,20,.72);border-bottom-color:rgba(255,255,255,.045);box-shadow:none}
+body.night .card{background:rgba(255,255,255,.042);border-color:rgba(255,255,255,.065);box-shadow:0 8px 26px rgba(0,0,0,.11)}
+body.night .card:before{background:radial-gradient(circle at 50% 0%,rgba(210,190,245,.075),transparent 70%);opacity:1}
+body.night .card .icon{background:rgba(255,255,255,.055);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+body.night .card .label{color:#f1ecf8}
+body.night .theme-toggle{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.065);box-shadow:0 2px 7px rgba(0,0,0,.12)}
+body.night #random-gif{border-color:rgba(255,255,255,.065);box-shadow:0 8px 26px rgba(0,0,0,.2)}
+@media(max-width:390px){.card{border-radius:22px;gap:12px}.card .icon{border-radius:19px}.card .label{font-size:.86rem}}
+@media(prefers-reduced-motion:reduce){.card{animation:none!important}}
+</style>
 </head>
 <body>
 <canvas id="night-stars" aria-hidden="true"></canvas>
