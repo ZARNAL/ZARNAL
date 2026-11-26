@@ -18,7 +18,7 @@ body{margin:0;min-height:100vh;min-height:100dvh;font-family:Inter,system-ui,-ap
 .spinner{width:42px;height:42px;border:4px solid #f3e8ed;border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 header{position:sticky;top:0;z-index:10;text-align:center;padding:17px 12px;color:#fff;font-weight:700;font-size:clamp(1.15rem,4vw,1.5rem);background:linear-gradient(135deg,#ff3366,#ff8db1);border-radius:0 0 24px 24px;box-shadow:0 4px 16px rgba(255,51,102,.13)}
-main{width:100%;max-width:900px;margin:0 auto;padding:clamp(12px,3vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,2.5vw,18px);align-content:start;animation:fadeIn .35s ease both}
+main{width:100%;max-width:1200px;margin:0 auto;padding:clamp(12px,3vw,24px);display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:clamp(10px,2.5vw,18px);align-content:start;animation:fadeIn .35s ease both}\n@media(max-width:600px){main{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .card{min-width:0;width:100%;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(7px,2vw,13px);padding:clamp(10px,3vw,20px);border:1px solid var(--border);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);text-decoration:none;color:inherit;text-align:center;position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
 .card:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .card:active{transform:scale(.97)}
