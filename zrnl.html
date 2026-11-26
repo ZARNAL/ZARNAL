@@ -41,7 +41,7 @@ main{width:100%;max-width:1160px;margin:0 auto;padding:clamp(14px,3.5vw,30px);di
 body{transition:background .65s ease,color .55s ease}
 header{transition:background .55s ease,color .55s ease,border-color .55s ease,box-shadow .55s ease}
 .card{transition:transform .32s cubic-bezier(.2,.7,.2,1),box-shadow .32s ease,border-color .32s ease,background .55s ease,color .55s ease}
-.theme-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:36px;height:36px;padding:0;border:1px solid rgba(184,75,105,.08);border-radius:50%;background:rgba(255,255,255,.5);color:#8e5266;display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 5px rgba(90,40,60,.025);-webkit-tap-highlight-color:transparent;transition:background .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease,transform .24s cubic-bezier(.2,.7,.2,1)}
+.theme-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:38px;height:38px;padding:0;border:1px solid rgba(184,75,105,.08);border-radius:50%;background:rgba(255,255,255,.55);color:#8e5266;display:grid;place-items:center;cursor:pointer;box-shadow:0 1px 5px rgba(90,40,60,.025);-webkit-tap-highlight-color:transparent;transition:background .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease,transform .24s cubic-bezier(.2,.7,.2,1)}
 .theme-toggle:active{transform:translateY(-50%) scale(.92)}
 .theme-toggle:focus-visible{outline:2px solid var(--rose);outline-offset:3px}
 .theme-toggle svg{position:absolute;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;transition:opacity .35s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
@@ -72,12 +72,35 @@ body.night #random-gif{box-shadow:0 5px 22px rgba(0,0,0,.2);border-color:rgba(22
 body.night #loader{background:#191526}
 body.night .spinner{border-color:#40334f;border-top-color:#df9ec8}
 @media(prefers-reduced-motion:reduce){.shooting-star{animation:none!important;display:none}.night-sky,body,header,.card,.theme-toggle{transition:none!important}}
-</style>
+/* Reference-inspired calm night theme */
+body.night{color:#f8edf7;background:radial-gradient(ellipse at 50% 0%,rgba(74,52,120,.2),transparent 45%),#030308;--text:#f8edf7;--muted:#a3a3b5;--bg:#030308;--card:rgba(255,255,255,.055);--border:rgba(255,255,255,.12);--shadow:0 6px 25px rgba(0,0,0,.2)}
+body.night header{background:rgba(12,10,20,.76);color:#fff;border-bottom-color:rgba(255,255,255,.08)}
+body.night .card{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.1);box-shadow:0 5px 20px rgba(0,0,0,.12)}
+body.night .card:before{background:radial-gradient(circle at 50% 0%,rgba(215,184,255,.12),transparent 68%);opacity:1}
+body.night .card .icon{background:rgba(255,255,255,.07);box-shadow:none}
+body.night .card .label{color:#f7efff}
+body.night #random-gif{border-color:rgba(255,255,255,.12);box-shadow:0 5px 22px rgba(0,0,0,.22)}
+body.night #loader{background:#030308}
+body.night .spinner{border-color:rgba(255,255,255,.12);border-top-color:#d7b8ff}
+#night-stars{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0;transition:opacity .65s ease}
+body.night #night-stars{opacity:1}
+.night-shooting-star{position:fixed;z-index:0;top:-5%;left:70%;width:120px;height:1px;pointer-events:none;opacity:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.9));filter:drop-shadow(0 0 3px rgba(215,184,255,.5));transform:rotate(-35deg);animation:zarnal-shoot 8s ease-in infinite}
+.night-shooting-star:after{content:"";position:absolute;right:0;top:-1px;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(255,255,255,.7)}
+.night-shooting-star.star-two{top:34%;left:50%;animation-delay:3.5s;animation-duration:9.5s}
+.night-shooting-star.star-three{top:65%;left:80%;animation-delay:6.2s;animation-duration:10s}
+@keyframes zarnal-shoot{0%,70%,100%{opacity:0;transform:translate(0,0) rotate(-35deg)}73%{opacity:.8}83%{opacity:0;transform:translate(-190px,130px) rotate(-35deg)}}
+.theme-toggle .toggle-sun,.theme-toggle .toggle-moon{position:absolute;display:grid;place-items:center;font-size:16px;line-height:1;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .4s ease}
+.theme-toggle .toggle-sun{opacity:0;transform:rotate(130deg) scale(.35)}
+.theme-toggle .toggle-moon{opacity:1;transform:rotate(0) scale(1)}
+body.night .theme-toggle .toggle-sun{opacity:1;transform:rotate(0) scale(1)}
+body.night .theme-toggle .toggle-moon{opacity:0;transform:rotate(-130deg) scale(.35)}
+@media(prefers-reduced-motion:reduce){#night-stars,.night-shooting-star{display:none!important;animation:none!important}.theme-toggle .toggle-sun,.theme-toggle .toggle-moon{transition:none!important}}</style>
 </head>
 <body>
 <div class="night-sky" aria-hidden="true"><span class="shooting-star"></span><span class="shooting-star"></span><span class="shooting-star"></span></div>
+<canvas id="night-stars" aria-hidden="true"></canvas><span class="night-shooting-star" aria-hidden="true"></span><span class="night-shooting-star star-two" aria-hidden="true"></span><span class="night-shooting-star star-three" aria-hidden="true"></span>
 <div id="loader" role="status" aria-label="Loading"><div class="spinner" aria-hidden="true"></div></div>
-<header><img class="header-logo" src="https://github.com/user-attachments/assets/e0a5b704-28d6-4d0b-81cc-6a9b0175c8f0" alt="Zarnal icon"><span class="header-title">ZARNAL</span><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to night mode" title="Night mode" aria-pressed="false"><svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.1A8.4 8.4 0 0 1 8.9 3.8 8.6 8.6 0 1 0 20.2 15.1Z"/></svg><svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2.5 12h2m15 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></button></header>
+<header><img class="header-logo" src="https://github.com/user-attachments/assets/e0a5b704-28d6-4d0b-81cc-6a9b0175c8f0" alt="Zarnal icon"><span class="header-title">ZARNAL</span><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to night mode" title="Night mode" aria-pressed="false"><span class="toggle-moon" aria-hidden="true">🌙</span><span class="toggle-sun" aria-hidden="true">☀️</span></button></header>
 <main>
 
 <a class="card" href="https://zarnal.odoo.com/shayari"><span class="icon">💌</span><span class="label">Shayari</span></a>
@@ -100,6 +123,18 @@ body.night .spinner{border-color:#40334f;border-top-color:#df9ec8}
 <script>
 (function(){
 "use strict";
+var canvas=document.getElementById("night-stars"),ctx=canvas&&canvas.getContext("2d");
+if(!ctx)return;
+var stars=[],w=0,h=0,dpr=1,raf=0,active=false;
+function resize(){dpr=Math.min(window.devicePixelRatio||1,2);w=window.innerWidth;h=window.innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+"px";canvas.style.height=h+"px";ctx.setTransform(dpr,0,0,dpr,0,0);stars=[];var count=Math.min(110,Math.max(24,Math.floor(w*h/10000)));for(var i=0;i<count;i++)stars.push({x:Math.random()*w,y:Math.random()*h,r:.35+Math.random()*1.05,p:Math.random()*6.28,s:.003+Math.random()*.009});}
+function draw(){if(!active)return;ctx.clearRect(0,0,w,h);for(var i=0;i<stars.length;i++){var st=stars[i];st.p+=st.s;ctx.beginPath();ctx.arc(st.x,st.y,st.r,0,Math.PI*2);ctx.fillStyle="rgba(220,220,255,"+(.18+Math.abs(Math.sin(st.p))*.52)+")";ctx.shadowBlur=4;ctx.shadowColor="#b9a6ef";ctx.fill();}ctx.shadowBlur=0;raf=requestAnimationFrame(draw);}
+function setActive(){active=document.body.classList.contains("night")&&!document.hidden;if(active){cancelAnimationFrame(raf);draw();}else{cancelAnimationFrame(raf);ctx.clearRect(0,0,w,h);}}
+resize();window.addEventListener("resize",resize);document.addEventListener("visibilitychange",setActive);document.addEventListener("zarnal-theme-change",setActive);setActive();
+})();
+</script>
+<script>
+(function(){
+"use strict";
 var btn=document.getElementById("theme-toggle");
 var body=document.body;
 var meta=document.querySelector('meta[name="theme-color"]');
@@ -107,6 +142,7 @@ var isNight=false;
 try{isNight=localStorage.getItem("zarnal-theme")==="night";}catch(e){}
 function setTheme(night){
  body.classList.toggle("night",night);
+ document.dispatchEvent(new Event("zarnal-theme-change"));
  if(btn){btn.setAttribute("aria-label",night?"Switch to day mode":"Switch to night mode");btn.setAttribute("title",night?"Day mode":"Night mode");btn.setAttribute("aria-pressed",night?"true":"false");}
  if(meta)meta.setAttribute("content",night?"#191526":"#fbf8f8");
  try{localStorage.setItem("zarnal-theme",night?"night":"day");}catch(e){}
