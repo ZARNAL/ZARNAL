@@ -1,282 +1,333 @@
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Romantic Coin Flip Game</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --background: linear-gradient(135deg, #ffe6f0 0%, #e6ccff 100%);
-            --text-color: #4a2e4a;
-            --coin-bg: #fff5f8;
-            --coin-shadow: 0 4px 8px rgba(74, 46, 74, 0.2);
-            --coin-hover-shadow: 0 8px 16px rgba(74, 46, 74, 0.3);
-            --button-bg: linear-gradient(145deg, #ff99cc, #cc6699);
-            --button-hover-bg: linear-gradient(145deg, #cc6699, #b34780);
-            --button-shadow: 0 6px 12px rgba(74, 46, 74, 0.2);
-            --button-hover-shadow: 0 8px 16px rgba(74, 46, 74, 0.3);
-            --focus-ring: rgba(255, 153, 204, 0.3);
-            --result-heads: #ff6699;
-            --result-tails: #cc99ff;
-            --minimal-bg: rgba(255, 153, 204, 0.2); /* Subtle pink for minimalist button */
-            --minimal-hover-bg: rgba(255, 153, 204, 0.4);
-        }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff0f5">
+  <meta name="description" content="A little romantic coin flip game.">
+  <title>Love Coin Flip</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #fff5f8;
+      --bg-glow: rgba(255, 151, 184, .23);
+      --surface: rgba(255,255,255,.66);
+      --surface-border: rgba(255,255,255,.8);
+      --text: #30232b;
+      --muted: #8b7882;
+      --accent: #e85b88;
+      --accent-strong: #d94476;
+      --coin: #fffaf0;
+      --coin-edge: #e8b9a2;
+      --coin-ink: #9e526b;
+      --shadow: 0 24px 70px rgba(117, 65, 89, .13);
+      --button-text: #fff;
+      --focus: rgba(232,91,136,.38);
+    }
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #17151d;
+      --bg-glow: rgba(177, 94, 145, .19);
+      --surface: rgba(39,34,47,.78);
+      --surface-border: rgba(255,255,255,.08);
+      --text: #f8edf3;
+      --muted: #b9a8b4;
+      --accent: #f08ab0;
+      --accent-strong: #e86e9d;
+      --coin: #f4d6c8;
+      --coin-edge: #b77d78;
+      --coin-ink: #7f4359;
+      --shadow: 0 24px 70px rgba(0,0,0,.35);
+      --button-text: #24151d;
+      --focus: rgba(240,138,176,.4);
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      min-height: 100svh;
+      margin: 0;
+      padding: max(76px, env(safe-area-inset-top) + 62px) 20px max(28px, env(safe-area-inset-bottom));
+      display: grid;
+      place-items: center;
+      overflow-x: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 18% 18%, var(--bg-glow), transparent 42%),
+        radial-gradient(ellipse at 85% 82%, rgba(174,148,255,.13), transparent 38%),
+        var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      transition: background-color .35s ease, color .35s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    .topbar {
+      position: fixed;
+      z-index: 5;
+      top: max(16px, env(safe-area-inset-top));
+      left: max(16px, env(safe-area-inset-left));
+      right: max(16px, env(safe-area-inset-right));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .topbar > * { pointer-events: auto; }
+    .back-button, .theme-toggle {
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--surface-border);
+      border-radius: 999px;
+      color: var(--text);
+      background: var(--surface);
+      box-shadow: 0 5px 20px rgba(40,20,35,.07);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .2s ease, background .25s ease, border-color .25s ease;
+    }
+    .back-button { padding: 0 15px; font-size: .9rem; font-weight: 600; }
+    .theme-toggle { width: 44px; padding: 0; font-size: 1.15rem; }
+    .back-button:hover, .theme-toggle:hover { transform: translateY(-2px); }
+    .back-button:active, .theme-toggle:active { transform: scale(.96); }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    .game {
+      width: min(100%, 440px);
+      padding: clamp(26px, 7vw, 42px) clamp(20px, 6vw, 34px) 30px;
+      text-align: center;
+      border: 1px solid var(--surface-border);
+      border-radius: 32px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      animation: arrive .65s cubic-bezier(.2,.75,.25,1) both;
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-size: .72rem;
+      font-weight: 750;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 7vw, 2.45rem);
+      line-height: 1.12;
+      letter-spacing: -.055em;
+      font-weight: 760;
+    }
+    .subtitle {
+      max-width: 270px;
+      margin: 12px auto 30px;
+      color: var(--muted);
+      font-size: .96rem;
+      line-height: 1.55;
+    }
+    .coin-stage {
+      min-height: 220px;
+      display: grid;
+      place-items: center;
+      perspective: 1000px;
+      margin: 2px 0 14px;
+    }
+    .coin {
+      position: relative;
+      width: clamp(156px, 44vw, 184px);
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 8px solid var(--coin-edge);
+      border-radius: 50%;
+      color: var(--coin-ink);
+      background:
+        radial-gradient(circle at 32% 25%, rgba(255,255,255,.98), transparent 34%),
+        linear-gradient(145deg, #fff7e7, var(--coin));
+      box-shadow:
+        inset 0 0 0 3px rgba(255,255,255,.65),
+        inset 0 -8px 18px rgba(142,75,76,.12),
+        0 16px 34px rgba(117,65,89,.2);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .coin::before {
+      content: "";
+      position: absolute;
+      inset: 10px;
+      border: 2px solid rgba(158,82,107,.35);
+      border-radius: 50%;
+    }
+    .coin-face {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      font-weight: 850;
+      letter-spacing: .12em;
+      font-size: 1rem;
+    }
+    .coin-symbol { font-size: 3.4rem; line-height: 1; letter-spacing: 0; }
+    .coin.flipping { animation: coinFlip 1.35s cubic-bezier(.18,.72,.22,1) both; }
+    @keyframes coinFlip {
+      0% { transform: rotateY(0) scale(1); }
+      18% { transform: rotateY(520deg) scale(1.08); }
+      55% { transform: rotateY(1480deg) scale(1.13); }
+      100% { transform: rotateY(var(--end-rotation, 1800deg)) scale(1); }
+    }
+    .result {
+      min-height: 36px;
+      margin: 8px 0 4px;
+      color: var(--text);
+      font-size: 1.45rem;
+      font-weight: 750;
+      letter-spacing: -.035em;
+    }
+    .result.heads { color: var(--accent); }
+    .result.tails { color: #9877d6; }
+    .hint { min-height: 22px; margin: 0 0 22px; color: var(--muted); font-size: .85rem; }
+    .flip-button {
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 22px;
+      border: 0;
+      border-radius: 18px;
+      color: var(--button-text);
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      box-shadow: 0 10px 22px rgba(218,68,118,.23);
+      font-size: 1rem;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+    }
+    .flip-button:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.04); box-shadow: 0 14px 26px rgba(218,68,118,.28); }
+    .flip-button:active:not(:disabled) { transform: scale(.98); }
+    .flip-button:disabled { cursor: wait; opacity: .75; }
+    .footer-note { margin: 20px 0 0; color: var(--muted); font-size: .76rem; }
+    @keyframes arrive { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @media (max-width: 380px) {
+      body { padding-inline: 12px; }
+      .game { border-radius: 26px; }
+      .coin-stage { min-height: 194px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar" aria-label="Game controls">
+    <a class="back-button" href="https://zarnal.github.io/ZARNAL/fun.html" aria-label="Back to Fun">← <span>Back</span></a>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Toggle appearance">☾</button>
+  </header>
 
-        [data-theme="dark"] {
-            --background: linear-gradient(135deg, #4a2e4a 0%, #3b2e5c 100%);
-            --text-color: #f0e6f0;
-            --coin-bg: #5c3d5c;
-            --coin-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-            --coin-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
-            --button-bg: linear-gradient(145deg, #cc6699, #994d7a);
-            --button-hover-bg: linear-gradient(145deg, #994d7a, #803d66);
-            --button-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
-            --button-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
-            --focus-ring: rgba(204, 102, 153, 0.3);
-            --result-heads: #ff99cc;
-            --result-tails: #cc99ff;
-            --minimal-bg: rgba(204, 102, 153, 0.2); /* Subtle dark pink for dark mode */
-            --minimal-hover-bg: rgba(204, 102, 153, 0.4);
-        }
+  <main class="game">
+    <p class="eyebrow">A little game for two</p>
+    <h1>Love Coin Flip <span aria-hidden="true">♡</span></h1>
+    <p class="subtitle">Leave it to a little bit of chance. What will it be?</p>
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: var(--background);
-            font-family: 'Georgia', 'Times New Roman', serif;
-            color: var(--text-color);
-            transition: background 0.3s ease, color 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
-            z-index: -1;
-            filter: blur(50px);
-        }
-
-        .coin-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .coin {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: var(--coin-bg);
-            box-shadow: var(--coin-shadow);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.6s ease, box-shadow 0.3s ease;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .coin:before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 30%, rgba(74, 46, 74, 0.1) 100%);
-            top: 0;
-            left: 0;
-            z-index: 1;
-            opacity: 0.5;
-        }
-
-        .coin:hover {
-            transform: scale(1.05);
-            box-shadow: var(--coin-hover-shadow);
-        }
-
-        .coin i {
-            font-size: 3.5rem;
-            color: var(--text-color);
-            z-index: 2;
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .coin.flipping i {
-            opacity: 0;
-            transform: scale(1.2);
-        }
-
-        .coin.flipping {
-            animation: flip 1.5s forwards;
-        }
-
-        @keyframes flip {
-            0% { transform: rotateY(0deg); }
-            50% { transform: rotateY(1800deg); }
-            100% { transform: rotateY(3600deg); }
-        }
-
-        .result {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 20px;
-            transition: color 0.3s ease, transform 0.3s ease;
-            font-style: italic;
-        }
-
-        .result-heads {
-            color: var(--result-heads);
-        }
-
-        .result-tails {
-            color: var(--result-tails);
-        }
-
-        button {
-            padding: 12px 24px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 30px;
-            background: var(--button-bg);
-            color: #ffffff;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            box-shadow: var(--button-shadow);
-            outline: none;
-            margin: 10px;
-            font-family: 'Georgia', 'Times New Roman', serif;
-        }
-
-        button:hover {
-            background: var(--button-hover-bg);
-            transform: scale(1.05);
-            box-shadow: var(--button-hover-shadow);
-        }
-
-        button:focus {
-            box-shadow: 0 0 0 3px var(--focus-ring);
-        }
-
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            box-shadow: none;
-            font-size: 1.2rem;
-        }
-
-        .theme-toggle i {
-            color: var(--text-color);
-        }
-
-        .theme-toggle:hover {
-            background: none;
-            transform: scale(1.1);
-            box-shadow: none;
-        }
-
-        .back-button {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            padding: 6px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 50%;
-            background: var(--minimal-bg);
-            color: var(--text-color);
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 30px;
-            height: 30px;
-            box-shadow: none;
-        }
-
-        .back-button:hover {
-            background: var(--minimal-hover-bg);
-            transform: scale(1.1);
-        }
-
-        .back-button:focus {
-            box-shadow: 0 0 0 2px var(--focus-ring);
-        }
-
-        .back-button i {
-            font-size: 1rem;
-        }
-    </style>
-
-
-    <a href="https://zarnal.github.io/ZARNAL/fun.html" class="back-button" aria-label="Back to Fun page">
-        <i class="fa-solid fa-arrow-left"></i>
-    </a>
-    <button class="theme-toggle" onclick="toggleTheme()">
-        <i id="themeIcon" class="fa-solid fa-moon"></i>
-    </button>
-    <div class="coin-container">
-        <div class="coin" id="coin">
-            <i id="coinIcon" class="fa-solid fa-question"></i>
+    <div class="coin-stage">
+      <div class="coin" id="coin" role="img" aria-label="Coin waiting to be flipped">
+        <div class="coin-face">
+          <span class="coin-symbol" id="coinSymbol" aria-hidden="true">✦</span>
+          <span id="coinFaceText">READY</span>
         </div>
-        <div class="result" id="result">Flip the coin, my love</div>
-        <button onclick="flipCoin()">Flip Coin</button>
+      </div>
     </div>
-    <script>
-        function flipCoin() {
-            const coin = document.getElementById('coin');
-            const coinIcon = document.getElementById('coinIcon');
-            const result = document.getElementById('result');
 
-            coin.classList.add('flipping');
+    <div class="result" id="result" role="status" aria-live="polite">Your moment awaits</div>
+    <p class="hint" id="hint">Tap the button to flip the coin.</p>
+    <button class="flip-button" id="flipButton" type="button">Flip the coin <span aria-hidden="true">✧</span></button>
+    <p class="footer-note">Good things are better when shared ♡</p>
+  </main>
 
-            setTimeout(() => {
-                const isHeads = Math.random() < 0.5;
-                const flipResult = isHeads ? 'Heads' : 'Tails';
-                result.textContent = flipResult;
-                result.className = `result ${isHeads ? 'result-heads' : 'result-tails'}`;
-                coin.classList.remove('flipping');
-                coinIcon.className = isHeads ? 'fa-solid fa-crown' : 'fa-solid fa-star';
-                coinIcon.style.opacity = 1;
-                coinIcon.style.transform = 'scale(1)';
-            }, 1500);
+  <script>
+    (() => {
+      const coin = document.getElementById('coin');
+      const coinSymbol = document.getElementById('coinSymbol');
+      const coinFaceText = document.getElementById('coinFaceText');
+      const result = document.getElementById('result');
+      const hint = document.getElementById('hint');
+      const flipButton = document.getElementById('flipButton');
+      const themeToggle = document.getElementById('themeToggle');
+      const root = document.documentElement;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let isFlipping = false;
+
+      function setTheme(theme) {
+        if (theme === 'dark') {
+          root.setAttribute('data-theme', 'dark');
+          themeToggle.textContent = '☀';
+          themeToggle.setAttribute('aria-label', 'Switch to light mode');
+        } else {
+          root.removeAttribute('data-theme');
+          themeToggle.textContent = '☾';
+          themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+        }
+        try { localStorage.setItem('zarnal-coin-theme', theme); } catch (_) {}
+      }
+
+      function loadTheme() {
+        try {
+          const saved = localStorage.getItem('zarnal-coin-theme');
+          if (saved === 'dark' || saved === 'light') return saved;
+        } catch (_) {}
+        return 'light';
+      }
+
+      async function flipCoin() {
+        if (isFlipping) return;
+        isFlipping = true;
+        flipButton.disabled = true;
+        flipButton.textContent = 'Flipping…';
+        result.className = 'result';
+        result.textContent = 'And the answer is…';
+        hint.textContent = 'A little moment of suspense';
+        coin.setAttribute('aria-label', 'Coin is flipping');
+
+        const isHeads = Math.random() < 0.5;
+        const rotation = 1800 + (isHeads ? 0 : 180);
+        coin.style.setProperty('--end-rotation', rotation + 'deg');
+
+        if (reducedMotion.matches) {
+          coin.classList.remove('flipping');
+          void coin.offsetWidth;
+          coin.style.transform = 'rotateY(' + rotation + 'deg)';
+          await new Promise(resolve => setTimeout(resolve, 180));
+        } else {
+          coin.classList.remove('flipping');
+          void coin.offsetWidth;
+          coin.classList.add('flipping');
+          await new Promise(resolve => setTimeout(resolve, 1380));
+          coin.classList.remove('flipping');
+          coin.style.transform = 'rotateY(' + rotation + 'deg)';
         }
 
-        function toggleTheme() {
-            const body = document.body;
-            const themeIcon = document.getElementById('themeIcon');
-            const currentTheme = body.getAttribute('data-theme');
+        const label = isHeads ? 'HEADS' : 'TAILS';
+        result.textContent = isHeads ? 'Heads! ♡' : 'Tails! ✨';
+        result.className = 'result ' + (isHeads ? 'heads' : 'tails');
+        hint.textContent = isHeads ? 'A sweet little yes.' : 'A lovely twist of fate.';
+        coinSymbol.textContent = isHeads ? '♡' : '✦';
+        coinFaceText.textContent = label;
+        coin.setAttribute('aria-label', 'Coin landed on ' + label.toLowerCase());
+        flipButton.disabled = false;
+        flipButton.innerHTML = 'Flip again <span aria-hidden="true">✧</span>';
+        isFlipping = false;
+      }
 
-            if (currentTheme === 'dark') {
-                body.removeAttribute('data-theme');
-                themeIcon.className = 'fa-solid fa-moon';
-                localStorage.setItem('theme', 'light');
-            } else {
-                body.setAttribute('data-theme', 'dark');
-                themeIcon.className = 'fa-solid fa-sun';
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.setAttribute('data-theme', 'dark');
-                document.getElementById('themeIcon').className = 'fa-solid fa-sun';
-            }
-        });
-    </script>
+      themeToggle.addEventListener('click', () => {
+        setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+      flipButton.addEventListener('click', flipCoin);
+      setTheme(loadTheme());
+    })();
+  </script>
+</body>
+</html>
