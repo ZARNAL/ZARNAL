@@ -1,0 +1,888 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baby Names</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<style>
+  @import url('https://fonts.cdnfonts.com/css/sf-pro-display');
+
+  :root {
+    --font: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --neutral-primary: #f0d7b8;
+    --neutral-accent: #f9e8d2;
+    --boy-primary: #3b9ce6;
+    --boy-accent: #9ccbf5;
+    --girl-primary: #ff7486;
+    --girl-accent: #ffb6c1;
+    --bg: #fef8f3;
+    --card-bg: rgba(255, 255, 255, 0.97);
+    --dark-bg: #252529;
+    --dark-card-bg: rgba(38, 38, 42, 0.97);
+    --text: #161618;
+    --text-dark: #fafafa;
+    --border: rgba(0, 0, 0, 0.04);
+    --shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+    --max-width: 700px;
+    --card-radius: 18px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: pan-y;
+  }
+
+  html, body {
+    width: 100%;
+    min-height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  body.dark {
+    background: var(--dark-bg);
+    color: var(--text-dark);
+  }
+
+  body.dark .card, body.dark header, body.dark .controls {
+    background: var(--dark-card-bg);
+    color: var(--text-dark);
+  }
+
+  body.dark .search input, body.dark .filters button, body.dark .sort select {
+    background: rgba(58, 58, 62, 0.97);
+    color: var(--text-dark);
+    border-color: rgba(255, 255, 255, 0.05);
+  }
+
+  body.dark .filters button.active {
+    background: var(--neutral-primary);
+    border-color: var(--neutral-primary);
+  }
+
+  body.dark .theme-switch .slider {
+    background: rgba(58, 58, 62, 0.97);
+  }
+
+  body.dark .theme-switch .slider:before {
+    transform: translateX(20px);
+  }
+
+  header {
+    background: var(--card-bg);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--neutral-primary);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(12px);
+  }
+
+  .header-title {
+    flex: 1;
+    text-align: center;
+  }
+
+  .back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Material Icons Round';
+    font-size: 1.5rem;
+    color: var(--girl-primary);
+    padding: 4px;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+  }
+
+  .back-button:hover {
+    color: color-mix(in srgb, var(--girl-primary) 85%, black);
+  }
+
+  .theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+  }
+
+  .theme-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    transition: background 0.3s ease;
+    backdrop-filter: blur(8px);
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 2px;
+    background: var(--neutral-primary);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+
+  .slider .material-icons-round {
+    position: absolute;
+    font-size: 14px;
+    color: var(--text);
+    transition: opacity 0.3s ease;
+  }
+
+  .slider .light-icon {
+    left: 5px;
+    top: 5px;
+    opacity: 0;
+  }
+
+  .slider .dark-icon {
+    right: 5px;
+    top: 5px;
+    opacity: 1;
+  }
+
+  body.dark .slider .light-icon {
+    opacity: 1;
+  }
+
+  body.dark .slider .dark-icon {
+    opacity: 0;
+  }
+
+  .controls {
+    max-width: var(--max-width);
+    width: 100%;
+    padding: 10px;
+    z-index: 15;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+  }
+
+  .search {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .search input, .sort select {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.98);
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    backdrop-filter: blur(8px);
+  }
+
+  .search input:focus, .sort select:focus {
+    border-color: var(--neutral-primary);
+    box-shadow: 0 0 0 2.5px color-mix(in srgb, var(--neutral-primary) 20%, transparent);
+    outline: none;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 6px;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filters button {
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.98);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+    white-space: nowrap;
+  }
+
+  .filters button.active, .filters button:hover {
+    background: var(--neutral-primary);
+    color: white;
+    border-color: var(--neutral-primary);
+  }
+
+  .filters button.favorite, .filters button.random, .filters button.export {
+    padding: 8px 12px;
+  }
+
+  .filters button span.material-icons-round {
+    font-size: 1rem;
+    color: inherit;
+  }
+
+  .filters button .tooltip {
+    position: absolute;
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .filters button:hover .tooltip, .filters button.touched .tooltip {
+    opacity: 1;
+  }
+
+  .filters button.export {
+    display: none;
+  }
+
+  .filters button.export.visible {
+    display: flex;
+  }
+
+  main {
+    max-width: var(--max-width);
+    width: 100%;
+    padding: 8px;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: auto;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow);
+    padding: 14px;
+    margin-bottom: 12px;
+    position: relative;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(12px);
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), transparent);
+  }
+
+  .card.boy {
+    --card-primary: var(--boy-primary);
+    --card-accent: var(--boy-accent);
+  }
+
+  .card.girl {
+    --card-primary: var(--girl-primary);
+    --card-accent: var(--girl-accent);
+  }
+
+  .card.unisex {
+    --card-primary: var(--neutral-primary);
+    --card-accent: var(--neutral-accent);
+  }
+
+  .card:hover, .card.touched {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+  }
+
+  .card.expanded {
+    padding-bottom: 16px;
+  }
+
+  .name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--card-primary);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    padding-right: 80px;
+  }
+
+  .meaning {
+    color: #535355;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+
+  .details {
+    display: none;
+    color: #535355;
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.6;
+    text-align: left;
+    margin-top: 10px;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 8px;
+  }
+
+  body.dark .details {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-dark);
+  }
+
+  .details div {
+    margin-bottom: 6px;
+  }
+
+  .card.expanded .details {
+    display: block;
+    animation: slideDown 0.25s ease-out;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .icon-bar {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+  }
+
+  .icon-btn {
+    font-size: 1.2rem;
+    color: var(--card-primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+
+  .icon-btn:hover, .icon-btn.touched {
+    color: color-mix(in srgb, var(--card-primary) 85%, black);
+    transform: scale(1.12);
+  }
+
+  .icon-btn.favorited {
+    color: #ff3055;
+  }
+
+  .card .tooltip {
+    position: absolute;
+    bottom: 40px;
+    right: 8px;
+    font-size: 0.75rem;
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+
+  .card.show-tooltip .tooltip {
+    opacity: 1;
+  }
+
+  .loader {
+    display: none;
+    border: 2.5px solid #ececef;
+    border-top: 2.5px solid var(--neutral-primary);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    animation: spin 0.7s linear infinite;
+    margin: 14px auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .loader.active {
+    display: block;
+  }
+
+  @media (max-width: 600px) {
+    header {
+      font-size: 1.15rem;
+      padding: 8px 10px;
+    }
+
+    .back-button {
+      font-size: 1.3rem;
+      margin-right: 8px;
+    }
+
+    .theme-switch {
+      width: 40px;
+      height: 22px;
+    }
+
+    .slider:before {
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+    }
+
+    body.dark .theme-switch .slider:before {
+      transform: translateX(18px);
+    }
+
+    .slider .material-icons-round {
+      font-size: 12px;
+    }
+
+    .slider .light-icon {
+      left: 4px;
+      top: 5px;
+    }
+
+    .slider .dark-icon {
+      right: 4px;
+      top: 5px;
+    }
+
+    .controls {
+      padding: 6px;
+    }
+
+    .search input, .sort select {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+
+    .filters {
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .filters button {
+      padding: 6px 10px;
+      font-size: 0.85rem;
+      border-radius: 8px;
+    }
+
+    .filters button.all::before {
+      content: '🌐';
+    }
+
+    .filters button.boy::before {
+      content: '👦';
+    }
+
+    .filters button.girl::before {
+      content: '👧';
+    }
+
+    .filters button.unisex::before {
+      content: '🧸';
+    }
+
+    .filters button.favorite, .filters button.random, .filters button.export {
+      padding: 6px 8px;
+    }
+
+    .filters button.all span, .filters button.boy span, .filters button.girl span, .filters button.unisex span,
+    .filters button.favorite span.label, .filters button.random span.label, .filters button.export span.label {
+      display: none;
+    }
+
+    main {
+      padding: 6px;
+    }
+
+    .card {
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .name {
+      font-size: 1.4rem;
+      padding-right: 60px;
+    }
+
+    .meaning {
+      font-size: 0.85rem;
+    }
+
+    .details {
+      font-size: 0.8rem;
+    }
+
+    .icon-bar {
+      bottom: 8px;
+      right: 8px;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      font-size: 1rem;
+      padding: 5px;
+    }
+  }
+</style>
+
+<header>
+  <a href="https://zarnalhome.odoo.com/" class="back-button">arrow_back_ios</a>
+  <span class="header-title" id="header">Baby Names</span>
+  <label class="theme-switch">
+    <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+    <span class="slider">
+      <span class="material-icons-round light-icon">brightness_7</span>
+      <span class="material-icons-round dark-icon">brightness_4</span>
+    </span>
+  </label>
+</header>
+
+<div class="controls">
+  <div class="search">
+    <input type="text" id="searchInput" placeholder="Search name or meaning...">
+  </div>
+  <div class="filters">
+    <button onclick="filterGender('All')" class="all active"><span>All</span><span class="tooltip">All</span></button>
+    <button onclick="filterGender('Boy')" class="boy"><span>Boy</span><span class="tooltip">Boy</span></button>
+    <button onclick="filterGender('Girl')" class="girl"><span>Girl</span><span class="tooltip">Girl</span></button>
+    <button onclick="filterGender('Unisex')" class="unisex"><span>Unisex</span><span class="tooltip">Unisex</span></button>
+    <button onclick="filterFavorite()" class="favorite"><span class="material-icons-round">favorite</span><span class="label">Favorite</span><span class="tooltip">Favorite</span></button>
+    <button onclick="showRandomName()" class="random"><span class="material-icons-round">shuffle</span><span class="label">Random</span><span class="tooltip">Random</span></button>
+    <button onclick="exportFavorites()" class="export"><span class="material-icons-round">download</span><span class="label">Export</span><span class="tooltip">Export</span></button>
+  </div>
+  <div class="sort">
+    <select id="sortOption">
+      <option value="alpha">Sort Alphabetically</option>
+      <option value="popularity">Sort by Popularity</option>
+    </select>
+  </div>
+</div>
+
+<div class="loader" id="loader"></div>
+<main id="nameList"></main>
+
+<script>
+  const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQhw_i8N41XmZROkyUhHd1mPcx-OO42Zt0SyYbjmeA7f-8Khh1x4IpyN5M2AXQXl4PVmb8azGlxmJGO/pub?gid=626213516&single=true&output=csv';
+  let names = [];
+  let selectedGender = "All";
+  let showFavoritesOnly = false;
+  let sortOption = "alpha";
+  let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  let isFavoritesView = false;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let touchStartTime = 0;
+
+  function updateTheme(gender) {
+    const header = document.getElementById('header');
+    header.textContent = gender === 'Boy' ? 'Boy Names' : gender === 'Girl' ? 'Girl Names' : gender === 'Unisex' ? 'Unisex Names' : showFavoritesOnly || isFavoritesView ? 'Favorite Names' : 'Baby Names';
+    updateExportButtonVisibility();
+  }
+
+  function updateExportButtonVisibility() {
+    const exportBtn = document.querySelector('.filters button.export');
+    exportBtn.classList.toggle('visible', (showFavoritesOnly || isFavoritesView) && favorites.length > 0);
+  }
+
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  async function fetchNames() {
+    const loader = document.getElementById("loader");
+    loader.classList.add("active");
+    try {
+      const response = await fetch(csvUrl);
+      const csvText = await response.text();
+      names = parseCSV(csvText);
+      updateTheme(selectedGender);
+      displayNames();
+    } catch (error) {
+      console.error('Error fetching names:', error);
+      document.getElementById("nameList").innerHTML = `<p style="text-align: center; color: #535355;">Failed to load names.</p>`;
+    } finally {
+      loader.classList.remove("active");
+    }
+  }
+
+  function parseCSV(csvText) {
+    const rows = csvText.split('\n').map(row => row.split(',').map(cell => cell.trim()));
+    const headers = rows[0];
+    return rows.slice(1).map(row => {
+      const obj = {};
+      headers.forEach((header, i) => {
+        obj[header] = row[i] || '';
+      });
+      obj.popularity = parseInt(obj.popularity) || 0;
+      return obj;
+    }).filter(obj => obj.Name && obj.Gender && obj.Meaning);
+  }
+
+  function displayNames() {
+    const container = document.getElementById("nameList");
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const loader = document.getElementById("loader");
+    loader.classList.add("active");
+    container.innerHTML = "";
+
+    setTimeout(() => {
+      let filteredNames = isFavoritesView ? favorites : names;
+      filteredNames = filteredNames.filter(n => {
+        const matchGender = selectedGender === "All" || n.Gender === selectedGender;
+        const matchText = n.Name.toLowerCase().includes(search) || n.Meaning.toLowerCase().includes(search);
+        const matchFavorite = !showFavoritesOnly || favorites.some(f => f.Name === n.Name && f.Gender === n.Gender);
+        return matchGender && matchText && matchFavorite;
+      });
+
+      if (sortOption === "popularity") {
+        filteredNames.sort((a, b) => b.popularity - a.popularity);
+      } else {
+        filteredNames.sort((a, b) => a.Name.localeCompare(b.Name));
+      }
+
+      if (filteredNames.length === 0) {
+        container.innerHTML = `<p style="text-align: center; color: #535355;">No names found.</p>`;
+      } else {
+        filteredNames.forEach(n => {
+          const card = document.createElement("div");
+          card.className = `card ${n.Gender.toLowerCase()}`;
+          const inputId = `copy-${n.Name}-${n.Gender}`;
+          const isFavorited = favorites.some(f => f.Name === n.Name && f.Gender === n.Gender);
+          card.innerHTML = `
+            <div class="icon-bar">
+              <button class="icon-btn material-icons-round ${isFavorited ? 'favorited' : ''}" onclick="toggleFavorite('${n.Name}', '${n.Gender}', '${n.Meaning}', ${n.popularity}, '${n['Starting Letter']}', '${n['Cultural Significance']}', '${n['Astrological Association']}', '${n['Popularity Trend']}', this)">${isFavorited ? 'favorite' : 'favorite_border'}</button>
+              <button class="icon-btn material-icons-round" onclick="copyName('${inputId}', this)">content_copy</button>
+              <button class="icon-btn material-icons-round" onclick="shareName('${n.Name}', '${n.Meaning}')">share</button>
+              <button class="icon-btn material-icons-round" onclick="pronounceName('${n.Name}')">volume_up</button>
+            </div>
+            <div class="tooltip">Copied!</div>
+            <div class="name">${n.Name} ${n.Gender === "Boy" ? "👦" : n.Gender === "Girl" ? "👧" : "🧸"}</div>
+            <div class="meaning">${n.Meaning}</div>
+            <div class="details">
+              <div>Cultural Significance: ${n['Cultural Significance'] || 'N/A'}</div>
+              <div>Astrological Association: ${n['Astrological Association'] || 'N/A'}</div>
+              <div>Popularity Trend: ${n['Popularity Trend'] || 'N/A'}</div>
+            </div>
+            <input type="text" id="${inputId}" value="${n.Name}" style="position:absolute; left:-9999px;" readonly />
+          `;
+          card.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('icon-btn') && !e.target.classList.contains('material-icons-round')) {
+              card.classList.toggle('expanded');
+            }
+          });
+          card.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartTime = Date.now();
+            card.classList.add('touched');
+          });
+          card.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const touchDuration = Date.now() - touchStartTime;
+            card.classList.remove('touched');
+            if (touchDuration > 500 && Math.abs(touchEndX - touchStartX) < 50 && !e.target.classList.contains('icon-btn')) {
+              toggleFavorites();
+            } else if (touchEndX - touchStartX > 100 && !e.target.classList.contains('icon-btn')) {
+              toggleFavorite(n.Name, n.Gender, n.Meaning, n.popularity, n['Starting Letter'], n['Cultural Significance'], n['Astrological Association'], n['Popularity Trend'], card.querySelector('.icon-btn'));
+            }
+          });
+          container.appendChild(card);
+        });
+      }
+      loader.classList.remove("active");
+    }, 300);
+  }
+
+  function filterGender(gender) {
+    selectedGender = gender;
+    showFavoritesOnly = false;
+    isFavoritesView = false;
+    document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
+    event.target.classList.add("active");
+    updateTheme(gender);
+    displayNames();
+  }
+
+  function filterFavorite() {
+    showFavoritesOnly = !showFavoritesOnly;
+    isFavoritesView = false;
+    document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
+    document.querySelector(".filters button.favorite").classList.toggle("active", showFavoritesOnly);
+    if (!showFavoritesOnly) {
+      document.querySelector(".filters button.all").classList.add("active");
+      selectedGender = "All";
+    }
+    updateTheme(selectedGender);
+    displayNames();
+  }
+
+  function copyName(id, btn) {
+    event.stopPropagation();
+    const input = document.getElementById(id);
+    input.select();
+    document.execCommand("copy");
+    const card = btn.closest(".card");
+    card.classList.add("show-tooltip");
+    setTimeout(() => card.classList.remove("show-tooltip"), 1000);
+  }
+
+  function shareName(name, meaning) {
+    event.stopPropagation();
+    const text = `Baby Name: ${name}\nMeaning: ${meaning}`;
+    if (navigator.share) {
+      navigator.share({ title: "Baby Name", text });
+    } else {
+      prompt("Share this name:", text);
+    }
+  }
+
+  function pronounceName(name) {
+    event.stopPropagation();
+    const utterance = new SpeechSynthesisUtterance(name);
+    utterance.lang = "en-US";
+    speechSynthesis.speak(utterance);
+  }
+
+  function toggleFavorite(name, gender, meaning, popularity, startingLetter, culturalSignificance, astrologicalAssociation, popularityTrend, btn) {
+    event.stopPropagation();
+    const favorite = { Name: name, Gender: gender, Meaning: meaning, popularity: popularity, 'Starting Letter': startingLetter, 'Cultural Significance': culturalSignificance, 'Astrological Association': astrologicalAssociation, 'Popularity Trend': popularityTrend };
+    const index = favorites.findIndex(f => f.Name === name && f.Gender === gender);
+    if (index === -1) {
+      favorites.push(favorite);
+      btn.innerHTML = 'favorite';
+      btn.classList.add("favorited");
+    } else {
+      favorites.splice(index, 1);
+      btn.innerHTML = 'favorite_border';
+      btn.classList.remove("favorited");
+    }
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    if (showFavoritesOnly || isFavoritesView) displayNames();
+    updateExportButtonVisibility();
+  }
+
+  function toggleFavorites() {
+    isFavoritesView = !isFavoritesView;
+    showFavoritesOnly = false;
+    selectedGender = "All";
+    document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
+    document.querySelector(".filters button.all").classList.add("active");
+    updateTheme(selectedGender);
+    displayNames();
+  }
+
+  function exportFavorites() {
+    event.stopPropagation();
+    if (favorites.length === 0) {
+      alert("No favorites to export!");
+      return;
+    }
+    const text = favorites.map(f => `${f.Name} (${f.Gender})\nMeaning: ${f.Meaning}\nCultural Significance: ${f['Cultural Significance'] || 'N/A'}\nAstrological Association: ${f['Astrological Association'] || 'N/A'}\nPopularity Trend: ${f['Popularity Trend'] || 'N/A'}\n`).join("\n");
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "favorite_baby_names.txt";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function showRandomName() {
+    event.stopPropagation();
+    const filteredNames = (isFavoritesView || showFavoritesOnly ? favorites : names).filter(n => {
+      const matchGender = selectedGender === "All" || n.Gender === selectedGender;
+      return matchGender;
+    });
+    if (filteredNames.length === 0) {
+      alert("No names match the current filters!");
+      return;
+    }
+    const randomName = filteredNames[Math.floor(Math.random() * filteredNames.length)];
+    document.getElementById("searchInput").value = randomName.Name;
+    displayNames();
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle("dark");
+    const isDark = document.body.classList.contains("dark");
+    document.getElementById("themeToggle").checked = isDark;
+    localStorage.setItem("darkMode", isDark);
+  }
+
+  document.getElementById("searchInput").addEventListener("input", debounce(displayNames, 500));
+  document.getElementById("sortOption").addEventListener("change", function() {
+    sortOption = this.value;
+    displayNames();
+  });
+
+  if (localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark");
+    document.getElementById("themeToggle").checked = true;
+  }
+
+  fetchNames();
+</script>
