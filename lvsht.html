@@ -26,6 +26,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 .counter{position:fixed;z-index:8;right:15px;bottom:calc(env(safe-area-inset-bottom) + 24px);padding:9px 12px;border-radius:999px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(16px);font-size:12px;font-variant-numeric:tabular-nums;color:#fff;pointer-events:none}
 .hint{position:fixed;z-index:8;left:50%;bottom:calc(env(safe-area-inset-bottom) + 22px);transform:translateX(-50%);display:flex;align-items:center;gap:7px;padding:9px 13px;border-radius:999px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(16px);color:rgba(255,255,255,.88);font-size:11px;white-space:nowrap;pointer-events:none;animation:hint 2.8s ease-in-out 2}
 @keyframes hint{0%,100%{opacity:.35;transform:translate(-50%,5px)}45%{opacity:1;transform:translate(-50%,0)}}
+.sound-prompt{position:fixed;z-index:12;left:50%;top:50%;transform:translate(-50%,-50%);padding:14px 20px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(20,18,25,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);color:#fff;font:600 14px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;box-shadow:0 10px 36px rgba(0,0,0,.35);cursor:pointer}.sound-prompt:active{transform:translate(-50%,-50%) scale(.96)}
 .reel-link{position:absolute;z-index:3;bottom:calc(env(safe-area-inset-bottom) + 72px);left:16px;color:#fff;text-decoration:none;font-size:12px;text-shadow:0 2px 12px #000;opacity:.82}
 .reel-link:focus-visible,.pill:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
 @media(min-width:700px){.reel{background:#08080b}.video-frame iframe{width:min(100vw,56.25vh);height:min(100vh,177.78vw);max-width:480px;max-height:854px}.topbar{left:24px;right:24px}.counter{right:24px}}
@@ -46,6 +47,7 @@ const videos = ["jYTzeGuToPM","8B9QFnpjw58","1yOj1G2noPE","_HDsVbalb0o","iK6x_ud
 const feed = document.getElementById('feed');
 const counter = document.getElementById('counter');
 const hint = document.getElementById('hint');
+let soundEnabled = false;
 let activeIndex = -1;
 let theme = 'dark';
 
@@ -76,7 +78,7 @@ function activate(index) {
   iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
   iframe.allowFullscreen = true;
   iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-  iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(videos[index]) + '?autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1';
+  iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(videos[index]) + '?autoplay=1&mute=0&playsinline=1&controls=1&rel=0&modestbranding=1';
   iframe.addEventListener('load', () => { if (loading) loading.hidden = true; }, {once:true});
   frame.appendChild(iframe);
   counter.textContent = String(index + 1).padStart(2,'0') + ' / ' + String(videos.length).padStart(2,'0');
@@ -98,6 +100,24 @@ document.getElementById('themeBtn').addEventListener('click', () => {
   document.getElementById('themeBtn').innerHTML = theme === 'dark' ? '☾ <span>Night</span>' : '☀ <span>Day</span>';
   document.documentElement.style.setProperty('--glass', theme === 'dark' ? 'rgba(20,18,25,.52)' : 'rgba(255,255,255,.24)');
 });
+// If the browser blocks autoplay with audio, a deliberate tap retries playback with sound.
+const soundPrompt = document.createElement('button');
+soundPrompt.type = 'button';
+soundPrompt.className = 'sound-prompt';
+soundPrompt.textContent = '▶  Tap to play with sound';
+soundPrompt.setAttribute('aria-label', 'Tap to play the video with sound');
+document.body.appendChild(soundPrompt);
+soundPrompt.addEventListener('click', () => {
+  soundEnabled = true;
+  soundPrompt.remove();
+  const slide = feed.children[activeIndex];
+  if (!slide) return;
+  const iframe = slide.querySelector('iframe');
+  if (iframe) {
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(videos[activeIndex]) + '?autoplay=1&mute=0&playsinline=1&controls=1&rel=0&modestbranding=1';
+  }
+});
+
 feed.addEventListener('scroll', () => {
   if (feed.scrollTop < 30) hint.style.display = 'flex';
 }, {passive:true});
