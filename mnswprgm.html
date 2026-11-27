@@ -1,0 +1,451 @@
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Romantic Minesweeper Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --background: linear-gradient(135deg, #ffe6f0 0%, #e6ccff 100%);
+            --text-color: #4a2e4a;
+            --square-bg: #fff5f8;
+            --square-revealed-bg: #f0d9e6;
+            --square-shadow: 0 4px 8px rgba(74, 46, 74, 0.2);
+            --square-hover-shadow: 0 8px 16px rgba(74, 46, 74, 0.3);
+            --button-bg: linear-gradient(145deg, #ff99cc, #cc6699);
+            --button-hover-bg: linear-gradient(145deg, #cc6699, #b34780);
+            --button-shadow: 0 6px 12px rgba(74, 46, 74, 0.2);
+            --button-hover-shadow: 0 8px 16px rgba(74, 46, 74, 0.3);
+            --focus-ring: rgba(255, 153, 204, 0.3);
+            --game-over-bg: rgba(74, 46, 74, 0.9);
+            --win-bg: rgba(255, 153, 204, 0.9);
+            --square-size: calc(14vw);
+            --grid-gap: calc(2vw);
+            --font-size-large: calc(1.5rem + 1vw);
+            --font-size-medium: calc(1rem + 0.5vw);
+            --font-size-small: calc(0.8rem + 0.3vw);
+            --button-padding: calc(10px + 1vw);
+            --button-min-size: 40px; /* Minimum size for buttons */
+        }
+
+        [data-theme="dark"] {
+            --background: linear-gradient(135deg, #4a2e4a 0%, #3b2e5c 100%);
+            --text-color: #f0e6f0;
+            --square-bg: #5c3d5c;
+            --square-revealed-bg: #704a70;
+            --square-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            --square-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            --button-bg: linear-gradient(145deg, #cc6699, #994d7a);
+            --button-hover-bg: linear-gradient(145deg, #994d7a, #803d66);
+            --button-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+            --button-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            --focus-ring: rgba(204, 102, 153, 0.3);
+            --game-over-bg: rgba(40, 25, 40, 0.9);
+            --win-bg: rgba(204, 102, 153, 0.9);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: var(--background);
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
+            padding: 10px;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+            z-index: -1;
+            filter: blur(50px);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 500px;
+            padding: 10px 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            margin-top: calc(60px + 3vw); /* Reduced margin for mobile */
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(48px, var(--square-size)));
+            gap: var(--grid-gap);
+            margin-bottom: 15px; /* Reduced margin */
+            width: 100%;
+            justify-content: center;
+        }
+
+        .square {
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%; /* Maintain square aspect ratio */
+            background: var(--square-bg);
+            box-shadow: var(--square-shadow);
+            border-radius: 6px; /* Slightly smaller radius */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 1;
+            transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+            position: relative;
+        }
+
+        .square i {
+            font-size: calc(var(--square-size) * 0.5); /* Icon scales with square */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Perfect centering */
+        }
+
+        .square.revealed {
+            background: var(--square-revealed-bg);
+            opacity: 1;
+        }
+
+        .square.revealed.heart {
+            color: #ff6699;
+        }
+
+        .square.revealed.devil {
+            color: #b34780;
+        }
+
+        .square.fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .square.scale-up {
+            animation: scaleUp 0.5s ease-in;
+        }
+
+        .square.rotate {
+            animation: rotateIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes rotateIn {
+            from { opacity: 0; transform: rotate(45deg); }
+            to { opacity: 1; transform: rotate(0deg); }
+        }
+
+        button {
+            padding: calc(var(--button-padding) * 0.8); /* Reduced padding */
+            font-size: var(--font-size-small);
+            border: none;
+            border-radius: 20px; /* Smaller radius */
+            background: var(--button-bg);
+            color: #ffffff;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: var(--button-shadow);
+            outline: none;
+            min-width: var(--button-min-size);
+            min-height: var(--button-min-size);
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        button:hover {
+            background: var(--button-hover-bg);
+            transform: scale(1.05);
+            box-shadow: var(--button-hover-shadow);
+        }
+
+        button:focus {
+            box-shadow: 0 0 0 3px var(--focus-ring);
+        }
+
+        .theme-toggle, .back-button {
+            background: none;
+            box-shadow: none;
+            font-size: calc(var(--font-size-small) * 1.2); /* Slightly smaller */
+            padding: 6px; /* Reduced padding */
+            width: var(--button-min-size);
+            height: var(--button-min-size);
+            border-radius: 50%; /* Circular buttons */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle i, .back-button i {
+            color: var(--text-color);
+        }
+
+        .theme-toggle:hover, .back-button:hover {
+            background: rgba(255, 153, 204, 0.2); /* Subtle hover effect */
+            transform: scale(1.1);
+            box-shadow: none;
+        }
+
+        .game-over, .game-won {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #f0e6f0;
+            font-size: var(--font-size-large);
+            font-style: italic;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+            padding: 15px; /* Reduced padding */
+            text-align: center;
+        }
+
+        .game-over {
+            background: var(--game-over-bg);
+        }
+
+        .game-won {
+            background: var(--win-bg);
+        }
+
+        .game-over.show, .game-won.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .game-over button, .game-won button {
+            margin-top: 15px; /* Reduced margin */
+            padding: calc(var(--button-padding) * 0.9); /* Adjusted padding */
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --square-size: calc(12vw);
+                --grid-gap: calc(1.5vw);
+                --font-size-large: calc(1.2rem + 1vw);
+                --font-size-medium: calc(0.9rem + 0.4vw);
+                --font-size-small: calc(0.7rem + 0.3vw);
+                --button-padding: calc(8px + 0.8vw);
+                --button-min-size: 35px; /* Smaller buttons on medium screens */
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px; /* Reduced gap */
+            }
+
+            .game-container {
+                margin-top: calc(70px + 3vw);
+            }
+
+            .square i {
+                font-size: calc(var(--square-size) * 0.45);
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --square-size: calc(11vw);
+                --grid-gap: calc(1vw);
+                --font-size-large: calc(1rem + 1vw);
+                --font-size-medium: calc(0.8rem + 0.3vw);
+                --font-size-small: calc(0.6rem + 0.3vw);
+                --button-padding: calc(6px + 0.6vw);
+                --button-min-size: 30px; /* Even smaller on small screens */
+            }
+
+            .button-container {
+                gap: 8px; /* Further reduced gap */
+            }
+
+            .game-container {
+                margin-top: calc(80px + 3vw);
+            }
+
+            .square i {
+                font-size: calc(var(--square-size) * 0.4); /* Adjusted for smaller screens */
+            }
+
+            button {
+                padding: calc(var(--button-padding) * 0.7); /* Further reduced padding */
+            }
+
+            .theme-toggle, .back-button {
+                padding: 4px; /* Smaller padding for icons */
+            }
+        }
+
+        @media (min-width: 1200px) {
+            :root {
+                --square-size: 70px;
+                --grid-gap: 12px;
+                --font-size-large: 2.2rem;
+                --font-size-medium: 1.6rem;
+                --font-size-small: 1.1rem;
+            }
+        }
+    </style>
+
+    <div class="button-container">
+        <button class="back-button" onclick="goBack()">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+    </div>
+    <div class="game-container">
+        <div class="grid" id="grid"></div>
+    </div>
+    <div class="game-over" id="gameOver">
+        <div>Game Over, My Love</div>
+        <button onclick="resetGame()">Try Again</button>
+    </div>
+    <div class="game-won" id="gameWon">
+        <div>You Won, My Heart!</div>
+        <button onclick="resetGame()">Play Again</button>
+    </div>
+    <script>
+        const grid = document.getElementById('grid');
+        const gameOverScreen = document.getElementById('gameOver');
+        const gameWonScreen = document.getElementById('gameWon');
+        const animations = ['fade-in', 'scale-up', 'rotate'];
+        let board = [];
+        let revealedSquares = 0;
+        const totalSquares = 25;
+        const devilCount = 5;
+
+        // Initialize the game board
+        function initBoard() {
+            board = [];
+            revealedSquares = 0;
+            grid.innerHTML = '';
+            for (let i = 0; i < totalSquares; i++) {
+                board.push({ isDevil: false, revealed: false });
+            }
+            let devilsPlaced = 0;
+            while (devilsPlaced < devilCount) {
+                const index = Math.floor(Math.random() * totalSquares);
+                if (!board[index].isDevil) {
+                    board[index].isDevil = true;
+                    devilsPlaced++;
+                }
+            }
+            for (let i = 0; i < totalSquares; i++) {
+                const square = document.createElement('div');
+                square.classList.add('square');
+                square.dataset.index = i;
+                square.addEventListener('click', () => revealSquare(i));
+                grid.appendChild(square);
+            }
+        }
+
+        // Reveal a square
+        function revealSquare(index) {
+            if (board[index].revealed) return;
+            board[index].revealed = true;
+            revealedSquares++;
+            const square = grid.children[index];
+            const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+            square.classList.add('revealed', randomAnimation);
+            if (board[index].isDevil) {
+                square.innerHTML = '<i class="fa-solid fa-skull"></i>';
+                square.classList.add('devil');
+                endGame();
+            } else {
+                square.innerHTML = '<i class="fa-solid fa-heart"></i>';
+                square.classList.add('heart');
+                checkWin();
+            }
+        }
+
+        // End the game
+        function endGame() {
+            gameOverScreen.classList.add('show');
+            board.forEach((cell, index) => {
+                if (cell.isDevil && !cell.revealed) {
+                    const square = grid.children[index];
+                    square.classList.add('revealed', 'devil');
+                    square.innerHTML = '<i class="fa-solid fa-skull"></i>';
+                }
+            });
+        }
+
+        // Check for win condition
+        function checkWin() {
+            if (revealedSquares === totalSquares - devilCount) {
+                gameWonScreen.classList.add('show');
+            }
+        }
+
+        // Reset the game
+        function resetGame() {
+            gameOverScreen.classList.remove('show');
+            gameWonScreen.classList.remove('show');
+            initBoard();
+        }
+
+        // Go back to previous page
+        function goBack() {
+            window.history.back();
+        }
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const currentTheme = body.getAttribute('data-theme');
+
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.className = 'fa-solid fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize game and load saved theme
+        document.addEventListener('DOMContentLoaded', () => {
+            initBoard();
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+            }
+        });
+    </script>
