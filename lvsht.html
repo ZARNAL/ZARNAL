@@ -431,14 +431,54 @@
 </div>
 
 <script>
-    // Load YouTube IFrame API
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // Shorts are embedded directly from the supplied dataset (no spreadsheet dependency).
+    const embeddedShorts = [
+    "https://youtube.com/shorts/jYTzeGuToPM",
+    "https://youtube.com/shorts/8B9QFnpjw58",
+    "https://youtube.com/shorts/1yOj1G2noPE",
+    "https://youtube.com/shorts/_HDsVbalb0o",
+    "https://youtube.com/shorts/iK6x_ud-NNI",
+    "https://youtube.com/shorts/zpjn8uPbAhw",
+    "https://youtube.com/shorts/r-vGytfjGVE",
+    "https://youtube.com/shorts/GNuIfXfmb7A",
+    "https://youtube.com/shorts/wO2FX8nXGWo",
+    "https://youtube.com/shorts/067r2yjkRxM",
+    "https://youtube.com/shorts/rmCXKwq7YxQ",
+    "https://youtube.com/shorts/k1zjLQGsyG4",
+    "https://youtube.com/shorts/WLIJ4Hpb0ko",
+    "https://youtube.com/shorts/Em_oNYkDiYw",
+    "https://youtube.com/shorts/x4TFi_9tvWQ",
+    "https://youtube.com/shorts/qRmg2a90QgU",
+    "https://youtube.com/shorts/Lmtdr1QKMms",
+    "https://youtube.com/shorts/9_UNsvtRJSA",
+    "https://youtube.com/shorts/oEkJZozYkbY",
+    "https://youtube.com/shorts/Airm4b2V0rc",
+    "https://youtube.com/shorts/rdn1zzgXxFw",
+    "https://youtube.com/shorts/9_N9CYLB_FE",
+    "https://youtube.com/shorts/q-hvHek0kp4",
+    "https://youtube.com/shorts/hw3Yc00Av00",
+    "https://youtube.com/shorts/ujONA2l8fzA",
+    "https://youtube.com/shorts/AOuqfaL51aU",
+    "https://youtube.com/shorts/uG1ng_fgWJg",
+    "https://youtube.com/shorts/pPUxeueDDGU",
+    "https://youtube.com/shorts/otDKoAksil0",
+    "https://youtube.com/shorts/3xVnkyAz5fI",
+    "https://youtube.com/shorts/uBqGSgvjUD0",
+    "https://youtube.com/shorts/GpGaht3exVk",
+    "https://youtube.com/shorts/qg98Y6a23mQ",
+    "https://youtube.com/shorts/5ueh0cM0Oz0",
+    "https://youtube.com/shorts/YKj_Lur9rmY",
+    "https://youtube.com/shorts/gMSvsY6zqYo",
+    "https://youtube.com/shorts/qykpmPnavtk",
+    "https://youtube.com/shorts/bfT5PFRjLUw",
+    "https://youtube.com/shorts/6oG21hDEb2I",
+    "https://youtube.com/shorts/px1Zv8LKZ0k",
+    "https://youtube.com/shorts/Lve_XmvmWHw"
+];
+    let apiReady = false;
 
     // Global variables
-    let urls = [];
+    let urls = embeddedShorts.slice();
     let currentIndex = 0;
     let players = [];
     let heartInterval = null;
@@ -481,29 +521,15 @@
         }
     }
 
-    // Fetch URLs from Google Sheets CSV
-    async function fetchShortsUrls() {
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQhw_i8N41XmZROkyUhHd1mPcx-OO42Zt0SyYbjmeA7f-8Khh1x4IpyN5M2AXQXl4PVmb8azGlxmJGO/pub?gid=523903097&single=true&output=csv';
+    // Load from the locally embedded list; no network data fetch required.
+    function fetchShortsUrls() {
         const loadingOverlay = document.getElementById('loading-overlay');
-        try {
-            const response = await fetch(csvUrl, { cache: 'default' });
-            if (!response.ok) throw new Error('Failed to fetch CSV data');
-            const csvText = await response.text();
-            urls = csvText.split('\n')
-                .map(row => row.trim())
-                .filter(url => url && url.match(/https?:\/\/(www\.)?(youtube\.com|youtu\.be)/))
-                .slice(0, 20);
-            if (urls.length === 0) {
-                document.getElementById('shorts-container').innerHTML = '<p class="error">No romantic Shorts found.</p>';
-                loadingOverlay.classList.add('hidden');
-                return;
-            }
-            setupVideos();
-        } catch (error) {
-            console.error('Error fetching URLs:', error);
-            document.getElementById('shorts-container').innerHTML = '<p class="error">Unable to load Shorts. Try again later.</p>';
+        if (!urls.length) {
+            document.getElementById('shorts-container').innerHTML = '<p class="error">No romantic Shorts found.</p>';
             loadingOverlay.classList.add('hidden');
+            return;
         }
+        if (apiReady) setupVideos();
     }
 
     // Setup video cards
@@ -707,13 +733,13 @@
         } else {
             backgroundWrapper.style.background = 'linear-gradient(135deg, #ffe4e9 0%, #f4c4d2 100%)';
         }
-        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        try { localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light'); } catch (_) {}
     }
 
     // Initialize
     window.onload = () => {
         console.log('Page loading started');
-        const savedTheme = localStorage.getItem('theme');
+        let savedTheme = 'light';\n        try { savedTheme = localStorage.getItem('theme') || 'light'; } catch (_) {}
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
             document.getElementById('theme-switch').checked = true;
