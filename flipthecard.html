@@ -450,7 +450,7 @@
     
         <div class="heart-bg" id="heart-bg"></div>
         <canvas id="confetti"></canvas>
-        <button id="back" data-tooltip="Back to Home" aria-label="Back to Home">Back</button>
+        <button id="back" type="button" data-tooltip="Back to Fun" aria-label="Back to Fun" onclick="window.location.assign('https://zarnal.github.io/ZARNAL/fun.html')">Back</button>
         <div class="container">
             <h1>Love Quest Cards <span style="color: #ff3b6f">❤️</span></h1>
             <div class="dark-mode-toggle">
@@ -692,10 +692,6 @@
                 document.body.classList.toggle('dark-mode');
                 toggleKnob.classList.add('animate');
                 setTimeout(() => toggleKnob.classList.remove('animate'), 400);
-            });
-
-            backButton.addEventListener('click', () => {
-                window.top.location.href = 'https://zarnal.github.io/ZARNAL/fun.html';
             });
 
             // Initialize saved state
