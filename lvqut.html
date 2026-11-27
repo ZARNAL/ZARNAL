@@ -335,8 +335,10 @@
 
     <script>
         // State
-        let quotes = [];
-        let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        const embeddedQuotes = [{"language":"English","quote":"You had me at hello 😘"},{"language":"English","quote":"Is your name Wi-Fi? I’m feeling a connection 📶"},{"language":"English","quote":"Do you have a map? I’m lost in your eyes 🗺️"},{"language":"English","quote":"If I could rearrange the alphabet, I’d put U and I together 🔠"},{"language":"English","quote":"Are you a magician? Everyone disappears when you’re around ✨"},{"language":"English","quote":"Is it hot in here, or is it just you? 🔥"},{"language":"English","quote":"I’m not a photographer, but I picture us together 📸"},{"language":"English","quote":"Your smile’s a black hole, pulling me in 🌌"},{"language":"English","quote":"Love at first sight, or should I walk by again? 😍"},{"language":"English","quote":"If I were a cat, I’d spend all nine lives with you 🐾"},{"language":"English","quote":"You’ve been running through my mind all day 🏃‍♂️"},{"language":"English","quote":"Are you French? Because *Eiffel* for you 🗼"},{"language":"English","quote":"I’m a snowflake, and I’ve fallen for you ❄️"},{"language":"English","quote":"Your eyes are an ocean, I’m lost at sea 🌊"},{"language":"English","quote":"Is your heart a prison? I’m ready to be locked up 🔒"},{"language":"English","quote":"You’re a dictionary, adding meaning to my life 📖"},{"language":"English","quote":"If you were a vegetable, you’d be a *cute-cumber* 🥒"},{"language":"English","quote":"I’m no mathematician, but I can add us together ➕"},{"language":"English","quote":"Are you a star? You light up my night 🌟"},{"language":"English","quote":"My heart says it’s you or nobody 💖"},{"language":"English","quote":"Got a Band-Aid? I scraped my knee falling for you 🩹"},{"language":"English","quote":"You’re a thief, you stole my heart 💰"},{"language":"English","quote":"If kisses were snowflakes, I’d send a blizzard ❄️"},{"language":"English","quote":"Are you an angel? Heaven’s missing one 😇"},{"language":"English","quote":"I’d never play chess with you; I’d hate to check you ♟️"},{"language":"English","quote":"Your name’s Google? You’re everything I search for 🔍"},{"language":"English","quote":"I’m not drunk, just intoxicated by you 🍷"},{"language":"English","quote":"You’re so sweet, you’re giving me a toothache 🍬"},{"language":"English","quote":"A star for every thought of you? I’d have a galaxy 🌠"},{"language":"English","quote":"Are you a loan? You’ve got my interest 💸"},{"language":"English","quote":"Your smile wakes me up, no coffee needed ☕"},{"language":"English","quote":"You’re the spark my heart’s been waiting for ⚡️"},{"language":"English","quote":"If love’s a crime, I’d serve life for you 🚨"},{"language":"English","quote":"You’re my favorite distraction 😜"},{"language":"English","quote":"Is your heart a museum? It’s a work of art 🎨"},{"language":"English","quote":"You’re a melody stuck in my head 🎶"},{"language":"English","quote":"My heart’s GPS leads to you 📍"},{"language":"English","quote":"You’re a sparkler in my dull world 🎇"},{"language":"English","quote":"Are you a book? I can’t stop reading you 📚"},{"language":"English","quote":"Your laugh’s my favorite song 🎵"},{"language":"English","quote":"I’d climb mountains just for your smile 🏔️"},{"language":"English","quote":"You’re the cherry on my sundae 🍒"},{"language":"English","quote":"My heart’s a puzzle, you’re the missing piece 🧩"},{"language":"English","quote":"You’re a sunrise in my darkest days 🌅"},{"language":"English","quote":"Are you a dream? I don’t want to wake up 😴"},{"language":"English","quote":"Your eyes twinkle brighter than stars ✨"},{"language":"English","quote":"I’d pause my game for you 🎮"},{"language":"English","quote":"You’re the sugar in my tea 🍵"},{"language":"English","quote":"My heart beats your name 🥁"},{"language":"English","quote":"You’re my happy ending 📖"},{"language":"Hindi","quote":"Tumhari muskaan meri duniya roshan karti hai 😊"},{"language":"Hindi","quote":"Kya tum Wi-Fi ho? Mujhe connection lag raha hai 📶"},{"language":"Hindi","quote":"Tumhari aankhon mein doob jana chahta hoon 🌊"},{"language":"Hindi","quote":"Dil se dil ka safar tumse shuru hota hai 💖"},{"language":"Hindi","quote":"Tum mere dil ka password ho 🔒"},{"language":"Hindi","quote":"Kya tum jadoogar ho? Sab gayab ho jate hain ✨"},{"language":"Hindi","quote":"Tum itni sundar ho, dil sambhalta nahi 😍"},{"language":"Hindi","quote":"Teri ek ada pe main fida ho gaya 😘"},{"language":"Hindi","quote":"Tum meri subah ki wajah ho ☀️"},{"language":"Hindi","quote":"Kya tum chand se utri ho? Itni chamak! 🌙"},{"language":"Hindi","quote":"Tera naam meri har dua mein hai 🙏"},{"language":"Hindi","quote":"Tum meri dhadkan ban gaye ho ❤️"},{"language":"Hindi","quote":"Ek muskaan de do, dil free mein le lo 😜"},{"language":"Hindi","quote":"Tumhari aankhein samundar, main tairna nahi janta 🌊"},{"language":"Hindi","quote":"Tera chehra kitna pyara, dil harta hai 😊"},{"language":"Hindi","quote":"Tum meri sapno ki shehzadi ho 👑"},{"language":"Hindi","quote":"Dil ka button sirf tum dabati ho 🎛️"},{"language":"Hindi","quote":"Tum meri zindagi ka Wi-Fi ho 📡"},{"language":"Hindi","quote":"Teri baaton mein jadoo, dil chura leti ho 🪄"},{"language":"Hindi","quote":"Tum chhoti si baat, meri badi wajah ho 💞"},{"language":"Hindi","quote":"Tera hasna meri zindagi ka playlist hai 🎶"},{"language":"Hindi","quote":"Tum meri coffee, subah tumse shuru hoti hai ☕"},{"language":"Hindi","quote":"Teri jhalak se dil ka current lagta hai ⚡️"},{"language":"Hindi","quote":"Tum meri love story ka hero/heroine ho 🎬"},{"language":"Hindi","quote":"Tera naam meri saans mein hai 🌬️"},{"language":"Hindi","quote":"Tum mere dil ka Google ho 🔍"},{"language":"Hindi","quote":"Teri muskaan meri battery charge karti hai 🔋"},{"language":"Hindi","quote":"Tum mere dil ke VIP ho 🎟️"},{"language":"Hindi","quote":"Teri baatein meri zindagi ka music hain 🎵"},{"language":"Hindi","quote":"Tum se har din Valentine’s Day hai 💝"},{"language":"Hindi","quote":"Tera chehra meri zindagi ka wallpaper hai 🖼️"},{"language":"Hindi","quote":"Tum meri zindagi ka ek hi solution ho 🧩"},{"language":"Hindi","quote":"Teri aankhon ka nasha chadh gaya hai 🍷"},{"language":"Hindi","quote":"Tum meri wajah se dil dhadakta hai 🥁"},{"language":"Hindi","quote":"Teri ek smile meri duniya badal deti hai 🌍"},{"language":"Hindi","quote":"Tum meri zindagi ki selfie ho 📸"},{"language":"Hindi","quote":"Tera naam meri har khushi ka raaz hai 😊"},{"language":"Hindi","quote":"Tum mere dil ka trending topic ho 📈"},{"language":"Hindi","quote":"Teri baaton se dil ka signal full ho jata hai 📡"},{"language":"Hindi","quote":"Tum meri zindagi ka filter ho, sab sundar lagta hai 🖌️"},{"language":"Hindi","quote":"Teri aankhein meri favorite story hain 📖"},{"language":"Hindi","quote":"Tum mere dil ka screenshot ho 📷"},{"language":"Hindi","quote":"Tera hasna meri zindagi ka highlight hai 🌟"},{"language":"Hindi","quote":"Tum meri wajah se har pal pyara hai ⏰"},{"language":"Hindi","quote":"Teri muskaan meri zindagi ka emoji hai 😊"},{"language":"Hindi","quote":"Tum mere dil ka notification ho 🔔"},{"language":"Hindi","quote":"Teri baatein meri zindagi ka status hain 📱"},{"language":"Hindi","quote":"Tum meri zindagi ka perfect shot ho 🎥"},{"language":"Hindi","quote":"Tera chehra meri har dua ka jawab hai 🙏"},{"language":"Hindi","quote":"Tum mere dil kaVol forever hashtag ho #️⃣"}];
+        let quotes = embeddedQuotes.slice();
+        let favorites = [];
+        try { favorites = JSON.parse(localStorage.getItem('favorites') || '[]') || []; } catch (e) { favorites = []; }
         let showFavorites = false;
 
         // DOM Elements
@@ -382,7 +384,7 @@
 
         // Load initial dark mode state
         window.onload = () => {
-            const savedTheme = localStorage.getItem('darkMode');
+            const savedTheme = (() => { try { return localStorage.getItem('darkMode'); } catch (e) { return null; } })();
             const backgroundWrapper = document.querySelector('.background-wrapper');
             if (savedTheme === 'true') {
                 document.body.classList.add('dark');
@@ -391,7 +393,7 @@
             } else {
                 backgroundWrapper.style.background = 'linear-gradient(135deg, #ff9a9e, #fad0c4)';
             }
-            fetchQuotes();
+            renderQuotes();
         };
 
         // Render quotes
@@ -485,26 +487,7 @@
             });
         }
 
-        // Fetch quotes
-        async function fetchQuotes() {
-            try {
-                const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQhw_i8N41XmZROkyUhHd1mPcx-OO42Zt0SyYbjmeA7f-8Khh1x4IpyN5M2AXQXl4PVmb8azGlxmJGO/pub?gid=783666004&single=true&output=csv');
-                if (!response.ok) throw new Error('Failed to fetch quotes');
-                const data = await response.text();
-                const rows = data.split('\n').slice(1);
-                quotes = rows.map(row => {
-                    const [language, quote] = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                    return {
-                        language: language.trim(),
-                        quote: quote?.replace(/^"|"$/g, '').trim()
-                    };
-                }).filter(q => q.language && q.quote);
-                renderQuotes();
-            } catch (err) {
-                console.error('Fetch error:', err);
-                quotesContainer.innerHTML = '<p class="text-center" style="color: #e91e63">Failed to load quotes. Please try again later.</p>';
-            }
-        }
+        // All quotes are embedded in this HTML; no external sheet/API request is needed.
 
         // Event listeners
         searchInput.addEventListener('input', renderQuotes);
@@ -515,7 +498,6 @@
             renderQuotes();
         });
         themeToggle.addEventListener('click', toggleDarkMode);
-
-        // Initialize
-        fetchQuotes();
-    </script>
+        // Initialize from embedded quote data
+        renderQuotes();
+</script>
