@@ -1,0 +1,339 @@
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍎 Emoji Picker</title>
+  <style>
+    :root {
+      --bg: #f9f9f9;
+      --text: #222;
+      --emoji-bg: #fff;
+      --emoji-hover: #e0f0ff;
+      --copied-bg: #c7f9cc;
+      --notification-bg: #111;
+    }
+
+    body.dark {
+      --bg: #1e1e1e;
+      --text: #f2f2f2;
+      --emoji-bg: #2a2a2a;
+      --emoji-hover: #333;
+      --copied-bg: #2e7d32;
+      --notification-bg: #fff;
+    }
+
+    body {
+      margin: 0;
+      padding: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+a.back-btn:hover {
+    background: var(--light-hover);
+  }
+
+  .material-icons {
+    font-size: 24px;
+    color: var(--primary);
+  }
+
+  .controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mode-lang {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.3rem;
+      color: var(--text);
+    }
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+      gap: 12px;
+      margin-top: 1rem;
+    }
+
+    .emoji {
+      font-size: 1.8rem;
+      background: var(--emoji-bg);
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .emoji:hover {
+      transform: scale(1.15);
+      background: var(--emoji-hover);
+    }
+
+    .emoji.copied {
+      background-color: var(--copied-bg) !important;
+    }
+
+    #notification {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--notification-bg);
+      color: var(--bg);
+      padding: 10px 20px;
+      border-radius: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+      z-index: 9999;
+      font-size: 1rem;
+    }
+
+    #notification.show {
+      opacity: 1;
+    }
+
+    /* Apple-style toggle switch */
+    .switch-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.3s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "🌙";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.3s;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    input:checked + .slider {
+      background-color: #4CAF50;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+      content: "☀️";
+    }
+
+    @media (max-width: 600px) {
+      .emoji {
+        font-size: 1.5rem;
+        padding: 10px;
+      }
+    }
+  </style>
+
+
+
+  
+  <div class="switch-container">
+    <label class="switch">
+      <input type="checkbox" id="darkToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+<a href="https://zarnalhome.odoo.com/" class="back-btn">
+  <span class="material-icons"> &lt; </span>
+</a>
+  <h1>🍎 Emoji Picker</h1>
+  <div id="emoji-section"></div>
+  <div id="notification">✅ Copied 🍓</div>
+
+  <script>
+    const emojiCategories = {
+      'Fruits': "🍇 🍈 🍉 🍊 🍋 🍋‍🟩 🍌 🍍 🥭 🍎 🍏 🍐 🍑 🍒 🍓 🫐 🥝 🍅 🫒 🥥",
+      'Vegetables': "🥑 🍆 🥔 🥕 🌽 🌶️ 🫑 🥒 🥬 🥦 🧄 🧅 🥜 🫘 🌰 🫚 🫛 🫜 🍄‍🟫",
+      'Prepared Foods': "🍞 🥐 🥖 🫓 🥨 🥯 🥞 🧇 🧀 🍖 🍗 🥩 🥓 🍔 🍟 🍕 🌭 🥪 🌮 🌯 🫔 🥙 🧆 🥚 🍳 🥘 🍲 🫕 🥣 🥗 🍿 🧈 🧂 🥫 🍝",
+      'Asian Foods': "🍱 🍘 🍙 🍚 🍛 🍜 🍠 🍢 🍣 🍤 🍥 🥮 🍡 🥟 🥠 🥡",
+      'Sweets & Desserts': "🍦 🍧 🍨 🍩 🍪 🎂 🍰 🧁 🥧 🍫 🍬 🍭 🍮 🍯",
+      'Drinks & Dishware': "🍼 🥛 ☕ 🫖 🍵 🍶 🍾 🍷 🍸 🍹 🍺 🍻 🥂 🥃 🫗 🥤 🧋 🧃 🧉 🥢 🍽️ 🍴 🥄 🔪 🫙 🏺",
+      "Mammals & Marsupials": `🐵 🐒 🦍 🦧 🐶 🐕 🦮 🐕‍🦺 🐩 🐺 🦊 🦝 🐱 🐈 🐈‍⬛ 🦁 🐯 🐅 🐆 🐴 🫎 🫏 🐎 🦄 🦓 🦌 🦬 🐮 🐂 🐃 🐄 🐷 🐖 🐗 🐽 🐏 🐑 🐐 🐪 🐫 🦙 🦒 🐘 🦣 🦏 🦛 🐭 🐁 🐀 🐹 🐰 🐇 🐿️ 🦫 🦔 🦇 🐻 🐻‍❄️ 🐨 🐼 🦥 🦦 🦨 🦘 🦡 🐾`,
+      "Birds": `🦃 🐔 🐓 🐣 🐤 🐥 🐦 🐧 🕊️ 🦅 🦆 🦢 🦉 🦤 🪶 🦩 🦚 🦜 🪽 🐦‍⬛ 🪿 🐦‍🔥 🪹 🪺`,
+      "Marine & Reptiles": `🐸 🐊 🐢 🦎 🐍 🐲 🐉 🦕 🦖 🐳 🐋 🐬 🦭 🐟 🐠 🐡 🦈 🐙 🐚 🪸 🪼 🦀 🦞 🦐 🦑 🦪`,
+      "Bugs": `🐌 🦋 🐛 🐜 🐝 🪲 🐞 🦗 🪳 🕷️ 🕸️ 🦂 🦟 🪰 🪱 🦠`,
+      "Plants, Flowers & Nature": `💐 🌸 💮 🪷 🏵️ 🌹 🥀 🌺 🌻 🌼 🌷 🪻 🌱 🪴 🌲 🌳 🪾 🌴 🌵 🌾 🌿 ☘️ 🍀 🍁 🍂 🍃 🍄 🪨 🪵`,
+      "Sky & Weather": `🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌙 🌚 🌛 🌜 ☀️ 🌝 🌞 🪐 ⭐ 🌟 🌠 🌌 ☁️ ⛅ ⛈️ 🌤️ 🌥️ 🌦️ 🌧️ 🌨️ 🌩️ 🌪️ 🌫️ 🌬️ 🌀 🌈 🌂 ☂️ ☔ ⛱️ ⚡ ❄️ ☃️ ⛄ ☄️ 🔥`,
+       "Maps & Geography": `🌍 🌎 🌏 🌐 🗺️ 🗾 🧭 🏔️ ⛰️ 🌋 🗻 🏕️ 🏖️ 🏜️ 🏝️ 🏞️`,
+  "Buildings & Places": `🏟️ 🏛️ 🏗️ 🧱 🛖 🏘️ 🏚️ 🏠 🏡 🏢 🏣 🏤 🏥 🏦 🏨 🏩 🏪 🏫 🏬 🏭 🏯 🏰 💒 🗼 🗽 ⛪ 🕌 🛕 🕍 ⛩️ 🕋 ⛲ ⛺ 🌁 🌃 🏙️ 🌄 🌅 🌆 🌇 🌉 ♨️ 🎠 🛝 🎡 🎢 💈 🎪 🛎️ 🗿`,
+  "Land Travel": `🚂 🚃 🚄 🚅 🚆 🚇 🚈 🚉 🚊 🚝 🚞 🚋 🚌 🚍 🚎 🚐 🚑 🚒 🚓 🚔 🚕 🚖 🚗 🚘 🚙 🛻 🚚 🚛 🚜 🏎️ 🏍️ 🛵 🦽 🦼 🛺 🚲 🛴 🛹 🛼 🚏 🛣️ 🛤️ 🛢️ ⛽ 🛞 🚨 🚥 🚦 🛑 🚧`,
+  "Air & Sea Travel": `⚓ 🛟 ⛵ 🛶 🚤 🛳️ ⛴️ 🛥️ 🚢 ✈️ 🛩️ 🛫 🛬 🪂 💺 🚁 🚟 🚠 🚡 🛰️ 🚀 🛸`,
+  "Clothing & Appearance": `🎀 🎗️ 👓 🕶️ 🥽 🥼 🦺 👔 👕 👖 🧣 🧤 🧥 🧦 👗 👘 🥻 🩱 🩲 🩳 👙 👚 🪭 👛 👜 👝 🛍️ 🎒 🩴 👞 👟 🥾 🥿 👠 👡 🩰 👢 🪮 👑 👒 🎩 🎓 🧢 🪖 ⛑️ 📿 💄 💍 💎 🦯 🧿`,
+  "Music & Sound": `🔇 🔈 🔉 🔊 📢 📣 📯 🔔 🔕 🎼 🎵 🎶 🎙️ 🎚️ 🎛️ 🎤 🎧 📻 🎷 🪗 🎸 🎹 🎺 🎻 🪕 🥁 🪘 🪇 🪈 🪉`,
+  "IT & AV": `📱 📲 ☎️ 📞 📟 📠 🔋 🪫 🔌 💻 🖥️ 🖨️ ⌨️ 🖱️ 🖲️ 💽 💾 💿 📀 🎥 🎞️ 📽️ 🎬 📺 📷 📸 📹 📼`,
+  "Office & Stationery": `📔 📕 📖 📗 📘 📙 📚 📓 📒 📃 📜 📄 📰 🗞️ 📑 🔖 🏷️ ✉️ 📧 📨 📩 📤 📥 📦 📫 📪 📬 📭 📮 🗳️ ✏️ ✒️ 🖋️ 🖊️ 🖌️ 🖍️ 📝 💼 📁 📂 🗂️ 📅 📆 🗒️ 🗓️ 📇 📈 📉 📊 📋 📌 📍 📎 🖇️ 📏 📐 ✂️ 🗃️ 🗄️ 🗑️ 🪪`,
+  "Money & Time": `⌛ ⏳ ⌚ ⏰ ⏱️ ⏲️ 🕰️ 🕛 🕧 🕐 🕜 🕑 🕝 🕒 🕞 🕓 🕟 🕔 🕠 🕕 🕡 🕖 🕢 🕗 🕣 🕘 🕤 🕙 🕥 🕚 🕦 🧮 💰 🪙 💴 💵 💶 💷 💸 💳 🧾 💹`,
+  "Tools, Household Items & Other": `🧳 🌡️ 🧸 🧶 🪢 🔍 🔎 🕯️ 💡 🔦 🔒 🔓 🔏 🔐 🔑 🗝️ 🔨 🪓 ⛏️ ⚒️ 🛠️ 🗡️ ⚔️ 💣 🪃 🏹 🛡️ 🪚 🔧 🪛 🔩 ⚙️ 🗜️ ⚖️ 🔗 ⛓️‍💥 ⛓️ 🪝 🧰 🧲 🪜 🪏 ⚗️ 🧪 🧫 🔬 🔭 📡 💉 🩹 🩼 🩺 🩻 🚪 🪞 🪟 🛏️ 🛋️ 🪑 🚽 🪠 🚿 🛁 🪤 🪒 🧴 🧷 🧹 🧺 🧻 🪣 🧼 🫧 🪥 🧽 🧯 🛒 🚬 ⚰️ 🪦 ⚱️ 🪧`,
+  "Hearts, Shapes & Emotions": `💌 💘 💝 💖 💗 💓 💞 💕 💟 ❣️ 💔 ❤️‍🔥 ❤️‍🩹 ❤️ 🩷 🧡 💛 💚 💙 🩵 💜 🤎 🖤 🩶 🤍 💋 💯 💢 💥 💦 💨 🕳️ 💬 👁️‍🗨️ 🗨️ 🗯️ 💭 💤 🫟 🔴 🟠 🟡 🟢 🔵 🟣 🟤 ⚫ ⚪ 🟥 🟧 🟨 🟩 🟦 🟪 🟫 ⬛ ⬜ ◼️ ◻️ ◾ ◽ ▪️ ▫️ 🔶 🔷 🔸 🔹 🔺 🔻 💠 🔘 🔳 🔲`,
+
+  "Location & Warning": `🛗 🏧 🚮 🚰 ♿ 🚹 🚺 🚻 🚼 🚾 🛂 🛃 🛄 🛅 ⚠️ 🚸 ⛔ 🚫 🚳 🚭 🚯 🚱 🚷 📵 🔞 ☢️ ☣️`,
+
+  "Arrows & AV": `⬆️ ↗️ ➡️ ↘️ ⬇️ ↙️ ⬅️ ↖️ ↕️ ↔️ ↩️ ↪️ ⤴️ ⤵️ 🔃 🔄 🔙 🔚 🔛 🔜 🔝 🔀 🔁 🔂 ▶️ ⏩ ⏭️ ⏯️ ◀️ ⏪ ⏮️ 🔼 ⏫ 🔽 ⏬ ⏸️ ⏹️ ⏺️ ⏏️ 🎦 🔅 🔆 📶 🛜 📳 📴`,
+
+  "Identity & Beliefs": `🛐 🕉️ ✡️ ☸️ ☯️ ✝️ ☦️ ☪️ ☮️ 🕎 🔯 🪯 ♈ ♉ ♊ ♋ ♌ ♍ ♎ ♏ ♐ ♑ ♒ ♓ ⛎ ♀️ ♂️ ⚧️`,
+
+  "Alphanumeric": `✖️ ➕ ➖ ➗ 🟰 ♾️ ‼️ ⁉️ ❓ ❔ ❕ ❗ 〰️ 💱 💲 #️⃣ *️⃣ 0️⃣ 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣ 🔟 🔠 🔡 🔢 🔣 🔤 🅰️ 🆎 🅱️ 🆑 🆒 🆓 ℹ️ 🆔 Ⓜ️ 🆕 🆖 🅾️ 🆗 🆘 🆙 🆚 🈁 🈂️ 🈷️ 🈶 🈯 🉐 🈹 🈚 🈲 🉑 🈸 🈴 🈳 ㊗️ ㊙️ 🈺 🈵`,
+
+  "Other Symbols": `⚕️ ♻️ ⚜️ 📛 🔰 ⭕ ✅ ☑️ ✔️ ❌ ❎ ➰ ➿ 〽️ ✳️ ✴️ ❇️ ©️ ®️ ™️`,
+  "Color & Identity": `🏁 🚩 🎌 🏴 🏳️ 🏳️‍🌈 🏳️‍⚧️ 🏴‍☠️ 🇺🇳`,
+
+  "Africa": `🇦🇴 🇧🇫 🇧🇮 🇧🇯 🇧🇼 🇨🇩 🇨🇫 🇨🇬 🇨🇮 🇨🇲 🇨🇻 🇩🇯 🇩🇿 🇪🇬 🇪🇭 🇪🇷 🇪🇹 🇬🇦 🇬🇭 🇬🇲 🇬🇳 🇬🇶 🇬🇼 🇰🇪 🇰🇲 🇱🇷 🇱🇸 🇱🇾 🇲🇦 🇲🇬 🇲🇱 🇲🇷 🇲🇺 🇲🇼 🇲🇿 🇳🇦 🇳🇪 🇳🇬 🇷🇼 🇸🇨 🇸🇩 🇸🇱 🇸🇳 🇸🇴 🇸🇸 🇸🇿 🇹🇩 🇹🇬 🇹🇳 🇹🇿 🇺🇬 🇿🇦 🇿🇲 🇿🇼`,
+
+  "The Americas": `🇦🇬 🇦🇮 🇦🇷 🇦🇼 🇧🇧 🇧🇱 🇧🇲 🇧🇴 🇧🇶 🇧🇷 🇧🇸 🇧🇿 🇨🇦 🇨🇱 🇨🇴 🇨🇷 🇨🇺 🇨🇼 🇩🇲 🇩🇴 🇪🇨 🇫🇰 🇬🇩 🇬🇫 🇬🇵 🇬🇹 🇬🇾 🇭🇳 🇭🇹 🇯🇲 🇰🇳 🇰🇾 🇱🇨 🇲🇫 🇲🇶 🇲🇸 🇲🇽 🇳🇮 🇵🇦 🇵🇪 🇵🇲 🇵🇷 🇵🇾 🇸🇷 🇸🇻 🇸🇽 🇹🇨 🇹🇹 🇺🇸 🇺🇾 🇻🇪 🇻🇬 🇻🇮`,
+
+  "Asia & The Middle East": `🇦🇪 🇦🇫 🇦🇿 🇧🇩 🇧🇭 🇧🇳 🇧🇹 🇨🇳 🇭🇰 🇮🇩 🇮🇱 🇮🇳 🇮🇶 🇮🇷 🇯🇴 🇯🇵 🇰🇬 🇰🇭 🇰🇵 🇰🇷 🇰🇼 🇰🇿 🇱🇦 🇱🇧 🇱🇰 🇲🇲 🇲🇳 🇲🇴 🇲🇻 🇲🇾 🇳🇵 🇴🇲 🇵🇭 🇵🇰 🇵🇸 🇶🇦 🇷🇺 🇸🇦 🇸🇬 🇸🇾 🇹🇭 🇹🇯 🇹🇱 🇹🇲 🇹🇷 🇹🇼 🇺🇿 🇻🇳 🇾🇪`,
+
+  "Europe": `🇦🇩 🇦🇱 🇦🇲 🇦🇹 🇧🇦 🇧🇪 🇧🇬 🇧🇾 🇨🇭 🇨🇶 🇨🇾 🇨🇿 🇩🇪 🇩🇰 🇪🇦 🇪🇪 🇪🇸 🇪🇺 🇫🇮 🇫🇷 🇬🇧 🇬🇪 🇬🇬 🇬🇮 🇬🇷 🇭🇷 🇭🇺 🇮🇪 🇮🇲 🇮🇸 🇮🇹 🇯🇪 🇱🇮 🇱🇹 🇱🇺 🇱🇻 🇲🇨 🇲🇩 🇲🇪 🇲🇰 🇲🇹 🇳🇱 🇳🇴 🇵🇱 🇵🇹 🇷🇴 🇷🇸 🇷🇺 🇸🇪 🇸🇮 🇸🇰 🇸🇲 🇺🇦 🇻🇦 🇽🇰 🏴 🏴 🏴`,
+
+  "Oceania, Island Nations & Territories": `🇦🇨 🇦🇶 🇦🇸 🇦🇺 🇦🇽 🇧🇻 🇨🇨 🇨🇰 🇨🇵 🇨🇽 🇩🇬 🇫🇯 🇫🇲 🇬🇱 🇬🇸 🇬🇺 🇭🇲 🇮🇨 🇮🇴 🇰🇮 🇲🇭 🇲🇵 🇳🇨 🇳🇫 🇳🇷 🇳🇺 🇳🇿 🇵🇫 🇵🇬 🇵🇳 🇵🇼 🇷🇪 🇸🇧 🇸🇭 🇸🇯 🇸🇹 🇹🇦 🇹🇫 🇹🇰 🇹🇴 🇹🇻 🇺🇲 🇻🇨 🇻🇺 🇼🇫 🇼🇸 🇾🇹`,
+   "Hands & Body Parts": `👋 🤚 🖐️ ✋ 🖖 🫱 🫲 🫳 🫴 🫷 🫸 👌 🤌 🤏 ✌️ 🤞 🫰 🤟 🤘 🤙 👈 👉 👆 🖕 👇 ☝️ 🫵 👍 👎 ✊ 👊 🤛 🤜 👏 🙌 🫶 👐 🤲 🤝 🙏 ✍️ 💅 🤳 💪 🦾 🦿 🦵 🦶 👂 🦻 👃 🧠 🫀 🫁 🦷 🦴 👀 👁️ 👅 👄 🫦 👣 🫆 🧬 🩸`,
+
+  "People & Appearance": `👶 🧒 👦 👧 🧑 👱 👨 🧔 🧔‍♂️ 🧔‍♀️ 👨‍🦰 👨‍🦱 👨‍🦳 👨‍🦲 👩 👩‍🦰 🧑‍🦰 👩‍🦱 🧑‍🦱 👩‍🦳 🧑‍🦳 👩‍🦲 🧑‍🦲 👱‍♀️ 👱‍♂️ 🧓 👴 👵 🧏 🧏‍♂️ 🧏‍♀️ 👳 👳‍♂️ 👳‍♀️ 👲 🧕 🤰 🫃 🫄 👼 🗣️ 👤 👥 🫂 🦰 🦱 🦲 🦳`,
+
+  "Gestures & Expressions": `🙍 🙍‍♂️ 🙍‍♀️ 🙎 🙎‍♂️ 🙎‍♀️ 🙅 🙅‍♂️ 🙅‍♀️ 🙆 🙆‍♂️ 🙆‍♀️ 💁 💁‍♂️ 💁‍♀️ 🙋 🙋‍♂️ 🙋‍♀️ 🧏 🧏‍♂️ 🧏‍♀️ 🙇 🙇‍♂️ 🙇‍♀️ 🤦 🤦‍♂️ 🤦‍♀️ 🤷 🤷‍♂️ 🤷‍♀️`,
+
+  "Activities & Sports": `🤱 👩‍🍼 👨‍🍼 🧑‍🍼 💆 💆‍♂️ 💆‍♀️ 💇 💇‍♂️ 💇‍♀️ 🚶 🚶‍♂️ 🚶‍♀️ 🚶‍➡️ 🚶‍♀️‍➡️ 🚶‍♂️‍➡️ 🧍 🧍‍♂️ 🧍‍♀️ 🧎 🧎‍♂️ 🧎‍♀️ 🧎‍➡️ 🧎‍♀️‍➡️ 🧎‍♂️‍➡️ 🧑‍🦯 🧑‍🦯‍➡️ 👨‍🦯 👨‍🦯‍➡️ 👩‍🦯 👩‍🦯‍➡️ 🧑‍🦼 🧑‍🦼‍➡️ 👨‍🦼 👨‍🦼‍➡️ 👩‍🦼 👩‍🦼‍➡️ 🧑‍🦽 🧑‍🦽‍➡️ 👨‍🦽 👨‍🦽‍➡️ 👩‍🦽 👩‍🦽‍➡️ 🏃 🏃‍♂️ 🏃‍♀️ 🏃‍➡️ 🏃‍♀️‍➡️ 🏃‍♂️‍➡️ 💃 🕺 🕴️ 👯 👯‍♂️ 👯‍♀️ 🧖 🧖‍♂️ 🧖‍♀️ 🧗 🧗‍♂️ 🧗‍♀️ 🤺 🏇 ⛷️ 🏂 🏌️ 🏌️‍♂️ 🏌️‍♀️ 🏄 🏄‍♂️ 🏄‍♀️ 🚣 🚣‍♂️ 🚣‍♀️ 🏊 🏊‍♂️ 🏊‍♀️ ⛹️ ⛹️‍♂️ ⛹️‍♀️ 🏋️ 🏋️‍♂️ 🏋️‍♀️ 🚴 🚴‍♂️ 🚴‍♀️ 🚵 🚵‍♂️ 🚵‍♀️ 🤸 🤸‍♂️ 🤸‍♀️ 🤼 🤼‍♂️ 🤼‍♀️ 🤽 🤽‍♂️ 🤽‍♀️ 🤾 🤾‍♂️ 🤾‍♀️ 🤹 🤹‍♂️ 🤹‍♀️ 🧘 🧘‍♂️ 🧘‍♀️ 🛀 🛌`,
+
+  "Professions, Roles & Fantasy": `🧑‍⚕️ 👨‍⚕️ 👩‍⚕️ 🧑‍🎓 👨‍🎓 👩‍🎓 🧑‍🏫 👨‍🏫 👩‍🏫 🧑‍⚖️ 👨‍⚖️ 👩‍⚖️ 🧑‍🌾 👨‍🌾 👩‍🌾 🧑‍🍳 👨‍🍳 👩‍🍳 🧑‍🔧 👨‍🔧 👩‍🔧 🧑‍🏭 👨‍🏭 👩‍🏭 🧑‍💼 👨‍💼 👩‍💼 🧑‍🔬 👨‍🔬 👩‍🔬 🧑‍💻 👨‍💻 👩‍💻 🧑‍🎤 👨‍🎤 👩‍🎤 🧑‍🎨 👨‍🎨 👩‍🎨 🧑‍✈️ 👨‍✈️ 👩‍✈️ 🧑‍🚀 👨‍🚀 👩‍🚀 🧑‍🚒 👨‍🚒 👩‍🚒 👮 👮‍♂️ 👮‍♀️ 🕵️ 🕵️‍♂️ 🕵️‍♀️ 💂 💂‍♂️ 💂‍♀️ 🥷 👷 👷‍♂️ 👷‍♀️ 🫅 🤴 👸 🤵 🤵‍♂️ 🤵‍♀️ 👰 👰‍♂️ 👰‍♀️ 🎅 🤶 🧑‍🎄 🦸 🦸‍♂️ 🦸‍♀️ 🦹 🦹‍♂️ 🦹‍♀️ 🧙 🧙‍♂️ 🧙‍♀️ 🧚 🧚‍♂️ 🧚‍♀️ 🧛 🧛‍♂️ 🧛‍♀️ 🧜 🧜‍♂️ 🧜‍♀️ 🧝 🧝‍♂️ 🧝‍♀️ 🧞 🧞‍♂️ 🧞‍♀️ 🧟 🧟‍♂️ 🧟‍♀️ 🧌 👯 👯‍♂️ 👯‍♀️`,
+
+  "Families & Couples": `🧑‍🤝‍🧑 👭 👫 👬 💏 👩‍❤️‍💋‍👨 👨‍❤️‍💋‍👨 👩‍❤️‍💋‍👩 💑 👩‍❤️‍👨 👨‍❤️‍👨 👩‍❤️‍👩 👨‍👩‍👦 👨‍👩‍👧 👨‍👩‍👧‍👦 👨‍👩‍👦‍👦 👨‍👩‍👧‍👧 👨‍👨‍👦 👨‍👨‍👧 👨‍👨‍👧‍👦 👨‍👨‍👦‍👦 👨‍👨‍👧‍👧 👩‍👩‍👦 👩‍👩‍👧 👩‍👩‍👧‍👦 👩‍👩‍👦‍👦 👩‍👩‍👧‍👧 👨‍👦 👨‍👦‍👦 👨‍👧 👨‍👧‍👦 👨‍👧‍👧 👩‍👦 👩‍👦‍👦 👩‍👧 👩‍👧‍👦 👩‍👧‍👧 👪 🧑‍🧑‍🧒 🧑‍🧑‍🧒‍🧒 🧑‍🧒 🧑‍🧒‍🧒`,
+   "Smiling & Affectionate": `😀 😃 😄 😁 😆 😅 🤣 😂 🙂 😉 😊 😇 🥰 😍 🤩 😘 😗 ☺️ 😚 😙 🥲 😏`,
+
+  "Tongues, Hands & Accessories": `😋 😛 😜 🤪 😝 🤑 🤗 🤭 🫢 🫣 🤫 🤔 🫡 🤤 🤠 🥳 🥸 😎 🤓 🧐`,
+
+  "Neutral & Skeptical": `🙃 🫠 🤐 🤨 😐 😑 😶 🫥 😶‍🌫️ 😒 🙄 😬 😮‍💨 🤥 🫨 🙂‍↔️ 🙂‍↕️`,
+
+  "Sleepy & Unwell": `😌 😔 😪 😴 🫩 😷 🤒 🤕 🤢 🤮 🤧 🥵 🥶 🥴 😵 😵‍💫 🤯 🥱`,
+
+  "Concerned & Negative": `😕 🫤 😟 🙁 ☹️ 😮 😯 😲 😳 🥺 🥹 😦 😧 😨 😰 😥 😢 😭 😱 😖 😣 😞 😓 😩 😫 😤 😡 😠 🤬`,
+
+  "Costume, Creature & Animal": `😈 👿 💀 ☠️ 💩 🤡 👹 👺 👻 👽 👾 🤖 😺 😸 😹 😻 😼 😽 🙀 😿 😾 🙈 🙉 🙊`
+,
+    };
+
+    const emojiSection = document.getElementById('emoji-section');
+    const notification = document.getElementById('notification');
+
+    Object.entries(emojiCategories).forEach(([category, emojis]) => {
+      const title = document.createElement('h2');
+      title.textContent = category;
+      emojiSection.appendChild(title);
+
+      const grid = document.createElement('div');
+      grid.className = 'emoji-grid';
+
+      emojis.trim().split(/\s+/).forEach((emoji) => {
+        const item = document.createElement('div');
+        item.className = 'emoji';
+        item.textContent = emoji;
+        item.onclick = () => {
+          fallbackCopyTextToClipboard(emoji, item);
+        };
+        grid.appendChild(item);
+      });
+
+      emojiSection.appendChild(grid);
+    });
+
+    function fallbackCopyTextToClipboard(text, el) {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "absolute";
+      textarea.style.left = "-9999px";
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          showNotification(`✅ Copied ${text}`);
+          highlight(el);
+        } else {
+          showNotification("❌ Copy failed");
+        }
+      } catch (err) {
+        showNotification("❌ Copy not supported");
+      }
+
+      document.body.removeChild(textarea);
+    }
+
+    function highlight(el) {
+      el.classList.add("copied");
+      setTimeout(() => el.classList.remove("copied"), 1200);
+    }
+
+    function showNotification(message) {
+      notification.textContent = message;
+      notification.classList.add("show");
+      setTimeout(() => {
+        notification.classList.remove("show");
+      }, 1200);
+    }
+
+    // Dark mode toggle switch logic
+    const toggleSwitch = document.getElementById('darkToggle');
+    toggleSwitch.addEventListener('change', () => {
+      document.body.classList.toggle('dark', toggleSwitch.checked);
+    });
+  </script>
