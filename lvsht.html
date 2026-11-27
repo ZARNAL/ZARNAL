@@ -50,8 +50,6 @@ const hint = document.getElementById('hint');
 let activeIndex = -1;
 let scrollTimer = 0;
 let activePlayer = null;
-let playerApiReady = false;
-let pendingPlayerId = null;
 let soundEnabled = false;
 try { soundEnabled = localStorage.getItem('loveShortsSound') === 'on'; } catch(e) { soundEnabled = false; }
 const soundToggle = document.getElementById('soundToggle');
@@ -81,8 +79,11 @@ videos.forEach((id,index)=>{
 
 function activate(index){
   if(!Number.isInteger(index)||index<0||index>=videos.length||index===activeIndex)return;
-  if(activePlayer && typeof activePlayer.destroy==='function'){
-    try{activePlayer.destroy();}catch(e){}
+
+  // Remove the previous iframe completely so two Shorts never play together.
+  if(activePlayer){
+    activePlayer.src='about:blank';
+    activePlayer.remove();
     activePlayer=null;
   }
   const oldSlide=feed.children[activeIndex];
@@ -90,87 +91,68 @@ function activate(index){
 
   activeIndex=index;
   const frame=feed.children[index].querySelector('.video-frame');
-  const mount=document.createElement('div');
-  mount.id='yt-player-active';
-  mount.style.cssText='width:100%;height:100%';
-  frame.replaceChildren(mount);
+  const player=document.createElement('iframe');
+  player.title='Love Short '+(index+1);
+  player.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen');
+  player.setAttribute('allowfullscreen','');
+  player.setAttribute('playsinline','');
+  player.setAttribute('loading','eager');
+  player.referrerPolicy='strict-origin-when-cross-origin';
 
-  const config={
-    videoId:videos[index],
-    playerVars:{
-      autoplay:1,
-      mute:1,
-      playsinline:1,
-      controls:1,
-      rel:0,
-      modestbranding:1,
-      enablejsapi:1
-    },
-    events:{
-      onReady:(event)=>{
-        if(index!==activeIndex){try{event.target.destroy();}catch(e){};return;}
-        try{
-          event.target.mute();
-          event.target.playVideo();
-          if(soundEnabled) event.target.unMute();
-        }catch(e){}
-      },
-      onStateChange:(event)=>{
-        // If the active player is cued but not yet playing, retry once when ready.
-        if(index===activeIndex && event.data===YT.PlayerState.CUED){
-          try{event.target.playVideo();}catch(e){}
-        }
-      }
+  // Explicit muted autoplay is the most reliable mode permitted by mobile browsers.
+  // A visitor can enable audio once using the floating sound control.
+  const params=new URLSearchParams({
+    autoplay:'1',
+    mute:'1',
+    playsinline:'1',
+    controls:'1',
+    rel:'0',
+    modestbranding:'1',
+    enablejsapi:'1',
+    origin:location.origin
+  });
+  player.src='https://www.youtube.com/embed/'+encodeURIComponent(videos[index])+'?'+params.toString();
+  frame.replaceChildren(player);
+  activePlayer=player;
+
+  // Nudge playback after the iframe is attached. This does not bypass browser autoplay policy.
+  player.addEventListener('load',()=>{
+    if(index!==activeIndex||!player.contentWindow)return;
+    player.contentWindow.postMessage(JSON.stringify({event:'command',func:'playVideo',args:[]}), 'https://www.youtube.com');
+    if(soundEnabled){
+      player.contentWindow.postMessage(JSON.stringify({event:'command',func:'unMute',args:[]}), 'https://www.youtube.com');
     }
-  };
+  },{once:true});
 
-  if(playerApiReady){
-    activePlayer=new YT.Player(mount.id,config);
-  }else{
-    pendingPlayerId={mountId:mount.id,config,index};
-    loadYouTubeApi();
-  }
   counter.textContent=String(index+1).padStart(2,'0')+' / '+String(videos.length).padStart(2,'0');
   if(index>0)hint.style.display='none';
 }
 
-function loadYouTubeApi(){
-  if(document.getElementById('youtube-iframe-api'))return;
-  const script=document.createElement('script');
-  script.id='youtube-iframe-api';
-  script.src='https://www.youtube.com/iframe_api';
-  script.async=true;
-  document.head.appendChild(script);
-}
-window.onYouTubeIframeAPIReady=function(){
-  playerApiReady=true;
-  if(pendingPlayerId && pendingPlayerId.index===activeIndex){
-    const pending=pendingPlayerId;
-    pendingPlayerId=null;
-    activePlayer=new YT.Player(pending.mountId,pending.config);
-  }
-};
-
 function getNearestReel(){
-  const height=feed.clientHeight || window.innerHeight;
-  return Math.max(0,Math.min(videos.length-1,Math.round(feed.scrollTop/height)));
+  let nearest=0;
+  let minDistance=Infinity;
+  const currentTop=feed.scrollTop;
+  for(let i=0;i<feed.children.length;i++){
+    const distance=Math.abs(feed.children[i].offsetTop-currentTop);
+    if(distance<minDistance){minDistance=distance;nearest=i;}
+  }
+  return nearest;
 }
 function settleToVisibleReel(){
   const index=getNearestReel();
   if(index!==activeIndex)activate(index);
 }
+function scheduleReelActivation(delay=120){
+  clearTimeout(scrollTimer);
+  scrollTimer=setTimeout(settleToVisibleReel,delay);
+}
 feed.addEventListener('scroll',()=>{
   if(feed.scrollTop<30)hint.style.display='flex';
-  clearTimeout(scrollTimer);
-  scrollTimer=setTimeout(settleToVisibleReel,140);
+  scheduleReelActivation(120);
 },{passive:true});
 feed.addEventListener('scrollend',settleToVisibleReel,{passive:true});
-window.addEventListener('resize',()=>{
-  clearTimeout(scrollTimer);
-  scrollTimer=setTimeout(settleToVisibleReel,180);
-});
+window.addEventListener('resize',()=>scheduleReelActivation(180));
 activate(0);
-
 
 soundToggle.addEventListener('click',()=>{
   soundEnabled = !soundEnabled;
@@ -178,11 +160,10 @@ soundToggle.addEventListener('click',()=>{
   updateSoundButton();
   // Apply the sound choice to the current Short. The button disappears immediately;
   // every later Short inherits the saved unmuted preference in activate().
-  if(activePlayer){
-    try{
-      if(soundEnabled){activePlayer.unMute();activePlayer.playVideo();}
-      else activePlayer.mute();
-    }catch(e){}
+  if(activePlayer && activePlayer.contentWindow){
+    const command=soundEnabled?'unMute':'mute';
+    activePlayer.contentWindow.postMessage(JSON.stringify({event:'command',func:command,args:[]}), 'https://www.youtube.com');
+    if(soundEnabled)activePlayer.contentWindow.postMessage(JSON.stringify({event:'command',func:'playVideo',args:[]}), 'https://www.youtube.com');
   }
 });
 
