@@ -1,7 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Love Quest Cards</title>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
     <style>
         @font-face {
             font-family: 'SF Pro Display';
@@ -71,6 +76,7 @@
             color: #ff7b9b;
         }
         .card-container {
+            position: relative;
             perspective: 1200px;
             width: clamp(200px, 60vw, 220px);
             height: clamp(260px, 80vw, 280px);
@@ -202,6 +208,11 @@
         }
         #back {
             position: fixed;
+            z-index: 20;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
             top: 16px;
             left: 16px;
             padding: 10px 16px;
@@ -360,9 +371,9 @@
             width: 100%;
             margin: 8px 0;
             background: rgba(255, 255, 255, 0.9);
-            color:ව
-
-            body.dark-mode input[type="text"] {
+            color: #1c1c1e;
+        }
+        body.dark-mode input[type="text"] {
                 background: rgba(0, 0, 0, 0.7);
                 color: #ffffff;
                 border: 1px solid rgba(255, 255, 255, 0.3);
@@ -376,6 +387,7 @@
                 border-color: #ff7b9b;
             }
             #google_translate_element {
+                position: relative;
                 margin: 8px 0;
                 width: 100%;
                 background: rgba(255, 255, 255, 0.9);
@@ -446,11 +458,13 @@
                 }
             }
         </style>
+</head>
+<body>
     
     
         <div class="heart-bg" id="heart-bg"></div>
         <canvas id="confetti"></canvas>
-        <button id="back" type="button" data-tooltip="Back to Fun" aria-label="Back to Fun" onclick="window.location.assign('https://zarnal.github.io/ZARNAL/fun.html')">Back</button>
+        <a id="back" href="https://zarnal.github.io/ZARNAL/fun.html" data-tooltip="Back to Fun" aria-label="Back to Fun">Back</a>
         <div class="container">
             <h1>Love Quest Cards <span style="color: #ff3b6f">❤️</span></h1>
             <div class="dark-mode-toggle">
@@ -545,6 +559,13 @@
             const confettiCanvas = document.getElementById('confetti');
             const confettiCtx = confettiCanvas.getContext('2d');
 
+            function playSound(audio) {
+                if (!audio) return;
+                audio.currentTime = 0;
+                const playback = audio.play();
+                if (playback && typeof playback.catch === 'function') playback.catch(() => {});
+            }
+
             function googleTranslateElementInit() {
                 new google.translate.TranslateElement({
                     pageLanguage: 'en',
@@ -608,14 +629,14 @@
                     card.classList.add('milestone');
                     setTimeout(() => card.classList.remove('milestone'), 1000);
                     launchConfetti();
-                    successSound.play();
+                    playSound(successSound);
                 }
             }
 
             function flipCard() {
                 if (isFlipping) return;
                 isFlipping = true;
-                flipSound.play();
+                playSound(flipSound);
                 const challenge = challenges[Math.floor(Math.random() * challenges.length)];
                 const message = romanticMessages[Math.floor(Math.random() * romanticMessages.length)];
                 const color = cardColors[Math.floor(Math.random() * cardColors.length)];
@@ -626,7 +647,7 @@
                     resultElement.textContent = `${currentPlayer === 1 ? player1Name : player2Name}, ${challenge}! ${message}`;
                     doneButton.classList.remove('hidden');
                     flipButton.classList.add('hidden');
-                    successSound.play();
+                    playSound(successSound);
                     launchConfetti();
                     isFlipping = false;
                 }, 600);
@@ -651,12 +672,6 @@
             });
 
             flipButton.addEventListener('click', flipCard);
-            flipButton.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                card.classList.add('touched');
-                setTimeout(() => card.classList.remove('touched'), 200);
-                flipCard();
-            });
 
             doneButton.addEventListener('click', () => {
                 if (currentPlayer === 1) player1Score++;
@@ -682,7 +697,13 @@
                     musicToggleButton.textContent = 'Play Love Tunes';
                     isMusicPlaying = false;
                 } else {
-                    backgroundMusic.play();
+                    const playback = backgroundMusic.play();
+                    if (playback && typeof playback.catch === 'function') {
+                        playback.catch(() => {
+                            isMusicPlaying = false;
+                            musicToggleButton.textContent = 'Play Love Tunes';
+                        });
+                    }
                     musicToggleButton.textContent = 'Pause Love Tunes';
                     isMusicPlaying = true;
                 }
