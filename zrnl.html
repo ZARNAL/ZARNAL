@@ -61,6 +61,28 @@ body.night .card.emoji-pop .icon{filter:drop-shadow(0 8px 14px rgba(193,142,255,
 @media(hover:hover) and (pointer:fine){.card:hover .icon{transform:translateY(-3px) scale(1.09) rotate(-2deg)}}
 @media(hover:none){.card:active .icon{transform:scale(.96)}}
 @media(prefers-reduced-motion:reduce){.card.emoji-pop .icon,.card.emoji-pop:after{animation:none!important}.card.emoji-pop .icon{transform:scale(1.12)}}
+
+/* Mobile performance + smoothness pass: avoid heavy compositing and forced reflow */
+.card{will-change:auto;transition:transform .18s ease-out,box-shadow .2s ease,border-color .18s ease;background-clip:padding-box}
+.card:after{display:none}
+.card .icon{will-change:auto;transition:transform .22s cubic-bezier(.2,.75,.3,1),filter .2s ease}
+@media(max-width:700px){
+ html{scroll-behavior:auto}
+ body{transition:background-color .22s ease,color .22s ease;background-image:none!important}
+ body.night{background-image:linear-gradient(180deg,#09080d,#100b17 70%,#09080d)!important}
+ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;transition:background-color .2s,color .2s,border-color .2s}
+ main{contain:layout style;gap:11px}
+ .card{animation:none!important;min-height:clamp(140px,39vw,166px);box-shadow:0 5px 16px rgba(55,30,43,.045);transition:transform .16s ease-out,background-color .2s,border-color .2s,box-shadow .2s}
+ body.night .card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:0 5px 18px rgba(0,0,0,.22)!important;background:rgba(26,23,33,.88)!important}
+ .card:before{opacity:.25}
+ .card:active{transform:scale(.975);box-shadow:0 2px 8px rgba(30,15,25,.06);transition-duration:.12s}
+ .card .icon{filter:none!important}
+ .card.emoji-pop .icon{animation:emojiTap .28s cubic-bezier(.2,.8,.3,1) both!important;filter:none!important}
+ @keyframes emojiTap{0%{transform:scale(1)}45%{transform:scale(1.22)}75%{transform:scale(1.08)}100%{transform:scale(1.12)}}
+ .card.emoji-pop:after{display:none!important}
+ #gif-box{animation:none}
+}
+@media(prefers-reduced-motion:reduce){.card.emoji-pop .icon{animation:none!important;transform:scale(1.05)!important}}
 </style>
 <script>(function(){try{if(localStorage.getItem("zarnal-theme")==="night")document.documentElement.classList.add("night-preload");}catch(e){}})();</script></head>
 <body>
@@ -150,13 +172,17 @@ setTimeout(hideLoader,3500);
 })();
 </script>
 <script>
-document.addEventListener("click",function(e){
- const card=e.target.closest(".card");
+(function(){
+let cleanupTimer;
+document.addEventListener("click",function(event){
+ const card=event.target.closest(".card");
  if(!card)return;
  card.classList.remove("emoji-pop");
- void card.offsetWidth;
- card.classList.add("emoji-pop");
- window.setTimeout(()=>card.classList.remove("emoji-pop"),700);
-},true);
+ // Use animation restart without forced synchronous layout; navigation is never delayed.
+ requestAnimationFrame(()=>card.classList.add("emoji-pop"));
+ clearTimeout(cleanupTimer);
+ cleanupTimer=setTimeout(()=>card.classList.remove("emoji-pop"),320);
+}, {passive:true});
+})();
 </script></body>
 </html>
