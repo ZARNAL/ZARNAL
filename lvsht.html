@@ -1,0 +1,742 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="public, max-age=3600">
+<title>📖 Love Shorts</title>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
+        height: 100%;
+        min-height: 100vh;
+        overflow: hidden;
+        position: relative;
+        touch-action: pan-y pinch-zoom;
+    }
+
+    .background-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #ffe4e9 0%, #f4c4d2 100%);
+        z-index: -1;
+        transition: background 0.3s ease;
+    }
+
+    body.dark-mode .background-wrapper {
+        background: linear-gradient(135deg, #2a1b2e 0%, #3c2f45 100%);
+    }
+
+    .content-wrapper {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        z-index: 1;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+        color: #333;
+        transition: color 0.3s ease;
+    }
+
+    body.dark-mode {
+        color: #e0e0e0;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 10px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        background: rgba(255, 255, 255, 0.15);
+        transition: background 0.3s ease;
+    }
+
+    body.dark-mode .header {
+        background: rgba(40, 30, 45, 0.25);
+    }
+
+    h1 {
+        font-size: 1.6em;
+        font-weight: 600;
+        color: #4a2c3e;
+        margin: 0;
+        transition: color 0.3s ease;
+    }
+
+    body.dark-mode h1 {
+        color: #d8a7b1;
+    }
+
+    .back-button {
+        background: linear-gradient(45deg, #ff6f91, #ff8ba7);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 18px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.8em;
+        transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    body.dark-mode .back-button {
+        background: linear-gradient(45deg, #a14a76, #c06c84);
+    }
+
+    .back-button:hover {
+        transform: scale(1.05);
+    }
+
+    .shorts-container {
+        height: calc(100vh - 40px);
+        position: relative;
+        margin-top: 40px;
+        overflow: hidden;
+    }
+
+    .short-card {
+        width: 100%;
+        height: calc(100vh - 40px);
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .video-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 360px;
+        height: 640px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+        pointer-events: none;
+    }
+
+    .next-button {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background: linear-gradient(45deg, #ff6f91, #ff8ba7);
+        color: white;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2em;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.3s ease;
+        pointer-events: auto;
+        z-index: 5;
+    }
+
+    body.dark-mode .next-button {
+        background: linear-gradient(45deg, #a14a76, #c06c84);
+    }
+
+    .next-button:hover {
+        transform: scale(1.1);
+    }
+
+    .next-button.hidden {
+        display: none;
+    }
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        loading: lazy;
+    }
+
+    .video-title {
+        font-size: 0.85em;
+        color: #333;
+        text-align: center;
+        margin-top: 8px;
+        max-width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        transition: color 0.3s ease;
+    }
+
+    body.dark-mode .video-title {
+        color: #d8a7b1;
+    }
+
+    .error {
+        color: #d32f2f;
+        font-weight: 500;
+        text-align: center;
+        font-size: 0.9em;
+        padding: 20px;
+        transition: color 0.3s ease;
+    }
+
+    body.dark-mode .error {
+        color: #ff6f91;
+    }
+
+    .heart {
+        position: fixed;
+        top: -1vh;
+        font-size: clamp(0.7rem, 2vw, 0.9rem);
+        color: #ff6f91;
+        animation: fall 3s linear infinite;
+        pointer-events: none;
+    }
+
+    body.dark-mode .heart {
+        color: #d8a7b1;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(100vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    .theme-toggle {
+        display: flex;
+        align-items: center;
+    }
+
+    .toggle-switch {
+        position: relative;
+        width: 36px;
+        height: 18px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 9px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 3px;
+    }
+
+    body.dark-mode .toggle-switch {
+        background: rgba(40, 30, 45, 0.3);
+    }
+
+    .toggle-switch::before {
+        content: '';
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        background: linear-gradient(45deg, #fff, #f0f0f0);
+        border-radius: 50%;
+        top: 2px;
+        left: 2px;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body.dark-mode .toggle-switch::before {
+        background: linear-gradient(45deg, #d8a7b1, #a14a76);
+    }
+
+    .toggle-switch .sun {
+        font-size: 10px;
+        color: #f1c40f;
+        transform: scale(1);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        opacity: 1;
+    }
+
+    .toggle-switch .moon {
+        font-size: 10px;
+        color: #8e44ad;
+        transform: scale(0.8);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        opacity: 0;
+    }
+
+    input[type="checkbox"]:checked + .toggle-switch {
+        background: rgba(255, 111, 145, 0.3);
+    }
+
+    input[type="checkbox"]:checked + .toggle-switch::before {
+        transform: translateX(18px);
+    }
+
+    input[type="checkbox"]:checked + .toggle-switch .sun {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    input[type="checkbox"]:checked + .toggle-switch .moon {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    input[type="checkbox"] {
+        display: none;
+    }
+
+    @media (max-width: 480px) {
+        .header {
+            padding: 6px 8px;
+            height: 32px;
+        }
+        h1 {
+            font-size: 1.3em;
+        }
+        .back-button {
+            padding: 5px 10px;
+            font-size: 0.7em;
+        }
+        .toggle-switch {
+            width: 32px;
+            height: 16px;
+        }
+        .toggle-switch::before {
+            width: 12px;
+            height: 12px;
+        }
+        input[type="checkbox"]:checked + .toggle-switch::before {
+            transform: translateX(16px);
+        }
+        .toggle-switch .sun, .toggle-switch .moon {
+            font-size: 9px;
+        }
+        .shorts-container {
+            margin-top: 32px;
+            height: calc(100vh - 32px);
+        }
+        .short-card {
+            height: calc(100vh - 32px);
+        }
+        .video-wrapper {
+            max-width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+        .video-title {
+            font-size: 0.75em;
+            padding: 0 8px;
+        }
+        .heart {
+            font-size: 0.7rem;
+        }
+        .next-button {
+            width: 40px;
+            height: 40px;
+            font-size: 1em;
+            bottom: 16px;
+        }
+    }
+
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 240, 245, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        transition: opacity 0.3s ease;
+    }
+
+    body.dark-mode .loading-overlay {
+        background: rgba(44, 26, 47, 0.9);
+    }
+
+    .loading-spinner {
+        width: 36px;
+        height: 36px;
+        border: 4px solid #ff6f91;
+        border-top: 4px solid transparent;
+        border-radius: 50%;
+        animation: spin 0.8s ease-in-out infinite, heartbeat 1.2s ease-in-out infinite;
+    }
+
+    body.dark-mode .loading-spinner {
+        border: 4px solid #d8a7b1;
+        border-top: 4px solid transparent;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes heartbeat {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.3);
+        }
+    }
+
+    .loading-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+</style>
+
+<div class="background-wrapper"></div>
+<div class="loading-overlay" id="loading-overlay">
+    <div class="loading-spinner"></div>
+</div>
+<div class="content-wrapper">
+    <div class="header">
+        <a href="https://zarnalhome.odoo.com/" class="back-button">Back</a>
+        <h1>🎬 Love Shorts</h1>
+        <div class="theme-toggle">
+            <input type="checkbox" id="theme-switch" onchange="toggleTheme()">
+            <label for="theme-switch" class="toggle-switch">
+                <span class="sun">☀️</span>
+                <span class="moon">🌙</span>
+            </label>
+        </div>
+    </div>
+    <div id="shorts-container" class="shorts-container"></div>
+</div>
+
+<script>
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Global variables
+    let urls = [];
+    let currentIndex = 0;
+    let players = [];
+    let heartInterval = null;
+    let isSwiping = false;
+    let startY = 0;
+    let startTime = 0;
+    let lastScrollTime = 0;
+
+    // Create falling heart animations
+    let heartCount = 0;
+    const maxHearts = 3;
+    function createHeart() {
+        if (heartCount >= maxHearts) return;
+        heartCount++;
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '♥';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 2 + 2 + 's';
+        heart.style.fontSize = Math.random() * 0.4 + 0.7 + 'rem';
+        document.body.appendChild(heart);
+        setTimeout(() => {
+            heart.remove();
+            heartCount--;
+        }, 4000);
+    }
+
+    // Convert YouTube Shorts URL to video ID
+    function getVideoId(url) {
+        try {
+            const videoIdMatch = url.match(/(?:shorts\/|v=|youtu\.be\/|watch\?v=)([a-zA-Z0-9_-]{11})/);
+            if (!videoIdMatch) {
+                console.warn('Invalid YouTube URL:', url);
+                return null;
+            }
+            return videoIdMatch[1];
+        } catch (e) {
+            console.error('Error parsing URL:', url, e);
+            return null;
+        }
+    }
+
+    // Fetch URLs from Google Sheets CSV
+    async function fetchShortsUrls() {
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQhw_i8N41XmZROkyUhHd1mPcx-OO42Zt0SyYbjmeA7f-8Khh1x4IpyN5M2AXQXl4PVmb8azGlxmJGO/pub?gid=523903097&single=true&output=csv';
+        const loadingOverlay = document.getElementById('loading-overlay');
+        try {
+            const response = await fetch(csvUrl, { cache: 'default' });
+            if (!response.ok) throw new Error('Failed to fetch CSV data');
+            const csvText = await response.text();
+            urls = csvText.split('\n')
+                .map(row => row.trim())
+                .filter(url => url && url.match(/https?:\/\/(www\.)?(youtube\.com|youtu\.be)/))
+                .slice(0, 20);
+            if (urls.length === 0) {
+                document.getElementById('shorts-container').innerHTML = '<p class="error">No romantic Shorts found.</p>';
+                loadingOverlay.classList.add('hidden');
+                return;
+            }
+            setupVideos();
+        } catch (error) {
+            console.error('Error fetching URLs:', error);
+            document.getElementById('shorts-container').innerHTML = '<p class="error">Unable to load Shorts. Try again later.</p>';
+            loadingOverlay.classList.add('hidden');
+        }
+    }
+
+    // Setup video cards
+    function setupVideos() {
+        const container = document.getElementById('shorts-container');
+        container.innerHTML = '';
+        updateCards();
+    }
+
+    // Update video cards
+    function updateCards() {
+        const container = document.getElementById('shorts-container');
+        container.innerHTML = '';
+        if (currentIndex >= urls.length) {
+            container.innerHTML = '<p class="error">No more Shorts available.</p>';
+            clearInterval(heartInterval);
+            return;
+        }
+
+        // Current video
+        const currentVideoId = getVideoId(urls[currentIndex]);
+        if (currentVideoId) {
+            const card = document.createElement('div');
+            card.className = 'short-card';
+            card.dataset.index = currentIndex;
+            card.style.transform = `translateY(0%)`;
+            card.innerHTML = `
+                <div class="video-wrapper">
+                    <div id="player-${currentIndex}"></div>
+                    <div class="video-overlay"></div>
+                    ${currentIndex < urls.length - 1 ? '<a class="next-button" onclick="loadNextVideo()">↓</a>' : ''}
+                </div>
+                <p class="video-title">Romantic Short ${currentIndex + 1}</p>
+            `;
+            container.appendChild(card);
+            players[0] = new YT.Player(`player-${currentIndex}`, {
+                height: '100%',
+                width: '100%',
+                videoId: currentVideoId,
+                playerVars: {
+                    autoplay: 1,
+                    mute: 0,
+                    controls: 1,
+                    rel: 0,
+                    modestbranding: 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange,
+                    'onError': (e) => {
+                        console.error('Error with video:', currentVideoId, e);
+                        loadNextVideo();
+                    }
+                }
+            });
+        }
+
+        // Next video
+        if (currentIndex + 1 < urls.length) {
+            const nextVideoId = getVideoId(urls[currentIndex + 1]);
+            if (nextVideoId) {
+                const nextCard = document.createElement('div');
+                nextCard.className = 'short-card';
+                nextCard.dataset.index = currentIndex + 1;
+                nextCard.style.transform = `translateY(100%)`;
+                nextCard.innerHTML = `
+                    <div class="video-wrapper">
+                        <div id="player-${currentIndex + 1}"></div>
+                        <div class="video-overlay"></div>
+                        <a class="next-button" onclick="loadNextVideo()">↓</a>
+                    </div>
+                    <p class="video-title">Romantic Short ${currentIndex + 2}</p>
+                `;
+                container.appendChild(nextCard);
+                players[1] = new YT.Player(`player-${currentIndex + 1}`, {
+                    height: '100%',
+                    width: '100%',
+                    videoId: nextVideoId,
+                    playerVars: {
+                        autoplay: 0,
+                        mute: 0,
+                        controls: 1,
+                        rel: 0,
+                        modestbranding: 1
+                    },
+                    events: {
+                        'onError': (e) => console.error('Error with next video:', nextVideoId, e)
+                    }
+                });
+            }
+        }
+    }
+
+    // Handle player ready
+    function onPlayerReady(event) {
+        console.log('Player ready:', currentIndex);
+        event.target.playVideo();
+        document.getElementById('loading-overlay').classList.add('hidden');
+        clearInterval(heartInterval);
+    }
+
+    // Handle player state change
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.ENDED) {
+            loadNextVideo();
+        }
+    }
+
+    // Load next video
+    function loadNextVideo() {
+        if (players[0]) players[0].destroy();
+        players[0] = players[1];
+        players[1] = null;
+        currentIndex++;
+        if (currentIndex >= urls.length) {
+            document.getElementById('shorts-container').innerHTML = '<p class="error">No more Shorts available.</p>';
+            clearInterval(heartInterval);
+            return;
+        }
+        updateCards();
+        animateScroll(currentIndex);
+    }
+
+    // Animate scroll
+    function animateScroll(index) {
+        const cards = document.querySelectorAll('.short-card');
+        cards.forEach(card => {
+            const cardIndex = parseInt(card.dataset.index);
+            card.style.transform = `translateY(${(cardIndex - index) * 100}%)`;
+        });
+    }
+
+    // Handle touch events
+    function handleTouchStart(e) {
+        if (isSwiping) return;
+        startY = e.changedTouches[0].screenY;
+        startTime = Date.now();
+        isSwiping = true;
+    }
+
+    function handleTouchMove(e) {
+        if (!isSwiping) return;
+        const currentY = e.changedTouches[0].screenY;
+        const delta = currentY - startY;
+        const cards = document.querySelectorAll('.short-card');
+        cards.forEach(card => {
+            const cardIndex = parseInt(card.dataset.index);
+            const offset = (cardIndex - currentIndex) * 100 + delta / window.innerHeight * 100;
+            card.style.transform = `translateY(${offset}%)`;
+        });
+        e.preventDefault();
+    }
+
+    function handleTouchEnd(e) {
+        if (!isSwiping) return;
+        const endY = e.changedTouches[0].screenY;
+        const delta = endY - startY;
+        const duration = Date.now() - startTime;
+        const velocity = Math.abs(delta / duration);
+        const threshold = window.innerHeight * 0.1;
+        const velocityThreshold = 0.2;
+
+        if ((delta < -threshold || (delta < 0 && velocity > velocityThreshold)) && currentIndex < urls.length - 1) {
+            loadNextVideo();
+        } else if ((delta > threshold || (delta > 0 && velocity > velocityThreshold)) && currentIndex > 0) {
+            if (players[0]) players[0].destroy();
+            if (players[1]) players[1].destroy();
+            players = [];
+            currentIndex--;
+            updateCards();
+            animateScroll(currentIndex);
+        } else {
+            animateScroll(currentIndex);
+        }
+        isSwiping = false;
+    }
+
+    // Handle mouse wheel
+    function handleWheel(e) {
+        const now = Date.now();
+        if (now - lastScrollTime < 200 || isSwiping) return;
+        lastScrollTime = now;
+        if (e.deltaY > 20 && currentIndex < urls.length - 1) {
+            loadNextVideo();
+        } else if (e.deltaY < -20 && currentIndex > 0) {
+            if (players[0]) players[0].destroy();
+            if (players[1]) players[1].destroy();
+            players = [];
+            currentIndex--;
+            updateCards();
+            animateScroll(currentIndex);
+        }
+    }
+
+    // Toggle dark mode
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const backgroundWrapper = document.querySelector('.background-wrapper');
+        if (document.body.classList.contains('dark-mode')) {
+            backgroundWrapper.style.background = 'linear-gradient(135deg, #2a1b2e 0%, #3c2f45 100%)';
+        } else {
+            backgroundWrapper.style.background = 'linear-gradient(135deg, #ffe4e9 0%, #f4c4d2 100%)';
+        }
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    }
+
+    // Initialize
+    window.onload = () => {
+        console.log('Page loading started');
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('theme-switch').checked = true;
+            document.querySelector('.background-wrapper').style.background = 'linear-gradient(135deg, #2a1b2e 0%, #3c2f45 100%)';
+        } else {
+            document.querySelector('.background-wrapper').style.background = 'linear-gradient(135deg, #ffe4e9 0%, #f4c4d2 100%)';
+        }
+        const container = document.getElementById('shorts-container');
+        container.addEventListener('touchstart', handleTouchStart);
+        container.addEventListener('touchmove', handleTouchMove);
+        container.addEventListener('touchend', handleTouchEnd);
+        container.addEventListener('wheel', handleWheel);
+        fetchShortsUrls();
+        setTimeout(() => {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }, 800);
+        heartInterval = setInterval(createHeart, 1200);
+    };
+
+    // YouTube API ready callback
+    function onYouTubeIframeAPIReady() {
+        if (urls.length > 0) {
+            setupVideos();
+        }
+    }
+</script>
