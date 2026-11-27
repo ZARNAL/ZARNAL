@@ -1,0 +1,655 @@
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy Font Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&amp;family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #fff0f5, #ffe4e1);
+            color: #4a2c2a;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 245, 247, 0.95);
+            width: 100%;
+            max-width: 700px;
+            padding: 10px 0;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .back-button {
+            padding: 8px 16px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #d8a7b1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-left: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #c5909a;
+            transform: scale(1.05);
+        }
+
+        h1 {
+            font-family: 'Great+Vibes', cursive;
+            font-size: 3em;
+            color: #4a2c2a;
+            margin: 10px 0;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: #6b4e4d;
+            max-width: 600px;
+            text-align: center;
+            margin: 10px 0 20px;
+        }
+
+        .input-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .input-container textarea {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            height: 100px;
+            border: 2px solid #f5c6cb;
+            border-radius: 10px;
+            background: #fff5f7;
+            resize: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-container textarea:focus {
+            outline: none;
+            border-color: #d8a7b1;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            background: #ffffff;
+        }
+
+        .input-container textarea::placeholder {
+            color: #b39294;
+            font-style: italic;
+        }
+
+        .output-container {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+
+        .output-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .output-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .output-text {
+            font-size: 1.1em;
+            word-break: break-word;
+            line-height: 1.6;
+            color: #4a2c2a;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .copy-button {
+            padding: 8px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #d8a7b1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .copy-button:hover {
+            background-color: #c5909a;
+            transform: scale(1.05);
+        }
+
+        .copy-button.copied {
+            background-color: #a8d5ba !important;
+        }
+
+        .copy-button.copied::after {
+            content: " Copied!";
+        }
+
+        .copy-button.error::after {
+            content: " Error!";
+        }
+
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .back-button {
+                margin: 10px 0;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .input-container textarea, .output-box {
+                width: 100%;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .output-box {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+
+
+    <header>
+        <a href="https://zarnalhome.odoo.com/" class="back-button">Back</a>
+        <h1>Fancy Font Converter</h1>
+    </header>
+    <p>Create romantic, stylish text with a touch of elegance. Type below and watch your words transform!</p>
+    <div class="input-container">
+        <textarea id="inputText" placeholder="Type your romantic message..."></textarea>
+    </div>
+    <div class="output-container" id="outputContainer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('inputText').addEventListener('input', convertText);
+            convertText();
+        });
+
+        function convertText() {
+            const inputText = document.getElementById("inputText").value || "Type your message";
+            document.getElementById("outputContainer").innerHTML = "";
+            const convertedText1 = convertToFont1(inputText);
+            const convertedText2 = convertToFont2(inputText);
+            const convertedText3 = convertToFont3(inputText);
+            const convertedText4 = convertToFont4(inputText);
+            const convertedText5 = convertToFont5(inputText);
+            const convertedText6 = convertToFont6(inputText);
+            const convertedText7 = convertToFont7(inputText);
+            const convertedText8 = convertToFont8(inputText);
+            const convertedText9 = convertToFont9(inputText);
+            const convertedText10 = convertToFont10(inputText);
+            const convertedText11 = convertToFont11(inputText);
+            const convertedText12 = convertToFont12(inputText);
+            const convertedText13 = convertToFont13(inputText);
+            const convertedText14 = convertToFont14(inputText);
+            const convertedText15 = convertToFont15(inputText);
+            const convertedText16 = convertToFont16(inputText);
+            const convertedText17 = convertToFont17(inputText);
+            const convertedText18 = convertToFont18(inputText);
+            const convertedText19 = convertToFont19(inputText);
+            const convertedText20 = convertToFont20(inputText);
+            const convertedText21 = convertToFont21(inputText);
+            const convertedText22 = convertToFont22(inputText);
+            const convertedText23 = convertToFont23(inputText);
+            const convertedText24 = convertToFont24(inputText);
+            const convertedText25 = convertToFont25(inputText);
+            const convertedText26 = convertToFont26(inputText);
+            const convertedText27 = convertToFont27(inputText);
+            const convertedText28 = convertToFont28(inputText);
+            const convertedText29 = convertToFont29(inputText);
+            const convertedText30 = convertToFont30(inputText);
+            const convertedText31 = convertToFont31(inputText);
+
+            createOutputBox("outputContainer", convertedText1);
+            createOutputBox("outputContainer", convertedText2);
+            createOutputBox("outputContainer", convertedText3);
+            createOutputBox("outputContainer", convertedText4);
+            createOutputBox("outputContainer", convertedText5);
+            createOutputBox("outputContainer", convertedText6);
+            createOutputBox("outputContainer", convertedText7);
+            createOutputBox("outputContainer", convertedText8);
+            createOutputBox("outputContainer", convertedText9);
+            createOutputBox("outputContainer", convertedText10);
+            createOutputBox("outputContainer", convertedText11);
+            createOutputBox("outputContainer", convertedText12);
+            createOutputBox("outputContainer", convertedText13);
+            createOutputBox("outputContainer", convertedText14);
+            createOutputBox("outputContainer", convertedText15);
+            createOutputBox("outputContainer", convertedText16);
+            createOutputBox("outputContainer", convertedText17);
+            createOutputBox("outputContainer", convertedText18);
+            createOutputBox("outputContainer", convertedText19);
+            createOutputBox("outputContainer", convertedText20);
+            createOutputBox("outputContainer", convertedText21);
+            createOutputBox("outputContainer", convertedText22);
+            createOutputBox("outputContainer", convertedText23);
+            createOutputBox("outputContainer", convertedText24);
+            createOutputBox("outputContainer", convertedText25);
+            createOutputBox("outputContainer", convertedText26);
+            createOutputBox("outputContainer", convertedText27);
+            createOutputBox("outputContainer", convertedText28);
+            createOutputBox("outputContainer", convertedText29);
+            createOutputBox("outputContainer", convertedText30);
+            createOutputBox("outputContainer", convertedText31);
+        }
+
+        function createOutputBox(containerId, text) {
+            const outputContainer = document.getElementById(containerId);
+            const outputBox = document.createElement("div");
+            outputBox.classList.add("output-box");
+            const outputText = document.createElement("p");
+            outputText.classList.add("output-text");
+            outputText.textContent = text;
+            const copyButton = document.createElement("button");
+            copyButton.classList.add("copy-button");
+            copyButton.textContent = "Copy";
+            copyButton.onclick = function() {
+                copyToClipboard(text, copyButton);
+            };
+            outputBox.appendChild(outputText);
+            outputBox.appendChild(copyButton);
+            outputContainer.appendChild(outputBox);
+        }
+
+        function convertToFont1(text) {
+            const charMap = {
+                'a': 'α', 'b': 'в', 'c': 'c', 'd': 'd', 'e': 'є', 'f': 'f', 'g': 'g',
+                'h': 'н', 'i': 'ι', 'j': 'j', 'k': 'к', 'l': 'l', 'm': 'м', 'n': 'и',
+                'o': 'σ', 'p': 'ρ', 'q': 'q', 'r': 'я', 's': 'ѕ', 't': 'т', 'u': 'υ',
+                'v': 'ν', 'w': 'ω', 'x': 'χ', 'y': 'ч', 'z': 'z'
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont2(text) {
+            const charMap = {
+                'a': 'Ⱥ', 'b': 'β', 'c': 'ȼ', 'd': 'ȡ', 'e': 'ɇ', 'f': 'ƒ', 'g': 'ǥ',
+                'h': 'ȟ', 'i': 'ɨ', 'j': 'ɉ', 'k': 'ǩ', 'l': 'ł', 'm': 'ɱ', 'n': 'ɲ',
+                'o': 'ø', 'p': 'þ', 'q': 'ɋ', 'r': 'ɍ', 's': 'š', 't': 'ŧ', 'u': 'ʉ',
+                'v': 'ʋ', 'w': 'ⱳ', 'x': 'Ӿ', 'y': 'ɏ', 'z': 'ȥ'
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont3(text) {
+            const charMap = {
+                'a': '𝗮', 'b': '𝗯', 'c': '𝗰', 'd': '𝗱', 'e': '𝗲', 'f': '𝗳', 'g': '𝗴',
+                'h': '𝗵', 'i': '𝗶', 'j': '𝗷', 'k': '𝗸', 'l': '𝗹', 'm': '𝗺', 'n': '𝗻',
+                'o': '𝗼', 'p': '𝗽', 'q': '𝗾', 'r': '𝗿', 's': '𝘀', 't': '𝘁', 'u': '𝘂',
+                'v': '𝘃', 'w': '𝘄', 'x': '𝘅', 'y': '𝘆', 'z': '𝘇'
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont4(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9",
+                "a":"𝓪","b":"𝓫","c":"𝓬","d":"𝓭","e":"𝓮","f":"𝓯","g":"𝓰","h":"𝓱","i":"𝓲","j":"𝓳",
+                "k":"𝓴","l":"𝓵","m":"𝓶","n":"𝓷","o":"𝓸","p":"𝓹","q":"𝓺","r":"𝓻","s":"𝓼","t":"𝓽",
+                "u":"𝓾","v":"𝓿","w":"𝔀","x":"𝔁","y":"𝔂","z":"𝔃",
+                "A":"𝓐","B":"𝓑","C":"𝓒","D":"𝓓","E":"𝓔","F":"𝓕","G":"𝓖","H":"𝓗","I":"𝓘",
+                "J":"𝓙","K":"𝓚","L":"𝓛","M":"𝓜","N":"𝓝","O":"𝓞","P":"𝓟","Q":"𝓠","R":"𝓡",
+                "S":"𝓢","T":"𝓣","U":"𝓤","V":"𝓥","W":"𝓦","X":"𝓧","Y":"𝓨","Z":"𝓩"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont5(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9",
+                "a":"ค","b":"๖","c":"¢","d":"໓","e":"ē","f":"f","g":"ງ","h":"h","i":"i","j":"ว",
+                "k":"k","l":"l","m":"๓","n":"ຖ","o":"໐","p":"p","q":"๑","r":"r","s":"Ş","t":"t",
+                "u":"น","v":"ง","w":"ຟ","x":"x","y":"ฯ","z":"ຊ",
+                "A":"ค","B":"๖","C":"¢","D":"໓","E":"ē","F":"f","G":"ງ","H":"h","I":"i",
+                "J":"ว","K":"k","L":"l","M":"๓","N":"ຖ","O":"໐","P":"p","Q":"๑","R":"r",
+                "S":"Ş","T":"t","U":"น","V":"ง","W":"ຟ","X":"x","Y":"ฯ","Z":"ຊ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont6(text) {
+            const charMap = {
+                '0':'𝟢','1':'𝟣','2':'𝟤','3':'𝟥','4':'𝟦','5':'𝟧','6':'𝟨','7':'𝟩','8':'𝟪','9':'𝟫','a':'𝒶','b':'𝒷','c':'𝒸','d':'𝒹','e':'𝑒','f':'𝒻','g':'𝑔','h':'𝒽','i':'𝒾','j':'𝒿','k':'𝓀','l':'𝓁','m':'𝓂','n':'𝓃','o':'𝑜','p':'𝓅','q':'𝓆','r':'𝓇','s':'𝓈','t':'𝓉','u':'𝓊','v':'𝓋','w':'𝓌','x':'𝓍','y':'𝓎','z':'𝓏','A':'𝒜','B':'𝐵','C':'𝒞','D':'𝒟','E':'𝐸','F':'𝐹','G':'𝒢','H':'𝐻','I':'𝐼','J':'𝒥','K':'𝒦','L':'𝐿','M':'𝑀','N':'𝒩','O':'𝒪','P':'𝒫','Q':'𝒬','R':'𝑅','S':'𝒮','T':'𝒯','U':'𝒰','V':'𝒱','W':'𝒲','X':'𝒳','Y':'𝒴','Z':'𝒵'
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont7(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"ﾑ","b":"乃","c":"ᄃ","d":"り","e":"乇","f":"ｷ","g":"ム","h":"ん","i":"ﾉ","j":"ﾌ","k":"ズ","l":"ﾚ","m":"ﾶ","n":"刀","o":"の","p":"ｱ","q":"ゐ","r":"尺","s":"丂","t":"ｲ","u":"ひ","v":"√","w":"W","x":"ﾒ","y":"ﾘ","z":"乙","A":"ﾑ","B":"乃","C":"ᄃ","D":"り","E":"乇","F":"ｷ","G":"ム","H":"ん","I":"ﾉ","J":"ﾌ","K":"ズ","L":"ﾚ","M":"ﾶ","N":"刀","O":"の","P":"ｱ","Q":"ゐ","R":"尺","S":"丂","T":"ｲ","U":"ひ","V":"√","W":"W","X":"ﾒ","Y":"ﾘ","Z":"乙"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont8(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"ą","b":"ც","c":"ƈ","d":"ɖ","e":"ɛ","f":"ʄ","g":"ɠ","h":"ɧ","i":"ı","j":"ʝ","k":"ƙ","l":"Ɩ","m":"ɱ","n":"ŋ","o":"ơ","p":"℘","q":"զ","r":"ཞ","s":"ʂ","t":"ɬ","u":"ų","v":"۷","w":"ῳ","x":"ҳ","y":"ყ","z":"ʑ","A":"ą","B":"ც","C":"ƈ","D":"ɖ","E":"ɛ","F":"ʄ","G":"ɠ","H":"ɧ","I":"ı","J":"ʝ","K":"ƙ","L":"Ɩ","M":"ɱ","N":"ŋ","O":"ơ","P":"℘","Q":"զ","R":"ཞ","S":"ʂ","T":"ɬ","U":"ų","V":"۷","W":"ῳ","X":"ҳ","Y":"ყ","Z":"ʑ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont9(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"🄰","b":"🄱","c":"🄲","d":"🄳","e":"🄴","f":"🄵","g":"🄶","h":"🄷","i":"🄸","j":"🄹","k":"🄺","l":"🄻","m":"🄼","n":"🄽","o":"🄾","p":"🄿","q":"🅀","r":"🅁","s":"🅂","t":"🅃","u":"🅄","v":"🅅","w":"🅆","x":"🅇","y":"🅈","z":"🅉","A":"🄰","B":"🄱","C":"🄲","D":"🄳","E":"🄴","F":"🄵","G":"🄶","H":"🄷","I":"🄸","J":"🄹","K":"🄺","L":"🄻","M":"🄼","N":"🄽","O":"🄾","P":"🄿","Q":"🅀","R":"🅁","S":"🅂","T":"🅃","U":"🅄","V":"🅅","W":"🅆","X":"🅇","Y":"🅈","Z":"🅉"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont10(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"Ꮧ","b":"Ᏸ","c":"ፈ","d":"Ꮄ","e":"Ꮛ","f":"Ꭶ","g":"Ꮆ","h":"Ꮒ","i":"Ꭵ","j":"Ꮰ","k":"Ꮶ","l":"Ꮭ","m":"Ꮇ","n":"Ꮑ","o":"Ꭷ","p":"Ꭾ","q":"Ꭴ","r":"Ꮢ","s":"Ꮥ","t":"Ꮦ","u":"Ꮼ","v":"Ꮙ","w":"Ꮗ","x":"ጀ","y":"Ꭹ","z":"ፚ","A":"Ꮧ","B":"Ᏸ","C":"ፈ","D":"Ꮄ","E":"Ꮛ","F":"Ꭶ","G":"Ꮆ","H":"Ꮒ","I":"Ꭵ","J":"Ꮰ","K":"Ꮶ","L":"Ꮭ","M":"Ꮇ","N":"Ꮑ","O":"Ꭷ","P":"Ꭾ","Q":"Ꭴ","R":"Ꮢ","S":"Ꮥ","T":"Ꮦ","U":"Ꮼ","V":"Ꮙ","W":"Ꮗ","X":"ጀ","Y":"Ꭹ","Z":"ፚ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont11(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"ᗩ","b":"ᗷ","c":"ᑕ","d":"ᗪ","e":"E","f":"ᖴ","g":"G","h":"ᕼ","i":"I","j":"ᒍ","k":"K","l":"ᒪ","m":"ᗰ","n":"ᑎ","o":"O","p":"ᑭ","q":"ᑫ","r":"ᖇ","s":"ᔕ","t":"T","u":"ᑌ","v":"ᐯ","w":"ᗯ","x":"᙭","y":"Y","z":"ᘔ","A":"ᗩ","B":"ᗷ","C":"ᑕ","D":"ᗪ","E":"E","F":"ᖴ","G":"G","H":"ᕼ","I":"I","J":"ᒍ","K":"K","L":"ᒪ","M":"ᗰ","N":"ᑎ","O":"O","P":"ᑭ","Q":"ᑫ","R":"ᖇ","S":"ᔕ","T":"T","U":"ᑌ","V":"ᐯ","W":"ᗯ","X":"᙭","Y":"Y","Z":"ᘔ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont12(text) {
+            const charMap = {
+                "0":"𝟶","1":"𝟷","2":"𝟸","3":"𝟹","4":"𝟺","5":"𝟻","6":"𝟼","7":"𝟽","8":"𝟾","9":"𝟿","a":"𝚊","b":"𝚋","c":"𝚌","d":"𝚍","e":"𝚎","f":"𝚏","g":"𝚐","h":"𝚑","i":"𝚒","j":"𝚓","k":"𝚔","l":"𝚕","m":"𝚖","n":"𝚗","o":"𝚘","p":"𝚙","q":"𝚚","r":"𝚛","s":"𝚜","t":"𝚝","u":"𝚞","v":"𝚟","w":"𝚠","x":"𝚡","y":"𝚢","z":"𝚣","A":"𝙰","B":"𝙱","C":"𝙲","D":"𝙳","E":"𝙴","F":"𝙵","G":"𝙶","H":"𝙷","I":"𝙸","J":"𝙹","K":"𝙺","L":"𝙻","M":"𝙼","N":"𝙽","O":"𝙾","P":"𝙿","Q":"𝚀","R":"𝚁","S":"𝚂","T":"𝚃","U":"𝚄","V":"𝚅","W":"𝚆","X":"𝚇","Y":"𝚈","Z":"𝚉"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont13(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"𝙖","b":"𝙗","c":"𝙘","d":"𝙙","e":"𝙚","f":"𝙛","g":"𝙜","h":"𝙝","i":"𝙞","j":"𝙟","k":"𝙠","l":"𝙡","m":"𝙢","n":"𝙣","o":"𝙤","p":"𝙥","q":"𝙦","r":"𝙧","s":"𝙨","t":"𝙩","u":"𝙪","v":"𝙫","w":"𝙬","x":"𝙭","y":"𝙮","z":"𝙯","A":"𝘼","B":"𝘽","C":"𝘾","D":"𝘿","E":"𝙀","F":"𝙁","G":"𝙂","H":"𝙃","I":"𝙄","J":"𝙅","K":"𝙆","L":"𝙇","M":"𝙈","N":"𝙉","O":"𝙊","P":"𝙋","Q":"𝙌","R":"𝙍","S":"𝙎","T":"𝙏","U":"𝙐","V":"𝙑","W":"𝙒","X":"𝙓","Y":"𝙔","Z":"𝙕"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont14(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"₳","b":"฿","c":"₵","d":"Đ","e":"Ɇ","f":"₣","g":"₲","h":"Ⱨ","i":"ł","j":"J","k":"₭","l":"Ⱡ","m":"₥","n":"₦","o":"Ø","p":"₱","q":"Q","r":"Ɽ","s":"₴","t":"₮","u":"Ʉ","v":"V","w":"₩","x":"Ӿ","y":"Ɏ","z":"Ⱬ","A":"₳","B":"฿","C":"₵","D":"Đ","E":"Ɇ","F":"₣","G":"₲","H":"Ⱨ","I":"ł","J":"J","K":"₭","L":"Ⱡ","M":"₥","N":"₦","O":"Ø","P":"₱","Q":"Q","R":"Ɽ","S":"₴","T":"₮","U":"Ʉ","V":"V","W":"₩","X":"Ӿ","Y":"Ɏ","Z":"Ⱬ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont15(text) {
+            const charMap = {
+                "0":"𝟘","1":"𝟙","2":"𝟚","3":"𝟛","4":"𝟜","5":"𝟝","6":"𝟞","7":"𝟟","8":"𝟠","9":"𝟡","a":"𝕒","b":"𝕓","c":"𝕔","d":"𝕕","e":"𝕖","f":"𝕗","g":"𝕘","h":"𝕙","i":"𝕚","j":"𝕛","k":"𝕜","l":"𝕝","m":"𝕞","n":"𝕟","o":"𝕠","p":"𝕡","q":"𝕢","r":"𝕣","s":"𝕤","t":"𝕥","u":"𝕦","v":"𝕧","w":"𝕨","x":"𝕩","y":"𝕪","z":"𝕫","A":"𝔸","B":"𝔹","C":"ℂ","D":"𝔻","E":"𝔼","F":"𝔽","G":"𝔾","H":"ℍ","I":"𝕀","J":"𝕁","K":"𝕂","L":"𝕃","M":"𝕄","N":"ℕ","O":"𝕆","P":"ℙ","Q":"ℚ","R":"ℝ","S":"𝕊","T":"𝕋","U":"𝕌","V":"𝕍","W":"𝕎","X":"𝕏","Y":"𝕐","Z":"ℤ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont16(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"𝖆","b":"𝖇","c":"𝖈","d":"𝖉","e":"𝖊","f":"𝖋","g":"𝖌","h":"𝖍","i":"𝖎","j":"𝖏","k":"𝖐","l":"𝖑","m":"𝖒","n":"𝖓","o":"𝖔","p":"𝖕","q":"𝖖","r":"𝖗","s":"𝖘","t":"𝖙","u":"𝖚","v":"𝖛","w":"𝖜","x":"𝖝","y":"𝖞","z":"𝖟","A":"𝕬","B":"𝕭","C":"𝕮","D":"𝕯","E":"𝕰","F":"𝕱","G":"𝕲","H":"𝕳","I":"𝕴","J":"𝕵","K":"𝕶","L":"𝕷","M":"𝕸","N":"𝕹","O":"𝕺","P":"𝕻","Q":"𝕼","R":"𝕽","S":"𝕾","T":"𝕿","U":"𝖀","V":"𝖁","W":"𝖂","X":"𝖃","Y":"𝖄","Z":"𝖅"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont17(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"𝓪","b":"𝓫","c":"𝓬","d":"𝓭","e":"𝓮","f":"𝓯","g":"𝓰","h":"𝓱","i":"𝓲","j":"𝓳","k":"𝓴","l":"𝓵","m":"𝓶","n":"𝓷","o":"𝓸","p":"𝓹","q":"𝓺","r":"𝓻","s":"𝓼","t":"𝓽","u":"𝓾","v":"𝓿","w":"𝔀","x":"𝔁","y":"𝔂","z":"𝔃","A":"𝓐","B":"𝓑","C":"𝓒","D":"𝓓","E":"𝓔","F":"𝓕","G":"𝓖","H":"𝓗","I":"𝓘","J":"𝓙","K":"𝓚","L":"𝓛","M":"𝓜","N":"𝓝","O":"𝓞","P":"𝓟","Q":"𝓠","R":"𝓡","S":"𝓢","T":"𝓣","U":"𝓤","V":"𝓥","W":"𝓦","X":"𝓧","Y":"𝓨","Z":"𝓩"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont18(text) {
+            const charMap = {
+                "0":"⊘","1":"𝟙","2":"ϩ","3":"Ӡ","4":"५","5":"Ƽ","6":"Ϭ","7":"7","8":"𝟠","9":"९","a":"ą","b":"ҍ","c":"ç","d":"ժ","e":"ҽ","f":"ƒ","g":"ց","h":"հ","i":"ì","j":"ʝ","k":"ҟ","l":"Ӏ","m":"ʍ","n":"ղ","o":"օ","p":"ք","q":"զ","r":"ɾ","s":"ʂ","t":"է","u":"մ","v":"ѵ","w":"ա","x":"×","y":"վ","z":"Հ","A":"Ⱥ","B":"β","C":"↻","D":"Ꭰ","E":"Ɛ","F":"Ƒ","G":"Ɠ","H":"Ƕ","I":"į","J":"ل","K":"Ҡ","L":"Ꝉ","M":"Ɱ","N":"ហ","O":"ට","P":"φ","Q":"Ҩ","R":"འ","S":"Ϛ","T":"Ͳ","U":"Ա","V":"Ỽ","W":"చ","X":"ჯ","Y":"Ӌ","Z":"ɀ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont19(text) {
+            const charMap = {
+                "0":"0","1":"1","2":"2","3":"3","4":"4","5":"5","6":"6","7":"7","8":"8","9":"9","a":"Ꮧ","b":"Ᏸ","c":"ፈ","d":"Ꮄ","e":"Ꮛ","f":"Ꭶ","g":"Ꮆ","h":"Ꮒ","i":"Ꭵ","j":"Ꮰ","k":"Ꮶ","l":"Ꮭ","m":"Ꮇ","n":"Ꮑ","o":"Ꭷ","p":"Ꭾ","q":"Ꭴ","r":"Ꮢ","s":"Ꮥ","t":"Ꮦ","u":"Ꮼ","v":"Ꮙ","w":"Ꮗ","x":"ጀ","y":"Ꭹ","z":"ፚ","A":"Ꮧ","B":"Ᏸ","C":"ፈ","D":"Ꮄ","E":"Ꮛ","F":"Ꭶ","G":"Ꮆ","H":"Ꮒ","I":"Ꭵ","J":"Ꮰ","K":"Ꮶ","L":"Ꮭ","M":"Ꮇ","N":"Ꮑ","O":"Ꭷ","P":"Ꭾ","Q":"Ꭴ","R":"Ꮢ","S":"Ꮥ","T":"Ꮦ","U":"Ꮼ","V":"Ꮙ","W":"Ꮗ","X":"ጀ","Y":"Ꭹ","Z":"ፚ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont20(text) {
+            const charMap = {
+                '0': '̲̅0', '1': '̲̅1', '2': '̲̅2', '3': '̲̅3', '4': '̲̅4', '5': '̲̅5', '6': '̲̅6', '7': '̲̅7', '8': '̲̅8', '9': '̲̅9',
+                'a': '̲̅a', 'b': '̲̅b', 'c': '̲̅c', 'd': '̲̅d', 'e': '̲̅e', 'f': '̲̅f', 'g': '̲̅g', 'h': '̲̅h', 'i': '̲̅i', 'j': '̲̅j',
+                'k': '̲̅k', 'l': '̲̅l', 'm': '̲̅m', 'n': '̲̅n', 'o': '̲̅o', 'p': '̲̅p', 'q': '̲̅q', 'r': '̲̅r', 's': '̲̅s', 't': '̲̅t',
+                'u': '̲̅u', 'v': '̲̅v', 'w': '̲̅w', 'x': '̲̅x', 'y': '̲̅y', 'z': '̲̅z',
+                'A': '̲̅A', 'B': '̲̅B', 'C': '̲̅C', 'D': '̲̅D', 'E': '̲̅E', 'F': '̲̅F', 'G': '̲̅G', 'H': '̲̅H', 'I': '̲̅I', 'J': '̲̅J',
+                'K': '̲̅K', 'L': '̲̅L', 'M': '̲̅M', 'N': '̲̅N', 'O': '̲̅O', 'P': '̲̅P', 'Q': '̲̅Q', 'R': '̲̅R', 'S': '̲̅S', 'T': '̲̅T',
+                'U': '̲̅U', 'V': '̲̅V', 'W': '̲̅W', 'X': '̲̅X', 'Y': '̲̅Y', 'Z': '̲̅Z'
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont21(text) {
+            const charMap = {
+                '0': '0', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9',
+                'a': 'ꍏ', 'b': 'ß', 'c': 'ꉓ', 'd': 'ꀸ', 'e': 'ꍟ', 'f': 'Ŧ', 'g': 'ꁅ', 'h': 'ꃅ', 'i': 'ꀤ', 'j': 'ꀭ',
+                'k': 'ꀘ', 'l': '꒒', 'm': 'ꎭ', 'n': 'ꈤ', 'o': 'ꂦ', 'p': 'ᖘ', 'q': 'ꆰ', 'r': 'ꋪ', 's': 'ꌗ', 't': 'Ƭ',
+                'u': 'ꀎ', 'v': 'ᐯ', 'w': 'ꅏ', 'x': 'ꊼ', 'y': 'ꌩ', 'z': 'ꁴ',
+                'A': 'ꍏ', 'B': 'ß', 'C': 'ꉓ', 'D': 'ꀸ', 'E': 'ꍟ', 'F': 'Ŧ', 'G': 'ꁅ', 'H': 'ꃅ', 'I': 'ꀤ', 'J': 'ꀭ',
+                'K': 'ꀘ', 'L': '꒒', 'M': 'ꎭ', 'N': 'ꈤ', 'O': 'ꂦ', 'P': 'ᖘ', 'Q': 'ꆰ', 'R': 'ꋪ', 'S': 'ꌗ', 'T': 'Ƭ',
+                'U': 'ꀎ', 'V': 'ᐯ', 'W': 'ꅏ', 'X': 'ꊼ', 'Y': 'ꌩ', 'Z': 'ꁴ'
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont22(text) {
+            const charMap = {
+                '0': '0', '1': '1', '2': '2', '3': '3', '4': '4', '5': '5', '6': '6', '7': '7', '8': '8', '9': '9',
+                'a': '🅰', 'b': '🅱', 'c': '🅲', 'd': '🅳', 'e': '🅴', 'f': '🅵', 'g': '🅶', 'h': '🅷', 'i': '🅸', 'j': '🅹',
+                'k': '🅺', 'l': '🅻', 'm': '🅼', 'n': '🅽', 'o': '🅾', 'p': '🅿', 'q': '🆀', 'r': '🆁', 's': '🆂', 't': '🆃',
+                'u': '🆄', 'v': '🆅', 'w': '🆆', 'x': '🆇', 'y': '🆈', 'z': '🆉',
+                'A': '🅰', 'B': '🅱', 'C': '🅲', 'D': '🅳', 'E': '🅴', 'F': '🅵', 'G': '🅶', 'H': '🅷', 'I': '🅸', 'J': '🅹',
+                'K': '🅺', 'L': '🅻', 'M': '🅼', 'N': '🅽', 'O': '🅾', 'P': '🅿', 'Q': '🆀', 'R': '🆁', 'S': '🆂', 'T': '🆃',
+                'U': '🆄', 'V': '🆅', 'W': '🆆', 'X': '🆇', 'Y': '🆈', 'Z': '🆉'
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont23(text) {
+            const charMap = {
+                "0": "0", "1": "1", "2": "2", "3": "3", "4": "4", "5": "5", "6": "6", "7": "7", "8": "8", "9": "9",
+                "a": "Ꭺ", "b": "b", "c": "Ꮯ", "d": "Ꭰ", "e": "Ꭼ", "f": "f", "g": "Ꮆ", "h": "h", "i": "Ꭵ", "j": "j",
+                "k": "Ꮶ", "l": "Ꮮ", "m": "m", "n": "Ꮑ", "o": "Ꮎ", "p": "Ꮲ", "q": "q", "r": "Ꮢ", "s": "s", "t": "Ꮖ",
+                "u": "u", "v": "Ꮙ", "w": "Ꮃ", "x": "x", "y": "Ꮍ", "z": "Ꮓ",
+                "A": "Ꭺ", "B": "b", "C": "Ꮯ", "D": "Ꭰ", "E": "Ꭼ", "F": "f", "G": "Ꮆ", "H": "h", "I": "Ꭵ",
+                "J": "j", "K": "Ꮶ", "L": "Ꮮ", "M": "m", "N": "Ꮑ", "O": "Ꮎ", "P": "Ꮲ", "Q": "q", "R": "Ꮢ",
+                "S": "s", "T": "Ꮖ", "U": "u", "V": "Ꮙ", "W": "Ꮃ", "X": "x", "Y": "Ꮍ", "Z": "Ꮓ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont24(text) {
+            const charMap = {
+                "0": "0", "1": "1", "2": "2", "3": "3", "4": "4", "5": "5", "6": "6", "7": "7", "8": "8", "9": "9",
+                "a": "ᗩ", "b": "ᗷ", "c": "ᑢ", "d": "ᕲ", "e": "ᘿ", "f": "ᖴ", "g": "ᘜ", "h": "ᕼ", "i": "ᓰ", "j": "ᒚ",
+                "k": "K", "l": "ᒪ", "m": "ᘻ", "n": "ᘉ", "o": "ᓍ", "p": "ᕵ", "q": "ᕴ", "r": "ᖇ", "s": "S", "t": "ᖶ",
+                "u": "ᑘ", "v": "ᐺ", "w": "ᘺ", "x": "᙭", "y": "ᖻ", "z": "ᗱ",
+                "A": "ᗩ", "B": "ᗷ", "C": "ᑢ", "D": "ᕲ", "E": "ᘿ", "F": "ᖴ", "G": "ᘜ", "H": "ᕼ", "I": "ᓰ", "J": "ᒚ",
+                "K": "K", "L": "ᒪ", "M": "ᘻ", "N": "ᘉ", "O": "ᓍ", "P": "ᕵ", "Q": "ᕴ", "R": "ᖇ", "S": "S", "T": "ᖶ",
+                "U": "ᑘ", "V": "ᐺ", "W": "ᘺ", "X": "᙭", "Y": "ᖻ", "Z": "ᗱ"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont25(text) {
+            const charMap = {
+                "0": "0♥", "1": "1♥", "2": "2♥", "3": "3♥", "4": "4♥", "5": "5♥", "6": "6♥", "7": "7♥", "8": "8♥", "9": "9♥",
+                "a": "a♥", "b": "b♥", "c": "c♥", "d": "d♥", "e": "e♥", "f": "f♥", "g": "g♥", "h": "h♥", "i": "i♥", "j": "j♥",
+                "k": "k♥", "l": "l♥", "m": "m♥", "n": "n♥", "o": "o♥", "p": "p♥", "q": "q♥", "r": "r♥", "s": "s♥", "t": "t♥",
+                "u": "u♥", "v": "v♥", "w": "w♥", "x": "x♥", "y": "y♥", "z": "z♥",
+                "A": "A♥", "B": "B♥", "C": "C♥", "D": "D♥", "E": "E♥", "F": "F♥", "G": "G♥", "H": "H♥", "I": "I♥", "J": "J♥",
+                "K": "K♥", "L": "L♥", "M": "M♥", "N": "N♥", "O": "O♥", "P": "P♥", "Q": "Q♥", "R": "R♥", "S": "S♥", "T": "T♥",
+                "U": "U♥", "V": "V♥", "W": "W♥", "X": "X♥", "Y": "Y♥", "Z": "Z♥"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont26(text) {
+            const charMap = {
+                "0": "【0】", "1": "【1】", "2": "【2】", "3": "【3】", "4": "【4】", "5": "【5】", "6": "【6】", "7": "【7】", "8": "【8】", "9": "【9】",
+                "a": "【a】", "b": "【b】", "c": "【c】", "d": "【d】", "e": "【e】", "f": "【f】", "g": "【g】", "h": "【h】", "i": "【i】", "j": "【j】",
+                "k": "【k】", "l": "【l】", "m": "【m】", "n": "【n】", "o": "【o】", "p": "【p】", "q": "【q】", "r": "【r】", "s": "【s】", "t": "【t】",
+                "u": "【u】", "v": "【v】", "w": "【w】", "x": "【x】", "y": "【y】", "z": "【z】",
+                "A": "【A】", "B": "【B】", "C": "【C】", "D": "【D】", "E": "【E】", "F": "【F】", "G": "【G】", "H": "【H】", "I": "【I】", "J": "【J】",
+                "K": "【K】", "L": "【L】", "M": "【M】", "N": "【N】", "O": "【O】", "P": "【P】", "Q": "【Q】", "R": "【R】", "S": "【S】", "T": "【T】",
+                "U": "【U】", "V": "【V】", "W": "【W】", "X": "【X】", "Y": "【Y】", "Z": "【Z】"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont27(text) {
+            const charMap = {
+                "0": "『0』", "1": "『1』", "2": "『2』", "3": "『3』", "4": "『4』", "5": "『5』", "6": "『6』", "7": "『7』", "8": "『8』", "9": "『9』",
+                "a": "『a』", "b": "『b』", "c": "『c』", "d": "『d』", "e": "『e』", "f": "『f』", "g": "『g』", "h": "『h』", "i": "『i』", "j": "『j』",
+                "k": "『k』", "l": "『l』", "m": "『m』", "n": "『n』", "o": "『o』", "p": "『p』", "q": "『q』", "r": "『r』", "s": "『s』", "t": "『t』",
+                "u": "『u』", "v": "『v』", "w": "『w』", "x": "『x』", "y": "『y』", "z": "『z』",
+                "A": "『A』", "B": "『B』", "C": "『C』", "D": "『D』", "E": "『E』", "F": "『F』", "G": "『G』", "H": "『H』", "I": "『I』", "J": "『J』",
+                "K": "『K』", "L": "『L』", "M": "『M』", "N": "『N』", "O": "『O』", "P": "『P』", "Q": "『Q』", "R": "『R』", "S": "『S』", "T": "『T』",
+                "U": "『U』", "V": "『V』", "W": "『W』", "X": "『X』", "Y": "『Y』", "Z": "『Z』"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont28(text) {
+            const charMap = {
+                "0": "⫷0⫸", "1": "⫷1⫸", "2": "⫷2⫸", "3": "⫷3⫸", "4": "⫷4⫸", "5": "⫷5⫸", "6": "⫷6⫸", "7": "⫷7⫸", "8": "⫷8⫸", "9": "⫷9⫸",
+                "a": "⫷a⫸", "b": "⫷b⫸", "c": "⫷c⫸", "d": "⫷d⫸", "e": "⫷e⫸", "f": "⫷f⫸", "g": "⫷g⫸", "h": "⫷h⫸", "i": "⫷i⫸", "j": "⫷j⫸",
+                "k": "⫷k⫸", "l": "⫷l⫸", "m": "⫷m⫸", "n": "⫷n⫸", "o": "⫷o⫸", "p": "⫷p⫸", "q": "⫷q⫸", "r": "⫷r⫸", "s": "⫷s⫸", "t": "⫷t⫸",
+                "u": "⫷u⫸", "v": "⫷v⫸", "w": "⫷w⫸", "x": "⫷x⫸", "y": "⫷y⫸", "z": "⫷z⫸",
+                "A": "⫷A⫸", "B": "⫷B⫸", "C": "⫷C⫸", "D": "⫷D⫸", "E": "⫷E⫸", "F": "⫷F⫸", "G": "⫷G⫸", "H": "⫷H⫸", "I": "⫷I⫸", "J": "⫷J⫸",
+                "K": "⫷K⫸", "L": "⫷L⫸", "M": "⫷M⫸", "N": "⫷N⫸", "O": "⫷O⫸", "P": "⫷P⫸", "Q": "⫷Q⫸", "R": "⫷R⫸", "S": "⫷S⫸", "T": "⫷T⫸",
+                "U": "⫷U⫸", "V": "⫷V⫸", "W": "⫷W⫸", "X": "⫷X⫸", "Y": "⫷Y⫸", "Z": "⫷Z⫸"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont29(text) {
+            const charMap = {
+                "0": "0░", "1": "1░", "2": "2░", "3": "3░", "4": "4░", "5": "5░", "6": "6░", "7": "7░", "8": "8░", "9": "9░",
+                "a": "a░", "b": "b░", "c": "c░", "d": "d░", "e": "e░", "f": "f░", "g": "g░", "h": "h░", "i": "i░", "j": "j░",
+                "k": "k░", "l": "l░", "m": "m░", "n": "n░", "o": "o░", "p": "p░", "q": "q░", "r": "r░", "s": "s░", "t": "t░",
+                "u": "u░", "v": "v░", "w": "w░", "x": "x░", "y": "y░", "z": "z░",
+                "A": "A░", "B": "B░", "C": "C░", "D": "D░", "E": "E░", "F": "F░", "G": "G░", "H": "H░", "I": "I░", "J": "J░",
+                "K": "K░", "L": "L░", "M": "M░", "N": "N░", "O": "O░", "P": "P░", "Q": "Q░", "R": "R░", "S": "S░", "T": "T░",
+                "U": "U░", "V": "V░", "W": "W░", "X": "X░", "Y": "Y░", "Z": "Z░"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont30(text) {
+            const charMap = {
+                "0": "0-", "1": "1-", "2": "2-", "3": "3-", "4": "4-", "5": "5-", "6": "6-", "7": "7-", "8": "8-", "9": "9-",
+                "a": "a-", "b": "b-", "c": "c-", "d": "d-", "e": "e-", "f": "f-", "g": "g-", "h": "h-", "i": "i-", "j": "j-",
+                "k": "k-", "l": "l-", "m": "m-", "n": "n-", "o": "o-", "p": "p-", "q": "q-", "r": "r-", "s": "s-", "t": "t-",
+                "u": "u-", "v": "v-", "w": "w-", "x": "x-", "y": "y-", "z": "z-",
+                "A": "A-", "B": "B-", "C": "C-", "D": "D-", "E": "E-", "F": "F-", "G": "G-", "H": "H-", "I": "I-", "J": "J-",
+                "K": "K-", "L": "L-", "M": "M-", "N": "N-", "O": "O-", "P": "P-", "Q": "Q-", "R": "R-", "S": "S-", "T": "T-",
+                "U": "U-", "V": "V-", "W": "W-", "X": "X-", "Y": "Y-", "Z": "Z-"
+            };
+            return transformText(text, charMap);
+        }
+
+        function convertToFont31(text) {
+            const charMap = {
+                "0": "0三", "1": "1三", "2": "2三", "3": "3三", "4": "4三", "5": "5三", "6": "6三", "7": "7三", "8": "8三", "9": "9三",
+                "a": "a三", "b": "b三", "c": "c三", "d": "d三", "e": "e三", "f": "f三", "g": "g三", "h": "h三", "i": "i三", "j": "j三",
+                "k": "k三", "l": "l三", "m": "m三", "n": "n三", "o": "o三", "p": "p三", "q": "q三", "r": "r三", "s": "s三", "t": "t三",
+                "u": "u三", "v": "v三", "w": "w三", "x": "x三", "y": "y三", "z": "z三",
+                "A": "A三", "B": "B三", "C": "C三", "D": "D三", "E": "E三", "F": "F三", "G": "G三", "H": "H三", "I": "I三", "J": "J三",
+                "K": "K三", "L": "L三", "M": "M三", "N": "N三", "O": "O三", "P": "P三", "Q": "Q三", "R": "R三", "S": "S三", "T": "T三",
+                "U": "U三", "V": "V三", "W": "W三", "X": "X三", "Y": "Y三", "Z": "Z三"
+            };
+            return transformText(text, charMap);
+        }
+
+        function transformText(text, charMap) {
+            return text.split('').map(char => charMap[char.toLowerCase()] || char).join('');
+        }
+
+        function copyToClipboard(text, button) {
+            // Try modern Clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    button.classList.add("copied");
+                    button.textContent = "";
+                    setTimeout(() => {
+                        button.classList.remove("copied");
+                        button.textContent = "Copy";
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Clipboard API failed: ', err);
+                    // Fallback to execCommand
+                    fallbackCopyToClipboard(text, button);
+                });
+            } else {
+                // Fallback if Clipboard API is not available
+                fallbackCopyToClipboard(text, button);
+            }
+        }
+
+        function fallbackCopyToClipboard(text, button) {
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            tempInput.style.position = "fixed";
+            tempInput.style.opacity = "0";
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand("copy");
+                button.classList.add("copied");
+                button.textContent = "";
+                setTimeout(() => {
+                    button.classList.remove("copied");
+                    button.textContent = "Copy";
+                }, 2000);
+            } catch (err) {
+                console.error('Fallback copy failed: ', err);
+                button.classList.add("error");
+                button.textContent = "";
+                setTimeout(() => {
+                    button.classList.remove("error");
+                    button.textContent = "Copy";
+                }, 2000);
+            } finally {
+                document.body.removeChild(tempInput);
+            }
+        }
+    </script>
