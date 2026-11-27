@@ -21,6 +21,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 .pill{pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);color:#fff;text-decoration:none;font-size:13px;font-weight:650;box-shadow:0 8px 28px rgba(0,0,0,.2);transition:transform .18s ease,background .18s ease}
 .pill:active{transform:scale(.96)}
 .brand{position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:700;letter-spacing:.02em;text-shadow:0 2px 12px #000;white-space:nowrap;pointer-events:none}
+.sound-toggle{position:fixed;z-index:25;right:14px;top:50%;transform:translateY(-50%);min-height:48px;padding:0 15px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);color:#fff;font-size:13px;font-weight:650;box-shadow:0 8px 28px rgba(0,0,0,.28);cursor:pointer;touch-action:manipulation}.sound-toggle:active{transform:translateY(-50%) scale(.96)}@media(min-width:700px){.sound-toggle{right:max(24px,calc((100vw - 480px)/2 - 72px))}}
 .counter{position:fixed;z-index:15;right:14px;bottom:calc(env(safe-area-inset-bottom) + 18px);padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(16px);color:#fff;font-size:12px;font-variant-numeric:tabular-nums;pointer-events:none}
 .hint{position:fixed;z-index:15;left:50%;bottom:calc(env(safe-area-inset-bottom) + 18px);transform:translateX(-50%);padding:9px 13px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(16px);color:rgba(255,255,255,.9);font-size:11px;white-space:nowrap;pointer-events:none;animation:hint 2.6s ease 2}
 @keyframes hint{0%,100%{opacity:.45;translate:0 4px}45%{opacity:1;translate:0 0}}
@@ -37,6 +38,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 <div class="brand">Love Shorts <span aria-hidden="true">♡</span></div>
 <button class="pill" id="themeBtn" type="button" aria-label="Toggle appearance">☾ <span>Night</span></button>
 </header>
+<button class="sound-toggle" id="soundToggle" type="button" aria-label="Turn sound on">🔇 <span>Sound off</span></button>
 <div class="counter" id="counter" aria-live="polite">01 / 41</div>
 <div class="hint" id="hint" aria-hidden="true">↑ Swipe up for the next video</div>
 <script>
@@ -48,6 +50,14 @@ const hint = document.getElementById('hint');
 let activeIndex = -1;
 let observer = null;
 let activationQueued = false;
+let soundEnabled = false;
+try { soundEnabled = localStorage.getItem('loveShortsSound') === 'on'; } catch(e) { soundEnabled = false; }
+const soundToggle = document.getElementById('soundToggle');
+function updateSoundButton(){
+  soundToggle.innerHTML = soundEnabled ? '🔊 <span>Sound on</span>' : '🔇 <span>Sound off</span>';
+  soundToggle.setAttribute('aria-label', soundEnabled ? 'Turn sound off' : 'Turn sound on');
+}
+updateSoundButton();
 
 videos.forEach((id,index)=>{
   const slide=document.createElement('section');
@@ -81,10 +91,10 @@ function activate(index){
   player.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
   player.allowFullscreen=true;
   player.referrerPolicy='strict-origin-when-cross-origin';
-  // Muted autoplay is the only reliable automatic-start mode on most mobile browsers.
-  // Sound can be enabled with YouTube's own player controls; the page cannot override OS/browser policy.
+  // Keep the visitor's sound choice for every next Short.
+  // Browsers may still block audible autoplay until the visitor interacts once.
   player.src='https://www.youtube.com/embed/'+encodeURIComponent(videos[index])+
-    '?autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1';
+    '?autoplay=1&mute='+(soundEnabled?'0':'1')+'&playsinline=1&controls=1&rel=0&modestbranding=1';
   frame.replaceChildren(player);
   counter.textContent=String(index+1).padStart(2,'0')+' / '+String(videos.length).padStart(2,'0');
   if(index>0)hint.style.display='none';
@@ -115,6 +125,20 @@ if('IntersectionObserver' in window){
   },{passive:true});
 }
 activate(0);
+
+
+soundToggle.addEventListener('click',()=>{
+  soundEnabled = !soundEnabled;
+  try { localStorage.setItem('loveShortsSound', soundEnabled ? 'on' : 'off'); } catch(e) {}
+  updateSoundButton();
+  // Reload only the active player so YouTube applies the selected audio state.
+  // Subsequent Shorts inherit the same saved preference automatically.
+  const current = activeIndex;
+  if(current >= 0){
+    activeIndex = -1;
+    activate(current);
+  }
+});
 
 document.getElementById('themeBtn').addEventListener('click',()=>{
   const light=document.documentElement.dataset.theme!=='light';
