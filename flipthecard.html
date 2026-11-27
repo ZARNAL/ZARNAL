@@ -1,0 +1,711 @@
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Love Quest Cards</title>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <style>
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://fonts.apple.com/SFProDisplay-Regular.woff2') format('woff2'),
+                 local('-apple-system'), local('BlinkMacSystemFont');
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: url('https://fonts.apple.com/SFProDisplay-Bold.woff2') format('woff2'),
+                 local('-apple-system'), local('BlinkMacSystemFont');
+            font-weight: 700;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(145deg, #ffe6ec, #f0e6ff);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            color: #000000;
+            overflow-y: auto;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        body.dark-mode {
+            background: linear-gradient(145deg, #1C2526, #2E3A3C);
+            color: #ffffff;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            padding: clamp(16px, 5vw, 24px);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: clamp(300px, 85vw, 400px);
+            text-align: center;
+            margin: clamp(60px, 10vh, 80px) 16px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: background 0.3s ease, border 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        body.dark-mode .container {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        h1 {
+            font-size: clamp(24px, 6vw, 30px);
+            font-weight: 700;
+            color: #ff3b6f;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 8px rgba(255, 59, 111, 0.3);
+            font-style: italic;
+        }
+        body.dark-mode h1 {
+            color: #ff7b9b;
+        }
+        .card-container {
+            perspective: 1200px;
+            width: clamp(200px, 60vw, 220px);
+            height: clamp(260px, 80vw, 280px);
+            margin: 10px auto;
+        }
+        .card {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 16px;
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15), 0 0 10px rgba(255, 59, 111, 0.3);
+            animation: romanticGlow 2s infinite alternate;
+        }
+        .card:hover, .card.touched {
+            transform: scale(1.03);
+        }
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+        @keyframes romanticGlow {
+            0% { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15), 0 0 10px rgba(255, 59, 111, 0.3); }
+            100% { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15), 0 0 16px rgba(255, 59, 111, 0.5); }
+        }
+        .card-front, .card-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(20px, 5vw, 24px);
+            font-weight: 600;
+        }
+        .card-front {
+            background: linear-gradient(45deg, #ff3b6f, #ff7b9b);
+            color: #fff;
+        }
+        body.dark-mode .card-front {
+            background: linear-gradient(45deg, #ff7b9b, #ffafbf);
+        }
+        .card-back {
+            background: #ffffff;
+            color: #000000;
+            transform: rotateY(180deg);
+            flex-direction: column;
+            padding: 20px;
+            text-align: center;
+        }
+        body.dark-mode .card-back {
+            background: #2C2C2E;
+            color: #ffffff;
+        }
+        .card-back span {
+            font-size: clamp(18px, 4.5vw, 22px);
+            margin-top: 8px;
+        }
+        .result {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px;
+            border-radius: 12px;
+            margin: 8px 0;
+            font-size: clamp(16px, 4vw, 18px);
+            font-weight: 500;
+            color: #000000;
+            min-height: 60px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            animation: popIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body.dark-mode .result {
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.95); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        button {
+            font-size: clamp(16px, 4vw, 18px);
+            font-weight: 600;
+            padding: clamp(12px, 3vw, 14px) clamp(24px, 6vw, 28px);
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(45deg, #ff3b6f, #ff7b9b);
+            color: #fff;
+            cursor: pointer;
+            margin: 8px 0;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            min-height: 48px;
+            position: relative;
+        }
+        button:hover {
+            background: linear-gradient(45deg, #ff7b9b, #ff3b6f);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+            margin-bottom: 6px;
+        }
+        #music-toggle {
+            background: linear-gradient(45deg, #007aff, #00c3ff);
+        }
+        #music-toggle:hover {
+            background: linear-gradient(45deg, #00c3ff, #007aff);
+        }
+        #back {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            padding: 10px 16px;
+            background: linear-gradient(45deg, #ff3b6f, #ff7b9b);
+            font-size: 14px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: auto;
+            min-height: 44px;
+        }
+        body.dark-mode #back {
+            background: linear-gradient(45deg, #ff7b9b, #ffafbf);
+        }
+        #back:hover {
+            transform: translateY(-1px) scale(1.03);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        #back::before {
+            content: '← ';
+        }
+        .dark-mode-toggle {
+            margin: 8px 0;
+            width: 100%;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 32px;
+            background: #e5e5ea;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+        body.dark-mode .toggle-switch {
+            background: #2c2c2e;
+        }
+        .toggle-knob {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: #ffffff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .toggle-knob {
+            transform: translateX(24px);
+            background: #ffcc00;
+        }
+        .toggle-knob::before {
+            content: '☀️';
+        }
+        body.dark-mode .toggle-knob::before {
+            content: '🌙';
+        }
+        .toggle-knob.animate {
+            animation: smoothBounce 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes smoothBounce {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.15) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .hidden {
+            display: none;
+        }
+        .score {
+            font-size: clamp(16px, 4vw, 18px);
+            font-weight: 500;
+            color: #ff3b6f;
+            margin: 8px 0;
+        }
+        body.dark-mode .score {
+            color: #ff7b9b;
+        }
+        .tokens {
+            font-size: clamp(14px, 3.5vw, 16px);
+            font-weight: 500;
+            color: #ff9500;
+            margin: 8px 0;
+        }
+        body.dark-mode .tokens {
+            color: #ffcc00;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin: 8px auto;
+            overflow: hidden;
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        body.dark-mode .progress-bar {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .progress {
+            height: 100%;
+            background: linear-gradient(45deg, #ff9500, #ffcc00);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 6px rgba(255, 149, 0, 0.4);
+        }
+        .milestone {
+            animation: milestonePulse 1s infinite alternate;
+        }
+        @keyframes milestonePulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .heart-particle {
+            position: absolute;
+            font-size: clamp(14px, 3vw, 16px);
+            color: #ff3b6f;
+            opacity: 0.6;
+            animation: float 4s infinite ease-in-out;
+        }
+        body.dark-mode .heart-particle {
+            color: #ff7b9b;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0.6); opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+        canvas#confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+        input[type="text"] {
+            padding: clamp(10px, 2.5vw, 12px);
+            font-size: clamp(14px, 3.5vw, 16px);
+            font-weight: 500;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.9);
+            color:ව
+
+            body.dark-mode input[type="text"] {
+                background: rgba(0, 0, 0, 0.7);
+                color: #ffffff;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            input[type="text"]:focus {
+                outline: none;
+                border-color: #ff3b6f;
+                box-shadow: 0 0 8px rgba(255, 59, 111, 0.3);
+            }
+            body.dark-mode input[type="text"]:focus {
+                border-color: #ff7b9b;
+            }
+            #google_translate_element {
+                margin: 8px 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.9);
+                border-radius: 12px;
+                padding: 10px;
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                transition: all 0.3s ease;
+            }
+            body.dark-mode #google_translate_element {
+                background: rgba(0, 0, 0, 0.7);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+            #google_translate_element select {
+                width: 100%;
+                padding: 10px;
+                font-size: clamp(14px, 3.5vw, 16px);
+                border: none;
+                background: transparent;
+                color: #000000;
+                appearance: none;
+                cursor: pointer;
+                font-weight: 500;
+            }
+            body.dark-mode #google_translate_element select {
+                color: #ffffff;
+            }
+            #google_translate_element::after {
+                content: '🌐';
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 16px;
+                color: #ff3b6f;
+            }
+            body.dark-mode #google_translate_element::after {
+                color: #ff7b9b;
+            }
+            @media (max-width: 600px) {
+                .container {
+                    margin: 50px 12px 12px;
+                    padding: 16px;
+                }
+                h1 {
+                    font-size: clamp(20px, 5.5vw, 24px);
+                }
+                .card-container {
+                    width: clamp(180px, 55vw, 200px);
+                    height: clamp(240px, 75vw, 260px);
+                }
+                button, input[type="text"], #google_translate_element {
+                    width: 100%;
+                    min-height: 48px;
+                }
+                .card-front, .card-back {
+                    font-size: clamp(18px, 4.5vw, 20px);
+                }
+                .card-back span {
+                    font-size: clamp(16px, 4vw, 18px);
+                }
+                .result {
+                    font-size: clamp(14px, 3.5vw, 16px);
+                    min-height: 56px;
+                }
+                .score, .tokens {
+                    font-size: clamp(14px, 3.5vw, 16px);
+                }
+            }
+        </style>
+    
+    
+        <div class="heart-bg" id="heart-bg"></div>
+        <canvas id="confetti"></canvas>
+        <button id="back" data-tooltip="Back to Home" aria-label="Back to Home">Back</button>
+        <div class="container">
+            <h1>Love Quest Cards <span style="color: #ff3b6f">❤️</span></h1>
+            <div class="dark-mode-toggle">
+                <div class="toggle-switch" id="dark-mode-toggle" aria-label="Toggle Dark Mode">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            <div id="google_translate_element"></div>
+            <div id="start-screen">
+                <input type="text" id="player1" placeholder="Your Name, Darling" autocapitalize="words" autocomplete="name">
+                <input type="text" id="player2" placeholder="Your Partner’s Name" autocapitalize="words" autocomplete="name">
+                <button id="start-game" data-tooltip="Start your romantic adventure!" aria-label="Start Game">Start the Quest!</button>
+            </div>
+            <div id="game" class="hidden">
+                <div class="card-container">
+                    <div class="card" id="card">
+                        <div class="card-front">Flip Me! ❤️</div>
+                        <div class="card-back" id="card-back"></div>
+                    </div>
+                </div>
+                <div class="result translate" id="result"></div>
+                <button id="flip" data-tooltip="Reveal a flirty challenge!" aria-label="Flip Card">Flip a Card!</button>
+                <button id="done" class="hidden" data-tooltip="Complete the challenge" aria-label="Complete Challenge">Done! +1 Token</button>
+                <button id="music-toggle" data-tooltip="Toggle romantic music" aria-label="Toggle Music">Play Love Tunes</button>
+                <div class="score" id="score">Scores: 0 - 0</div>
+                <div class="tokens" id="tokens">Love Tokens: 0</div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+            </div>
+            <audio id="flip-sound" src="https://www.soundjay.com/buttons/button-09.mp3"></audio>
+            <audio id="success-sound" src="https://www.soundjay.com/buttons/button-16.mp3"></audio>
+            <audio id="background-music" loop="" src="https://www.bensound.com/bensound-music/bensound-sweet.mp3"></audio>
+        </div>
+        <script>
+            const challenges = [
+                "Kiss 😘", "Hug 🤗", "Cuddle 🥰", "Neck Kiss 😚",
+                "Cheek Kiss 💋", "Forehead Kiss 😙", "Hand Hold ✋", "Wink 😉",
+                "Flirty Whisper 🗣️", "Back Rub 💆", "Slow Dance 💃", "Eye Gaze 👀",
+                "Write a Love Note 📝", "Hair Ruffle 💇", "Sweet Compliment 😊", "Playful Tickle 😜",
+                "Shoulder Squeeze 🤲", "Lip Peck 💄", "Nose Boop 👃", "Arm Link 💪",
+                "Sweet Talk 🍬", "Make a Heart Shape 💖", "Playful Push 😏", "Ear Nibble 👂",
+                "Sing a Love Song 🎶", "Chin Lift 😍", "Twirl Spin 🌀", "Cozy Snuggle 🛋️",
+                "Flirty Tease 😈", "Hand Kiss 🙌", "Giggle Fit 😂", "Love Stare 🌟",
+                "Knee Touch 🦵", "Silly Face 😛", "Love Quote 📜", "Quick Dip 💃",
+                "Brow Kiss 😗", "Warm Embrace 🔥", "Cheek Pinch 😺", "Love Laugh 😄",
+                "Flirty Dance 🕺", "Soft Pat 😇", "Sweet Smile 😊", "Love Poke 🫶",
+                "Cute Wink 😜", "Neck Nuzzle 🦒", "Love Hug 🧸", "Flirty Wave 👋",
+                "Heart Wink 💘", "Playful Kiss 😽"
+            ];
+            const romanticMessages = [
+                "A spark of love just ignited!",
+                "Feel the butterflies yet?",
+                "Your heart's beating faster now!",
+                "Romance is in the air!",
+                "A moment to cherish forever!"
+            ];
+            const cardColors = [
+                ['#ff3b6f', '#ff7b9b'],
+                ['#ff9500', '#ffcc00'],
+                ['#5856d6', '#7876ff'],
+                ['#34c759', '#5ad779']
+            ];
+            let currentPlayer = 1;
+            let player1Name = localStorage.getItem('player1Name') || '';
+            let player2Name = localStorage.getItem('player2Name') || '';
+            let player1Score = parseInt(localStorage.getItem('player1Score')) || 0;
+            let player2Score = parseInt(localStorage.getItem('player2Score')) || 0;
+            let totalTokens = parseInt(localStorage.getItem('totalTokens')) || 0;
+            let isFlipping = false;
+            let isMusicPlaying = false;
+
+            const startScreen = document.getElementById('start-screen');
+            const game = document.getElementById('game');
+            const card = document.getElementById('card');
+            const cardFront = document.querySelector('.card-front');
+            const cardBack = document.getElementById('card-back');
+            const resultElement = document.getElementById('result');
+            const flipButton = document.getElementById('flip');
+            const doneButton = document.getElementById('done');
+            const musicToggleButton = document.getElementById('music-toggle');
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const toggleKnob = document.querySelector('.toggle-knob');
+            const scoreElement = document.getElementById('score');
+            const tokensElement = document.getElementById('tokens');
+            const progressBar = document.getElementById('progress');
+            const startButton = document.getElementById('start-game');
+            const backButton = document.getElementById('back');
+            const flipSound = document.getElementById('flip-sound');
+            const successSound = document.getElementById('success-sound');
+            const backgroundMusic = document.getElementById('background-music');
+            const confettiCanvas = document.getElementById('confetti');
+            const confettiCtx = confettiCanvas.getContext('2d');
+
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                }, 'google_translate_element');
+            }
+
+            function resizeConfettiCanvas() {
+                confettiCanvas.width = window.innerWidth;
+                confettiCanvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeConfettiCanvas);
+            resizeConfettiCanvas();
+
+            function createHearts() {
+                const heartBg = document.getElementById('heart-bg');
+                const heartCount = window.innerWidth < 600 ? 10 : 15;
+                for (let i = 0; i < heartCount; i++) {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart-particle';
+                    heart.textContent = '❤️';
+                    heart.style.left = `${Math.random() * 100}%`;
+                    heart.style.animationDelay = `${Math.random() * 3}s`;
+                    heartBg.appendChild(heart);
+                }
+            }
+
+            function launchConfetti() {
+                const particleCount = window.innerWidth < 600 ? 50 : 100;
+                const particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: confettiCanvas.width / 2,
+                        y: confettiCanvas.height / 3,
+                        vx: (Math.random() - 0.5) * 8,
+                        vy: (Math.random() - 0.5) * 8,
+                        color: `hsl(${Math.random() * 360}, 85%, 65%)`,
+                        size: Math.random() * 4 + 2
+                    });
+                }
+                function animate() {
+                    confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                    particles.forEach(p => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.1;
+                        confettiCtx.fillStyle = p.color;
+                        confettiCtx.beginPath();
+                        confettiCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        confettiCtx.fill();
+                    });
+                    if (particles.some(p => p.y < confettiCanvas.height)) requestAnimationFrame(animate);
+                }
+                animate();
+            }
+
+            function updateProgressBar() {
+                const progress = (totalTokens % 5) * 20;
+                progressBar.style.width = `${progress}%`;
+                if (totalTokens > 0 && totalTokens % 5 === 0) {
+                    card.classList.add('milestone');
+                    setTimeout(() => card.classList.remove('milestone'), 1000);
+                    launchConfetti();
+                    successSound.play();
+                }
+            }
+
+            function flipCard() {
+                if (isFlipping) return;
+                isFlipping = true;
+                flipSound.play();
+                const challenge = challenges[Math.floor(Math.random() * challenges.length)];
+                const message = romanticMessages[Math.floor(Math.random() * romanticMessages.length)];
+                const color = cardColors[Math.floor(Math.random() * cardColors.length)];
+                cardFront.style.background = `linear-gradient(45deg, ${color[0]}, ${color[1]})`;
+                cardBack.textContent = challenge;
+                card.classList.add('flipped');
+                setTimeout(() => {
+                    resultElement.textContent = `${currentPlayer === 1 ? player1Name : player2Name}, ${challenge}! ${message}`;
+                    doneButton.classList.remove('hidden');
+                    flipButton.classList.add('hidden');
+                    successSound.play();
+                    launchConfetti();
+                    isFlipping = false;
+                }, 600);
+            }
+
+            startButton.addEventListener('click', () => {
+                player1Name = document.getElementById('player1').value.trim() || 'Darling 1';
+                player2Name = document.getElementById('player2').value.trim() || 'Darling 2';
+                if (!player1Name || !player2Name) {
+                    alert('Please enter names for both players!');
+                    return;
+                }
+                localStorage.setItem('player1Name', player1Name);
+                localStorage.setItem('player2Name', player2Name);
+                startScreen.classList.add('hidden');
+                game.classList.remove('hidden');
+                scoreElement.textContent = `Scores: ${player1Score} - ${player2Score}`;
+                tokensElement.textContent = `Love Tokens: ${totalTokens}`;
+                createHearts();
+                flipButton.classList.remove('hidden');
+                updateProgressBar();
+            });
+
+            flipButton.addEventListener('click', flipCard);
+            flipButton.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                card.classList.add('touched');
+                setTimeout(() => card.classList.remove('touched'), 200);
+                flipCard();
+            });
+
+            doneButton.addEventListener('click', () => {
+                if (currentPlayer === 1) player1Score++;
+                else player2Score++;
+                totalTokens++;
+                localStorage.setItem('player1Score', player1Score);
+                localStorage.setItem('player2Score', player2Score);
+                localStorage.setItem('totalTokens', totalTokens);
+                scoreElement.textContent = `Scores: ${player1Score} - ${player2Score}`;
+                tokensElement.textContent = `Love Tokens: ${totalTokens}`;
+                updateProgressBar();
+                currentPlayer = currentPlayer === 1 ? 2 : 1;
+                doneButton.classList.add('hidden');
+                flipButton.classList.remove('hidden');
+                resultElement.textContent = '';
+                card.classList.remove('flipped');
+                cardBack.textContent = '';
+            });
+
+            musicToggleButton.addEventListener('click', () => {
+                if (isMusicPlaying) {
+                    backgroundMusic.pause();
+                    musicToggleButton.textContent = 'Play Love Tunes';
+                    isMusicPlaying = false;
+                } else {
+                    backgroundMusic.play();
+                    musicToggleButton.textContent = 'Pause Love Tunes';
+                    isMusicPlaying = true;
+                }
+            });
+
+            darkModeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                toggleKnob.classList.add('animate');
+                setTimeout(() => toggleKnob.classList.remove('animate'), 400);
+            });
+
+            backButton.addEventListener('click', () => {
+                window.location.href = 'https://zarnal.odoo.com/';
+            });
+
+            // Initialize saved state
+            if (player1Name && player2Name) {
+                startScreen.classList.add('hidden');
+                game.classList.remove('hidden');
+                scoreElement.textContent = `Scores: ${player1Score} - ${player2Score}`;
+                tokensElement.textContent = `Love Tokens: ${totalTokens}`;
+                createHearts();
+                flipButton.classList.remove('hidden');
+                updateProgressBar();
+            }
+        </script>
