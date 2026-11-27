@@ -1,0 +1,556 @@
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Code Converter</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&family=Great+Vibes&display=swap');
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #fff0f5, #ffe4e1);
+            color: #4a4a4a;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c1a2f, #3b2a3e); /* Dark romantic gradient */
+            color: #e0e0e0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            box-sizing: border-box;
+            margin: 20px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.8s ease-in-out;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark-mode .container {
+            background: rgba(40, 30, 45, 0.95); /* Dark glassmorphism */
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            font-weight: 400;
+            text-align: center;
+            color: #d83b6b;
+            margin-bottom: 24px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h1 {
+            color: #ff9aa2; /* Lighter pink for dark mode */
+        }
+
+        .dropdown {
+            position: relative;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .dropdown select {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 16px;
+            background-color: #ffffff;
+            color: #4a4a4a;
+            cursor: pointer;
+            appearance: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        body.dark-mode .dropdown select {
+            background-color: #3a2f3f;
+            color: #e0e0e0;
+            border-color: #5a4b5f;
+        }
+
+        .dropdown select:focus {
+            border-color: #d83b6b;
+            box-shadow: 0 0 0 3px rgba(216, 59, 107, 0.1);
+            outline: none;
+        }
+
+        body.dark-mode .dropdown select:focus {
+            border-color: #ff9aa2;
+            box-shadow: 0 0 0 3px rgba(255, 154, 162, 0.1);
+        }
+
+        .dropdown:after {
+            content: '▼';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #d83b6b;
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .dropdown:after {
+            color: #ff9aa2;
+        }
+
+        .swap-button {
+            background-color: #ff9aa2;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        body.dark-mode .swap-button {
+            background-color: #c06c84;
+        }
+
+        .swap-button:hover {
+            background-color: #e88b92;
+        }
+
+        body.dark-mode .swap-button:hover {
+            background-color: #a14a76;
+        }
+
+        .swap-button:active {
+            transform: scale(0.98);
+        }
+
+        .swap-button svg {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff;
+            transition: transform 0.3s ease;
+        }
+
+        .swap-button:active svg {
+            transform: rotate(180deg);
+        }
+
+        .converter {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section {
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #d83b6b;
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode h2 {
+            color: #ff9aa2;
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            padding: 16px;
+            box-sizing: border-box;
+            font-size: 16px;
+            resize: vertical;
+            background: #fff;
+            color: #4a4a4a;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode textarea {
+            background: #3a2f3f;
+            color: #e0e0e0;
+            border-color: #5a4b5f;
+        }
+
+        textarea:focus {
+            border-color: #d83b6b;
+            box-shadow: 0 0 0 3px rgba(216, 59, 107, 0.1);
+            outline: none;
+        }
+
+        body.dark-mode textarea:focus {
+            border-color: #ff9aa2;
+            box-shadow: 0 0 0 3px rgba(255, 154, 162, 0.1);
+        }
+
+        button {
+            background-color: #d83b6b;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        body.dark-mode button {
+            background-color: #ff9aa2;
+        }
+
+        button:hover {
+            background-color: #b0305a;
+        }
+
+        body.dark-mode button:hover {
+            background-color: #e88b92;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .copy-button {
+            background-color: #ff6f91;
+            margin-top: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .copy-button {
+            background-color: #c06c84;
+        }
+
+        .copy-button:hover {
+            background-color: #e65b7e;
+        }
+
+        body.dark-mode .copy-button:hover {
+            background-color: #a14a76;
+        }
+
+        .copy-button.copied {
+            background-color: #34c759;
+            transform: scale(1.05);
+        }
+
+        .copy-button.copied:hover {
+            background-color: #28a745;
+        }
+
+        .back-button {
+            background-color: #ff9aa2;
+            margin-bottom: 24px;
+        }
+
+        body.dark-mode .back-button {
+            background-color: #c06c84;
+        }
+
+        .back-button:hover {
+            background-color: #e88b92;
+        }
+
+        body.dark-mode .back-button:hover {
+            background-color: #a14a76;
+        }
+
+        /* Apple-inspired dark mode toggle switch */
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2); /* Glassmorphism */
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .toggle-switch {
+            background: rgba(40, 30, 45, 0.4); /* Dark glassmorphism */
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: linear-gradient(45deg, #fff, #f0f0f0);
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .toggle-switch::before {
+            background: linear-gradient(45deg, #ff9aa2, #c06c84);
+        }
+
+        .toggle-switch .sun {
+            font-size: 16px;
+            color: #f1c40f; /* Sun yellow */
+            transform: scale(1);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .toggle-switch .moon {
+            font-size: 16px;
+            color: #8e44ad; /* Moon purple */
+            transform: scale(0.8);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        input[type="checkbox"]:checked + .toggle-switch {
+            background: rgba(255, 154, 162, 0.4); /* Romantic pink glassmorphism */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="checkbox"]:checked + .toggle-switch::before {
+            transform: translateX(30px);
+        }
+
+        input[type="checkbox"]:checked + .toggle-switch .sun {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        input[type="checkbox"]:checked + .toggle-switch .moon {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        .toggle-switch:hover {
+            box-shadow: 0 0 10px rgba(255, 154, 162, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            h2 {
+                font-size: 18px;
+            }
+            textarea {
+                font-size: 14px;
+            }
+            button {
+                font-size: 14px;
+            }
+            .swap-button svg {
+                width: 20px;
+                height: 20px;
+            }
+            .toggle-switch {
+                width: 50px;
+                height: 25px;
+            }
+            .toggle-switch::before {
+                width: 21px;
+                height: 21px;
+            }
+            input[type="checkbox"]:checked + .toggle-switch::before {
+                transform: translateX(25px);
+            }
+            .toggle-switch .sun, .toggle-switch .moon {
+                font-size: 14px;
+            }
+        }
+    </style>
+
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <button class="back-button" onclick="window.location.href='https://zarnalhome.odoo.com/'">Back</button>
+            <div class="theme-toggle">
+                <input type="checkbox" id="theme-switch" onchange="toggleTheme()">
+                <label for="theme-switch" class="toggle-switch">
+                    <span class="sun">☀️</span>
+                    <span class="moon">🌙</span>
+                </label>
+            </div>
+        </div>
+        <h1>Whisper in Morse</h1>
+        <div class="dropdown">
+            <select id="conversionType">
+                <option value="textToMorse">Text to Morse Code</option>
+                <option value="morseToText">Morse Code to Text</option>
+            </select>
+            <button class="swap-button" onclick="swapConversionType()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 3L5 6.99h3V14h2V6.99h3L9 3zm6 14.01V10h-2v7.01h-3L15 21l4-3.99h-3z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="converter">
+            <div class="section" id="textToMorseSection">
+                <h2>Write Your Heart</h2>
+                <textarea id="textInput" placeholder="Pour your feelings here..."></textarea>
+                <textarea id="morseOutput" placeholder="Your secret code awaits..."></textarea>
+                <button class="copy-button" onclick="copyToClipboard('morseOutput', this)">Copy Secret Code</button>
+            </div>
+            <div class="section" id="morseToTextSection" style="display: none;">
+                <h2>Decode the Whisper</h2>
+                <textarea id="morseInput" placeholder="Enter the secret code..."></textarea>
+                <textarea id="textOutput" placeholder="The message reveals itself..."></textarea>
+                <button class="copy-button" onclick="copyToClipboard('textOutput', this)">Copy Message</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const morseCode = {
+            'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+            'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+            'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+            'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+            'Y': '-.--', 'Z': '--..', '1': '.----', '2': '..---', '3': '...--',
+            '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..',
+            '9': '----.', '0': '-----', '.': '.-.-.-', ',': '--..--', '?': '..--..',
+            "'": '.----.', '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-',
+            '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.',
+            '-': '-....-', '_': '..--.-', '"': '.-..-.', '@': '.--.-', ' ': '/'
+        };
+
+        function convertTextToMorse() {
+            const text = document.getElementById('textInput').value.toUpperCase();
+            const morse = text.split('').map(char => morseCode[char] || '').join(' ');
+            document.getElementById('morseOutput').value = morse;
+        }
+
+        function convertMorseToText() {
+            const morse = document.getElementById('morseInput').value.trim();
+            const text = morse.split(' ').map(code => Object.keys(morseCode).find(key => morseCode[key] === code) || '').join('');
+            document.getElementById('textOutput').value = text;
+        }
+
+        function convertMorseToTextReverse() {
+            const morse = document.getElementById('morseOutput').value.trim();
+            const text = morse.split(' ').map(code => Object.keys(morseCode).find(key => morseCode[key] === code) || '').join('');
+            document.getElementById('textInput').value = text;
+        }
+
+        function convertTextToMorseReverse() {
+            const text = document.getElementById('textOutput').value.toUpperCase();
+            const morse = text.split('').map(char => morseCode[char] || '').join(' ');
+            document.getElementById('morseInput').value = morse;
+        }
+
+        function copyToClipboard(elementId, button) {
+            const element = document.getElementById(elementId);
+            const originalText = button.textContent;
+            const textarea = document.createElement('textarea');
+            textarea.value = element.value;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 1500);
+            } catch (err) {
+                alert('Failed to copy!');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function swapConversionType() {
+            const select = document.getElementById('conversionType');
+            const textInput = document.getElementById('textInput');
+            const morseOutput = document.getElementById('morseOutput');
+            const morseInput = document.getElementById('morseInput');
+            const textOutput = document.getElementById('textOutput');
+
+            // Store current values
+            const textVal = textInput.value;
+            const morseVal = morseOutput.value;
+            const morseInputVal = morseInput.value;
+            const textOutputVal = textOutput.value;
+
+            // Swap values: textInput <-> textOutput, morseOutput <-> morseInput
+            textInput.value = textOutputVal;
+            textOutput.value = textVal;
+            morseInput.value = morseVal;
+            morseOutput.value = morseInputVal;
+
+            // Toggle conversion type
+            select.value = select.value === 'textToMorse' ? 'morseToText' : 'textToMorse';
+            const event = new Event('change');
+            select.dispatchEvent(event);
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        document.getElementById('conversionType').addEventListener('change', function() {
+            const selectedValue = this.value;
+            document.getElementById('textToMorseSection').style.display = selectedValue === 'textToMorse' ? 'block' : 'none';
+            document.getElementById('morseToTextSection').style.display = selectedValue === 'morseToText' ? 'block' : 'none';
+        });
+
+        document.getElementById('textInput').addEventListener('input', convertTextToMorse);
+        document.getElementById('morseInput').addEventListener('input', convertMorseToText);
+        document.getElementById('morseOutput').addEventListener('input', convertMorseToTextReverse);
+        document.getElementById('textOutput').addEventListener('input', convertTextToMorseReverse);
+
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-switch').checked = true;
+            }
+        };
+    </script>
