@@ -25,7 +25,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 .counter{position:fixed;z-index:15;right:14px;bottom:calc(env(safe-area-inset-bottom) + 18px);padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(16px);color:#fff;font-size:12px;font-variant-numeric:tabular-nums;pointer-events:none}
 .hint{position:fixed;z-index:15;left:50%;bottom:calc(env(safe-area-inset-bottom) + 18px);transform:translateX(-50%);padding:9px 13px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(16px);color:rgba(255,255,255,.9);font-size:11px;white-space:nowrap;pointer-events:none;animation:hint 2.6s ease 2}
 @keyframes hint{0%,100%{opacity:.45;translate:0 4px}45%{opacity:1;translate:0 0}}
-.start-gate{position:fixed;z-index:40;inset:0;display:grid;place-items:center;padding:28px;background:rgba(0,0,0,.78);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.start-gate[hidden]{display:none}.start-card{width:min(100%,340px);padding:30px 24px;text-align:center;border:1px solid rgba(255,255,255,.18);border-radius:28px;background:rgba(28,25,33,.88);box-shadow:0 24px 80px rgba(0,0,0,.4)}.start-heart{font-size:34px;margin-bottom:12px}.start-title{font-size:22px;font-weight:750;letter-spacing:-.04em;margin:0 0 9px}.start-copy{font-size:13px;line-height:1.55;color:rgba(255,255,255,.72);margin:0 0 22px}.start-button{width:100%;min-height:52px;border:0;border-radius:16px;background:#f29abc;color:#21121a;font-size:15px;font-weight:750;cursor:pointer;box-shadow:0 8px 26px rgba(242,154,188,.2);touch-action:manipulation}.start-button:active{transform:scale(.98)}.reel-link{position:absolute;z-index:5;left:16px;bottom:calc(env(safe-area-inset-bottom) + 70px);color:#fff;text-decoration:none;font-size:12px;text-shadow:0 2px 12px #000;opacity:.82}
+.reel-link{position:absolute;z-index:5;left:16px;bottom:calc(env(safe-area-inset-bottom) + 70px);color:#fff;text-decoration:none;font-size:12px;text-shadow:0 2px 12px #000;opacity:.82}
 a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media(min-width:700px){.reel{background:#08080b}.video-frame iframe{width:min(100vw,56.25vh);height:min(100vh,177.78vw);max-width:480px;max-height:854px}.topbar{left:24px;right:24px}.counter{right:24px}}
 @media(prefers-reduced-motion:reduce){.feed{scroll-behavior:auto}.hint{animation:none}}
@@ -38,8 +38,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 <div class="brand">Love Shorts <span aria-hidden="true">♡</span></div>
 <button class="pill" id="themeBtn" type="button" aria-label="Toggle appearance">☾ <span>Night</span></button>
 </header>
-<button class="sound-toggle" id="soundToggle" type="button" aria-label="Turn sound on">🔇 <span>Unmute</span></button>
-<div class="start-gate" id="startGate"><div class="start-card"><div class="start-heart" aria-hidden="true">♡</div><h1 class="start-title">Your Love Shorts</h1><p class="start-copy">Tap once to start watching. Swipe up to move through the videos — playback will start automatically when each Short becomes active.</p><button class="start-button" id="startButton" type="button">Start watching&nbsp; →</button></div></div>
+<button class="sound-toggle" id="soundToggle" type="button" aria-label="Turn sound on">🔇 <span>Sound off</span></button>
 <div class="counter" id="counter" aria-live="polite">01 / 41</div>
 <div class="hint" id="hint" aria-hidden="true">↑ Swipe up for the next video</div>
 <script>
@@ -48,11 +47,10 @@ const videos = ["jYTzeGuToPM","8B9QFnpjw58","1yOj1G2noPE","_HDsVbalb0o","iK6x_ud
 const feed = document.getElementById('feed');
 const counter = document.getElementById('counter');
 const hint = document.getElementById('hint');
-const startGate = document.getElementById('startGate');
-let feedStarted = false;
 let activeIndex = -1;
-let scrollTimer = 0;
-let activePlayer = null;
+let observer = null;
+let activationQueued = false;
+let pendingActivation = -1;
 let soundEnabled = false;
 try { soundEnabled = localStorage.getItem('loveShortsSound') === 'on'; } catch(e) { soundEnabled = false; }
 const soundToggle = document.getElementById('soundToggle');
@@ -82,87 +80,60 @@ videos.forEach((id,index)=>{
 
 function activate(index){
   if(!Number.isInteger(index)||index<0||index>=videos.length||index===activeIndex)return;
-
-  // Remove the previous iframe completely so two Shorts never play together.
-  if(activePlayer){
-    activePlayer.src='about:blank';
-    activePlayer.remove();
-    activePlayer=null;
-  }
   const oldSlide=feed.children[activeIndex];
-  if(oldSlide)oldSlide.querySelector('.video-frame').replaceChildren();
-
+  if(oldSlide){
+    const oldPlayer=oldSlide.querySelector('iframe');
+    if(oldPlayer)oldPlayer.remove();
+  }
   activeIndex=index;
   const frame=feed.children[index].querySelector('.video-frame');
   const player=document.createElement('iframe');
   player.title='Love Short '+(index+1);
-  player.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen');
-  player.setAttribute('allowfullscreen','');
-  player.setAttribute('playsinline','');
-  player.setAttribute('loading','eager');
+  player.loading='eager';
+  player.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
+  player.allowFullscreen=true;
   player.referrerPolicy='strict-origin-when-cross-origin';
-
-  // Explicit muted autoplay is the most reliable mode permitted by mobile browsers.
-  // A visitor can enable audio once using the floating sound control.
-  const params=new URLSearchParams({
-    autoplay:'1',
-    mute:'1',
-    playsinline:'1',
-    controls:'1',
-    rel:'0',
-    modestbranding:'1',
-    enablejsapi:'1',
-    origin:location.origin
-  });
-  player.src='https://www.youtube.com/embed/'+encodeURIComponent(videos[index])+'?'+params.toString();
+  // Keep the visitor's sound choice for every next Short.
+  // Browsers may still block audible autoplay until the visitor interacts once.
+  player.src='https://www.youtube.com/embed/'+encodeURIComponent(videos[index])+
+    '?autoplay=1&mute='+(soundEnabled?'0':'1')+'&playsinline=1&controls=1&rel=0&modestbranding=1';
   frame.replaceChildren(player);
-  activePlayer=player;
-
-  // Nudge playback after the iframe is attached. This does not bypass browser autoplay policy.
-  player.addEventListener('load',()=>{
-    if(index!==activeIndex||!player.contentWindow)return;
-    player.contentWindow.postMessage(JSON.stringify({event:'command',func:'playVideo',args:[]}), 'https://www.youtube.com');
-    if(soundEnabled){
-      player.contentWindow.postMessage(JSON.stringify({event:'command',func:'unMute',args:[]}), 'https://www.youtube.com');
-    }
-  },{once:true});
-
   counter.textContent=String(index+1).padStart(2,'0')+' / '+String(videos.length).padStart(2,'0');
   if(index>0)hint.style.display='none';
 }
 
-function getNearestReel(){
-  let nearest=0;
-  let minDistance=Infinity;
-  const currentTop=feed.scrollTop;
-  for(let i=0;i<feed.children.length;i++){
-    const distance=Math.abs(feed.children[i].offsetTop-currentTop);
-    if(distance<minDistance){minDistance=distance;nearest=i;}
+function chooseVisible(entries){
+  let best=null;
+  for(const entry of entries){
+    if(entry.isIntersecting&&(!best||entry.intersectionRatio>best.intersectionRatio))best=entry;
   }
-  return nearest;
+  if(best&&best.intersectionRatio>=0.65){
+    const index=Number(best.target.dataset.index);
+    pendingActivation=index;
+    if(!activationQueued){
+      activationQueued=true;
+      requestAnimationFrame(()=>{
+        const next=pendingActivation;
+        pendingActivation=-1;
+        activationQueued=false;
+        if(next>=0)activate(next);
+      });
+    }
+  }
 }
-function settleToVisibleReel(){
-  if(!feedStarted)return;
-  const index=getNearestReel();
-  if(index!==activeIndex)activate(index);
+
+if('IntersectionObserver' in window){
+  observer=new IntersectionObserver(chooseVisible,{root:feed,threshold:[0.4,0.65,0.8,1]});
+  [...feed.children].forEach(slide=>observer.observe(slide));
+}else{
+  let scrollTimer=0;
+  feed.addEventListener('scroll',()=>{
+    clearTimeout(scrollTimer);
+    scrollTimer=setTimeout(()=>activate(Math.round(feed.scrollTop/Math.max(feed.clientHeight,1))),100);
+  },{passive:true});
 }
-function scheduleReelActivation(delay=120){
-  if(!feedStarted)return;
-  clearTimeout(scrollTimer);
-  scrollTimer=setTimeout(settleToVisibleReel,delay);
-}
-feed.addEventListener('scroll',()=>{
-  if(feed.scrollTop<30)hint.style.display='flex';
-  scheduleReelActivation(120);
-},{passive:true});
-feed.addEventListener('scrollend',settleToVisibleReel,{passive:true});
-window.addEventListener('resize',()=>scheduleReelActivation(180));
-document.getElementById('startButton').addEventListener('click',()=>{
-  if(feedStarted)return;
-  feedStarted=true;
-  startGate.hidden=true;
-  activate(0);
-});
+activate(0);
+
 
 soundToggle.addEventListener('click',()=>{
   soundEnabled = !soundEnabled;
@@ -170,10 +141,10 @@ soundToggle.addEventListener('click',()=>{
   updateSoundButton();
   // Apply the sound choice to the current Short. The button disappears immediately;
   // every later Short inherits the saved unmuted preference in activate().
-  if(activePlayer && activePlayer.contentWindow){
-    const command=soundEnabled?'unMute':'mute';
-    activePlayer.contentWindow.postMessage(JSON.stringify({event:'command',func:command,args:[]}), 'https://www.youtube.com');
-    if(soundEnabled)activePlayer.contentWindow.postMessage(JSON.stringify({event:'command',func:'playVideo',args:[]}), 'https://www.youtube.com');
+  const current = activeIndex;
+  if(current >= 0){
+    activeIndex = -1;
+    activate(current);
   }
 });
 
