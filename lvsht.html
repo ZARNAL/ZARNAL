@@ -1,209 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#fff4f7">
-  <meta name="description" content="A collection of romantic YouTube Shorts.">
-  <title>Love Shorts ♡</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --page:#fff5f8; --page-glow:rgba(245,145,180,.18); --surface:rgba(255,255,255,.76);
-      --border:rgba(255,255,255,.9); --text:#30242c; --muted:#897781;
-      --accent:#e65b89; --accent-2:#d9487b; --control:rgba(255,255,255,.82);
-      --shadow:0 18px 55px rgba(94,48,69,.12);
-    }
-    [data-theme="dark"] {
-      color-scheme:dark;
-      --page:#17151d; --page-glow:rgba(181,91,142,.16); --surface:rgba(39,34,47,.82);
-      --border:rgba(255,255,255,.09); --text:#f8edf3; --muted:#b8a8b2;
-      --accent:#f08ab0; --accent-2:#df6d99; --control:rgba(49,42,57,.88);
-      --shadow:0 18px 55px rgba(0,0,0,.32);
-    }
-    *{box-sizing:border-box}
-    html,body{width:100%;height:100%;margin:0}
-    body{
-      min-height:100vh;min-height:100dvh;overflow:hidden;color:var(--text);
-      background:radial-gradient(ellipse at 12% 10%,var(--page-glow),transparent 42%),var(--page);
-      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
-      -webkit-font-smoothing:antialiased;transition:background .3s ease,color .3s ease;
-    }
-    button,a{-webkit-tap-highlight-color:transparent}
-    .app{height:100%;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom)}
-    .topbar{height:58px;flex:0 0 58px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
-    .back,.theme{
-      min-height:42px;border:1px solid var(--border);border-radius:999px;background:var(--control);
-      color:var(--text);box-shadow:0 4px 18px rgba(40,20,35,.06);backdrop-filter:blur(16px);
-      -webkit-backdrop-filter:blur(16px);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
-    }
-    .back{justify-self:start;padding:0 15px;font-size:.88rem;font-weight:650;gap:7px}
-    .theme{justify-self:end;width:42px;font-size:1.1rem;cursor:pointer}
-    .brand{margin:0;text-align:center;font-size:1.02rem;font-weight:760;letter-spacing:-.035em;white-space:nowrap}
-    .brand span{color:var(--accent)}
-    .back:active,.theme:active,.nav-button:active{transform:scale(.96)}
-    button:focus-visible,a:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:3px}
-    main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:2px 0 10px}
-    .viewer{
-      position:relative;width:min(100%,430px);height:min(calc(100dvh - 158px),760px);
-      min-height:220px;display:flex;align-items:center;justify-content:center;
-      border-radius:25px;overflow:hidden;background:#100d13;box-shadow:var(--shadow);
-      border:1px solid rgba(255,255,255,.12);isolation:isolate;
-    }
-    .player-frame{width:100%;height:100%;position:relative;background:#100d13}
-    .player-frame iframe{display:block;width:100%;height:100%;border:0;background:#100d13}
-    .loading{
-      position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
-      color:#fff;background:linear-gradient(145deg,#21151f,#100d13);z-index:1;pointer-events:none;
-      transition:opacity .25s ease;
-    }
-    .loading.done{opacity:0}
-    .spinner{width:34px;height:34px;border:3px solid rgba(255,255,255,.22);border-top-color:#f08ab0;border-radius:50%;animation:spin .8s linear infinite}
-    .loading p{margin:0;font-size:.85rem;color:rgba(255,255,255,.78)}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .under-player{width:min(100%,430px);display:flex;flex-direction:column;gap:10px}
-    .meta{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .counter{font-size:.83rem;color:var(--muted);font-weight:650;font-variant-numeric:tabular-nums}
-    .progress{height:4px;flex:1;max-width:150px;border-radius:10px;background:rgba(140,120,132,.18);overflow:hidden}
-    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#bd91e9);border-radius:inherit;transition:width .3s ease}
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .nav-button{
-      min-height:48px;border:1px solid var(--border);border-radius:16px;background:var(--surface);
-      color:var(--text);font-size:.92rem;font-weight:700;cursor:pointer;box-shadow:0 5px 18px rgba(40,20,35,.05);
-      transition:transform .18s ease,background .2s ease,opacity .2s ease;
-    }
-    .nav-button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border-color:transparent}
-    .nav-button:disabled{opacity:.35;cursor:not-allowed}
-    .open-link{align-self:center;color:var(--muted);font-size:.78rem;text-decoration:none;padding:3px 8px}
-    .open-link:hover{color:var(--accent)}
-    .empty{color:#fff;text-align:center;padding:25px}
-    @media(min-width:700px){
-      .app{padding-left:24px;padding-right:24px}
-      .topbar{height:66px;flex-basis:66px}
-      .brand{font-size:1.12rem}
-      .viewer{height:min(calc(100dvh - 180px),780px)}
-    }
-    @media(max-height:560px) and (orientation:landscape){
-      .topbar{height:46px;flex-basis:46px}
-      main{flex-direction:row;gap:18px}
-      .viewer{width:auto;height:calc(100dvh - 70px);aspect-ratio:9/16;min-height:0}
-      .under-player{width:min(38vw,300px)}
-    }
-    @media(prefers-reduced-motion:reduce){
-      *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17151d">
+<meta name="description" content="A collection of romantic YouTube Shorts.">
+<title>Love Shorts ♡</title>
+<style>
+:root{color-scheme:dark;--bg:#09090d;--fg:#fff;--muted:rgba(255,255,255,.72);--glass:rgba(20,18,25,.52);--line:rgba(255,255,255,.16);--pink:#f28ab2}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+body{overflow:hidden}
+button,a{-webkit-tap-highlight-color:transparent}
+.feed{position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-behavior:smooth;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;background:#000}
+.reel{position:relative;width:100%;height:100vh;height:100dvh;min-height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:grid;place-items:center;background:#000;isolation:isolate}
+.video-frame{position:absolute;inset:0;display:grid;place-items:center;background:#000}
+.video-frame iframe{width:100%;height:100%;border:0;display:block;background:#000}
+.loading{position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.75);font-size:13px;letter-spacing:.04em;pointer-events:none}
+.spinner{width:27px;height:27px;border:2px solid rgba(255,255,255,.22);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.topbar{position:fixed;z-index:10;top:calc(env(safe-area-inset-top) + 12px);left:14px;right:14px;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.pill{pointer-events:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);color:#fff;text-decoration:none;font:600 13px inherit;box-shadow:0 8px 30px rgba(0,0,0,.18);transition:transform .2s ease,background .2s ease}
+.pill:active{transform:scale(.95)}
+.brand{position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:650;letter-spacing:.02em;text-shadow:0 2px 12px #000;white-space:nowrap;pointer-events:none}
+.counter{position:fixed;z-index:8;right:15px;bottom:calc(env(safe-area-inset-bottom) + 24px);padding:9px 12px;border-radius:999px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(16px);font-size:12px;font-variant-numeric:tabular-nums;color:#fff;pointer-events:none}
+.hint{position:fixed;z-index:8;left:50%;bottom:calc(env(safe-area-inset-bottom) + 22px);transform:translateX(-50%);display:flex;align-items:center;gap:7px;padding:9px 13px;border-radius:999px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(16px);color:rgba(255,255,255,.88);font-size:11px;white-space:nowrap;pointer-events:none;animation:hint 2.8s ease-in-out 2}
+@keyframes hint{0%,100%{opacity:.35;transform:translate(-50%,5px)}45%{opacity:1;transform:translate(-50%,0)}}
+.reel-link{position:absolute;z-index:3;bottom:calc(env(safe-area-inset-bottom) + 72px);left:16px;color:#fff;text-decoration:none;font-size:12px;text-shadow:0 2px 12px #000;opacity:.82}
+.reel-link:focus-visible,.pill:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
+@media(min-width:700px){.reel{background:#08080b}.video-frame iframe{width:min(100vw,56.25vh);height:min(100vh,177.78vw);max-width:480px;max-height:854px}.topbar{left:24px;right:24px}.counter{right:24px}}
+@media(prefers-reduced-motion:reduce){.feed{scroll-behavior:auto}.spinner,.hint{animation:none}}
+</style>
 </head>
 <body>
-  <div class="app">
-    <header class="topbar">
-      <a class="back" href="https://zarnal.github.io/ZARNAL/zrnl.html" aria-label="Back to home">‹ <span>Back</span></a>
-      <h1 class="brand">Love <span>Shorts</span> ♡</h1>
-      <button class="theme" id="themeButton" type="button" aria-label="Switch to dark mode" title="Toggle theme">☾</button>
-    </header>
-    <main>
-      <section class="viewer" aria-label="Shorts video player">
-        <div class="player-frame" id="playerFrame">
-          <div class="loading" id="loading"><div class="spinner"></div><p>Loading your short…</p></div>
-        </div>
-      </section>
-      <section class="under-player" aria-label="Video navigation">
-        <div class="meta">
-          <span class="counter" id="counter" aria-live="polite">Short 1 of 41</span>
-          <div class="progress" role="progressbar" aria-label="Collection progress" aria-valuemin="1" aria-valuemax="41" aria-valuenow="1" id="progress"><div class="progress-fill" id="progressFill"></div></div>
-        </div>
-        <div class="actions">
-          <button class="nav-button" id="previousButton" type="button" disabled>← Previous</button>
-          <button class="nav-button primary" id="nextButton" type="button">Next short →</button>
-        </div>
-        <a class="open-link" id="openLink" href="https://www.youtube.com/shorts/jYTzeGuToPM" target="_blank" rel="noopener noreferrer">Having trouble? Open on YouTube ↗</a>
-      </section>
-    </main>
-  </div>
-  <script>
-    (() => {
-      'use strict';
-      const videos = ["jYTzeGuToPM","8B9QFnpjw58","1yOj1G2noPE","_HDsVbalb0o","iK6x_ud-NNI","zpjn8uPbAhw","r-vGytfjGVE","GNuIfXfmb7A","wO2FX8nXGWo","067r2yjkRxM","rmCXKwq7YxQ","k1zjLQGsyG4","WLIJ4Hpb0ko","Em_oNYkDiYw","x4TFi_9tvWQ","qRmg2a90QgU","Lmtdr1QKMms","9_UNsvtRJSA","oEkJZozYkbY","Airm4b2V0rc","rdn1zzgXxFw","9_N9CYLB_FE","q-hvHek0kp4","hw3Yc00Av00","ujONA2l8fzA","AOuqfaL51aU","uG1ng_fgWJg","pPUxeueDDGU","otDKoAksil0","3xVnkyAz5fI","uBqGSgvjUD0","GpGaht3exVk","qg98Y6a23mQ","5ueh0cM0Oz0","YKj_Lur9rmY","gMSvsY6zqYo","qykpmPnavtk","bfT5PFRjLUw","6oG21hDEb2I","px1Zv8LKZ0k","Lve_XmvmWHw"];
-      const frame = document.getElementById('playerFrame');
-      const loading = document.getElementById('loading');
-      const counter = document.getElementById('counter');
-      const progress = document.getElementById('progress');
-      const progressFill = document.getElementById('progressFill');
-      const previousButton = document.getElementById('previousButton');
-      const nextButton = document.getElementById('nextButton');
-      const openLink = document.getElementById('openLink');
-      const themeButton = document.getElementById('themeButton');
-      let index = 0;
-      let loadTimer = 0;
+<main class="feed" id="feed" aria-label="Love Shorts vertical video feed"></main>
+<header class="topbar">
+<a class="pill" href="https://zarnal.github.io/ZARNAL/zrnl.html" aria-label="Back to Zarnal home">← <span>Back</span></a>
+<div class="brand">Love Shorts <span aria-hidden="true">♡</span></div>
+<button class="pill" id="themeBtn" type="button" aria-label="Toggle appearance">☾ <span>Night</span></button>
+</header>
+<div class="counter" id="counter" aria-live="polite">01 / 41</div>
+<div class="hint" id="hint" aria-hidden="true">↑ Swipe up for the next video</div>
+<script>
+const videos = ["jYTzeGuToPM","8B9QFnpjw58","1yOj1G2noPE","_HDsVbalb0o","iK6x_ud-NNI","zpjn8uPbAhw","r-vGytfjGVE","GNuIfXfmb7A","wO2FX8nXGWo","067r2yjkRxM","rmCXKwq7YxQ","k1zjLQGsyG4","WLIJ4Hpb0ko","Em_oNYkDiYw","x4TFi_9tvWQ","qRmg2a90QgU","Lmtdr1QKMms","9_UNsvtRJSA","oEkJZozYkbY","Airm4b2V0rc","rdn1zzgXxFw","9_N9CYLB_FE","q-hvHek0kp4","hw3Yc00Av00","ujONA2l8fzA","AOuqfaL51aU","uG1ng_fgWJg","pPUxeueDDGU","otDKoAksil0","3xVnkyAz5fI","uBqGSgvjUD0","GpGaht3exVk","qg98Y6a23mQ","5ueh0cM0Oz0","YKj_Lur9rmY","gMSvsY6zqYo","qykpmPnavtk","bfT5PFRjLUw","6oG21hDEb2I","px1Zv8LKZ0k","Lve_XmvmWHw"];
+const feed = document.getElementById('feed');
+const counter = document.getElementById('counter');
+const hint = document.getElementById('hint');
+let activeIndex = -1;
+let theme = 'dark';
 
-      function setTheme(theme) {
-        const dark = theme === 'dark';
-        document.documentElement.toggleAttribute('data-theme', dark);
-        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
-        themeButton.textContent = dark ? '☀' : '☾';
-        themeButton.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
-        try { localStorage.setItem('zarnal-shorts-theme', dark ? 'dark' : 'light'); } catch (_) {}
-        const metaTheme = document.querySelector('meta[name="theme-color"]');
-        if (metaTheme) metaTheme.content = dark ? '#17151d' : '#fff4f7';
-      }
+videos.forEach((id, index) => {
+  const slide = document.createElement('section');
+  slide.className = 'reel';
+  slide.dataset.index = String(index);
+  slide.innerHTML = '<div class="video-frame"><div class="loading"><div><div class="spinner"></div>Loading short…</div></div></div><a class="reel-link" href="https://www.youtube.com/watch?v=' + encodeURIComponent(id) + '" target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a>';
+  feed.appendChild(slide);
+});
 
-      function showVideo() {
-        window.clearTimeout(loadTimer);
-        const id = videos[index];
-        frame.replaceChildren();
-        const overlay = document.createElement('div');
-        overlay.className = 'loading';
-        overlay.id = 'loading';
-        overlay.innerHTML = '<div class="spinner"></div><p>Loading your short…</p>';
-        frame.appendChild(overlay);
-        const iframe = document.createElement('iframe');
-        iframe.title = 'Love Short ' + (index + 1);
-        iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&mute=1&playsinline=1&controls=1&rel=0&iv_load_policy=3';
-        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-        iframe.allowFullscreen = true;
-        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-        iframe.addEventListener('load', () => {
-          window.clearTimeout(loadTimer);
-          const currentOverlay = frame.querySelector('.loading');
-          if (currentOverlay) currentOverlay.classList.add('done');
-          window.setTimeout(() => currentOverlay && currentOverlay.remove(), 300);
-        }, { once: true });
-        frame.appendChild(iframe);
-        counter.textContent = 'Short ' + (index + 1) + ' of ' + videos.length;
-        progressFill.style.width = ((index + 1) / videos.length * 100) + '%';
-        progress.setAttribute('aria-valuenow', String(index + 1));
-        previousButton.disabled = index === 0;
-        nextButton.disabled = index === videos.length - 1;
-        nextButton.textContent = index === videos.length - 1 ? 'You’re all caught up ✓' : 'Next short →';
-        openLink.href = 'https://www.youtube.com/shorts/' + id;
-        loadTimer = window.setTimeout(() => {
-          const currentOverlay = frame.querySelector('.loading');
-          if (currentOverlay) {
-            currentOverlay.innerHTML = '<p>Taking a while? You can open this Short directly on YouTube.</p>';
-            currentOverlay.style.pointerEvents = 'auto';
-          }
-        }, 12000);
-      }
+function activate(index) {
+  if (index < 0 || index >= videos.length || index === activeIndex) return;
+  const previous = feed.children[activeIndex];
+  if (previous) {
+    const oldFrame = previous.querySelector('iframe');
+    if (oldFrame) oldFrame.remove();
+    const oldLoading = previous.querySelector('.loading');
+    if (oldLoading) oldLoading.hidden = false;
+  }
+  activeIndex = index;
+  const slide = feed.children[index];
+  const frame = slide.querySelector('.video-frame');
+  const loading = frame.querySelector('.loading');
+  if (loading) loading.hidden = false;
+  const iframe = document.createElement('iframe');
+  iframe.title = 'Love Short ' + (index + 1);
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+  iframe.allowFullscreen = true;
+  iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+  iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(videos[index]) + '?autoplay=1&mute=1&playsinline=1&controls=1&rel=0&modestbranding=1';
+  iframe.addEventListener('load', () => { if (loading) loading.hidden = true; }, {once:true});
+  frame.appendChild(iframe);
+  counter.textContent = String(index + 1).padStart(2,'0') + ' / ' + String(videos.length).padStart(2,'0');
+  if (index > 0) hint.style.display = 'none';
+}
 
-      function goTo(nextIndex) {
-        if (nextIndex < 0 || nextIndex >= videos.length || nextIndex === index) return;
-        index = nextIndex;
-        showVideo();
-      }
-      previousButton.addEventListener('click', () => goTo(index - 1));
-      nextButton.addEventListener('click', () => goTo(index + 1));
-      themeButton.addEventListener('click', () => {
-        setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-      });
-      document.addEventListener('keydown', event => {
-        if (event.key === 'ArrowDown' || event.key === 'PageDown') { event.preventDefault(); goTo(index + 1); }
-        if (event.key === 'ArrowUp' || event.key === 'PageUp') { event.preventDefault(); goTo(index - 1); }
-      });
-      let savedTheme = 'light';
-      try { savedTheme = localStorage.getItem('zarnal-shorts-theme') || 'light'; } catch (_) {}
-      setTheme(savedTheme === 'dark' ? 'dark' : 'light');
-      showVideo();
-    })();
-  </script>
+const observer = new IntersectionObserver(entries => {
+  let best = null;
+  for (const entry of entries) {
+    if (entry.isIntersecting && (!best || entry.intersectionRatio > best.intersectionRatio)) best = entry;
+  }
+  if (best && best.intersectionRatio >= .65) activate(Number(best.target.dataset.index));
+}, {root:feed,threshold:[.25,.5,.65,.8,1]});
+[...feed.children].forEach(slide => observer.observe(slide));
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  theme = theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = theme;
+  document.getElementById('themeBtn').innerHTML = theme === 'dark' ? '☾ <span>Night</span>' : '☀ <span>Day</span>';
+  document.documentElement.style.setProperty('--glass', theme === 'dark' ? 'rgba(20,18,25,.52)' : 'rgba(255,255,255,.24)');
+});
+feed.addEventListener('scroll', () => {
+  if (feed.scrollTop < 30) hint.style.display = 'flex';
+}, {passive:true});
+</script>
 </body>
 </html>
