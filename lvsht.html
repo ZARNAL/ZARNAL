@@ -25,7 +25,7 @@ button,a{-webkit-tap-highlight-color:transparent}
 .counter{position:fixed;z-index:15;right:14px;bottom:calc(env(safe-area-inset-bottom) + 18px);padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(16px);color:#fff;font-size:12px;font-variant-numeric:tabular-nums;pointer-events:none}
 .hint{position:fixed;z-index:15;left:50%;bottom:calc(env(safe-area-inset-bottom) + 18px);transform:translateX(-50%);padding:9px 13px;border:1px solid var(--line);border-radius:999px;background:var(--glass);backdrop-filter:blur(16px);color:rgba(255,255,255,.9);font-size:11px;white-space:nowrap;pointer-events:none;animation:hint 2.6s ease 2}
 @keyframes hint{0%,100%{opacity:.45;translate:0 4px}45%{opacity:1;translate:0 0}}
-.reel-link{position:absolute;z-index:5;left:16px;bottom:calc(env(safe-area-inset-bottom) + 70px);color:#fff;text-decoration:none;font-size:12px;text-shadow:0 2px 12px #000;opacity:.82}
+.start-gate{position:fixed;z-index:40;inset:0;display:grid;place-items:center;padding:28px;background:rgba(0,0,0,.78);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.start-gate[hidden]{display:none}.start-card{width:min(100%,340px);padding:30px 24px;text-align:center;border:1px solid rgba(255,255,255,.18);border-radius:28px;background:rgba(28,25,33,.88);box-shadow:0 24px 80px rgba(0,0,0,.4)}.start-heart{font-size:34px;margin-bottom:12px}.start-title{font-size:22px;font-weight:750;letter-spacing:-.04em;margin:0 0 9px}.start-copy{font-size:13px;line-height:1.55;color:rgba(255,255,255,.72);margin:0 0 22px}.start-button{width:100%;min-height:52px;border:0;border-radius:16px;background:#f29abc;color:#21121a;font-size:15px;font-weight:750;cursor:pointer;box-shadow:0 8px 26px rgba(242,154,188,.2);touch-action:manipulation}.start-button:active{transform:scale(.98)}.reel-link{position:absolute;z-index:5;left:16px;bottom:calc(env(safe-area-inset-bottom) + 70px);color:#fff;text-decoration:none;font-size:12px;text-shadow:0 2px 12px #000;opacity:.82}
 a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media(min-width:700px){.reel{background:#08080b}.video-frame iframe{width:min(100vw,56.25vh);height:min(100vh,177.78vw);max-width:480px;max-height:854px}.topbar{left:24px;right:24px}.counter{right:24px}}
 @media(prefers-reduced-motion:reduce){.feed{scroll-behavior:auto}.hint{animation:none}}
@@ -38,7 +38,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 <div class="brand">Love Shorts <span aria-hidden="true">♡</span></div>
 <button class="pill" id="themeBtn" type="button" aria-label="Toggle appearance">☾ <span>Night</span></button>
 </header>
-<button class="sound-toggle" id="soundToggle" type="button" aria-label="Turn sound on">🔇 <span>Sound off</span></button>
+<button class="sound-toggle" id="soundToggle" type="button" aria-label="Turn sound on">🔇 <span>Unmute</span></button>
+<div class="start-gate" id="startGate"><div class="start-card"><div class="start-heart" aria-hidden="true">♡</div><h1 class="start-title">Your Love Shorts</h1><p class="start-copy">Tap once to start watching. Swipe up to move through the videos — playback will start automatically when each Short becomes active.</p><button class="start-button" id="startButton" type="button">Start watching&nbsp; →</button></div></div>
 <div class="counter" id="counter" aria-live="polite">01 / 41</div>
 <div class="hint" id="hint" aria-hidden="true">↑ Swipe up for the next video</div>
 <script>
@@ -47,6 +48,8 @@ const videos = ["jYTzeGuToPM","8B9QFnpjw58","1yOj1G2noPE","_HDsVbalb0o","iK6x_ud
 const feed = document.getElementById('feed');
 const counter = document.getElementById('counter');
 const hint = document.getElementById('hint');
+const startGate = document.getElementById('startGate');
+let feedStarted = false;
 let activeIndex = -1;
 let scrollTimer = 0;
 let activePlayer = null;
@@ -139,10 +142,12 @@ function getNearestReel(){
   return nearest;
 }
 function settleToVisibleReel(){
+  if(!feedStarted)return;
   const index=getNearestReel();
   if(index!==activeIndex)activate(index);
 }
 function scheduleReelActivation(delay=120){
+  if(!feedStarted)return;
   clearTimeout(scrollTimer);
   scrollTimer=setTimeout(settleToVisibleReel,delay);
 }
@@ -152,7 +157,12 @@ feed.addEventListener('scroll',()=>{
 },{passive:true});
 feed.addEventListener('scrollend',settleToVisibleReel,{passive:true});
 window.addEventListener('resize',()=>scheduleReelActivation(180));
-activate(0);
+document.getElementById('startButton').addEventListener('click',()=>{
+  if(feedStarted)return;
+  feedStarted=true;
+  startGate.hidden=true;
+  activate(0);
+});
 
 soundToggle.addEventListener('click',()=>{
   soundEnabled = !soundEnabled;
