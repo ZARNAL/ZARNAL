@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>💖 Alexa Cute Soundboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --bg-base: #fff6f9;
@@ -22,13 +24,10 @@
   --accent: #ff2d55;
   --accent-gradient: linear-gradient(135deg, #ff2d55 0%, #ff5c8a 55%, #ff85a1 100%);
   --accent-glow: rgba(255, 45, 85, 0.28);
-  
   --unlock-gradient: linear-gradient(135deg, #5856D6 0%, #8583F2 100%);
   --unlock-glow: rgba(88, 86, 214, 0.35);
-
   --music-gradient: linear-gradient(135deg, #00C7BE 0%, #30B0C7 50%, #32ADE6 100%);
   --music-glow: rgba(50, 173, 230, 0.35);
-
   --chip-bg: rgba(255, 255, 255, 0.82);
   --chip-hover: rgba(255, 45, 85, 0.1);
   --chip-border: rgba(255, 122, 162, 0.2);
@@ -53,13 +52,10 @@
   --accent: #ff375f;
   --accent-gradient: linear-gradient(135deg, #ff2d55 0%, #ff5c8a 50%, #c77dff 100%);
   --accent-glow: rgba(255, 55, 95, 0.4);
-  
   --unlock-gradient: linear-gradient(135deg, #5E5CE6 0%, #AD46FF 100%);
   --unlock-glow: rgba(94, 92, 230, 0.4);
-
   --music-gradient: linear-gradient(135deg, #32D74B 0%, #64D2FF 100%);
   --music-glow: rgba(50, 215, 75, 0.35);
-
   --chip-bg: rgba(255, 255, 255, 0.08);
   --chip-hover: rgba(255, 55, 95, 0.2);
   --chip-border: rgba(255, 255, 255, 0.1);
@@ -321,10 +317,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   transform: translateY(-1px) scale(1.01);
   filter: brightness(1.08);
 }
-
-.unlock-btn:active {
-  transform: scale(0.96);
-}
+.unlock-btn:active { transform: scale(0.96); }
 
 .shake { animation: appleShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
 @keyframes appleShake {
@@ -384,10 +377,7 @@ input:checked + .slider:before { transform: translateX(22px); }
   display: none;
 }
 
-.textarea-wrapper {
-  position: relative;
-  margin: 4px 0 8px;
-}
+.textarea-wrapper { position: relative; margin: 4px 0 8px; }
 
 textarea {
   width: 100%;
@@ -486,12 +476,8 @@ textarea:focus {
   transition: transform 0.2s var(--spring), filter 0.2s ease;
 }
 
-.music-btn:hover {
-  transform: translateY(-1px) scale(1.02);
-  filter: brightness(1.1);
-}
+.music-btn:hover { transform: translateY(-1px) scale(1.02); filter: brightness(1.1); }
 
-/* Optimized, Larger, Easier-to-Touch Send Button */
 #sendToAlexaBtn {
   width: 100%;
   max-width: 280px;
@@ -514,10 +500,7 @@ textarea:focus {
   filter: brightness(1.08);
   box-shadow: 0 12px 28px var(--accent-glow);
 }
-
-#sendToAlexaBtn:active {
-  transform: scale(0.95);
-}
+#sendToAlexaBtn:active { transform: scale(0.95); }
 
 #status {
   margin-top: 6px;
@@ -643,6 +626,7 @@ textarea:focus {
 #gifGalleryContainer img:hover { transform: scale(1.03); }
 </style>
 </head>
+
 <body>
 
 <div class="ambient-canvas">
@@ -651,6 +635,7 @@ textarea:focus {
   <div class="orb orb-3"></div>
   <div class="orb orb-4"></div>
 </div>
+
 <a href="https://zarnal.github.io/ZARNAL/zrnl.html" class="back-arrow" aria-label="Back">
   <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
 </a>
@@ -699,7 +684,6 @@ textarea:focus {
     <button onclick="setText('quack quack quaaaaaack wacka wacka', event)">🦆</button>
     <button onclick="setText('ooh ooh aah aah eee eee eee', event)">🐵</button>
     <button onclick="setText('ssssssss sss ssss ssssssss', event)">🐍</button>
-   
     <button onclick="setText('waddle waddle brrrrr waddle brrrr', event)">🐧</button>
     <button onclick="setText('squeak squeak eek eek eek eek', event)">🐭</button>
     <button onclick="setText('haaattt', event)">𝓱𝓪𝓽𝓽𝓽😏</button>
@@ -711,7 +695,7 @@ textarea:focus {
     <button onclick="setText('Jaleebiiieeeeee… yummyyy yummm!', event)">🌀Jalebi</button>
     <button onclick="setText('Poppp popppp POPCORN!!', event)">🍿popcorn</button>
     <button onclick="setText('Gulaaaablaaaablaaaablaaa Jummmmuuuuuuun!!', event)">🧆gulab</button>
-     <button onclick="setText('sutarfearni yeeeyyyy yummmy yummyy yumm yumm!!', event)">☁️🍬cottoncandy</button>
+    <button onclick="setText('sutarfearni yeeeyyyy yummmy yummyy yumm yumm!!', event)">☁️🍬cottoncandy</button>
     <a href="https://zarnal.github.io/ZARNAL/zrnmp3" target="_blank" class="music-btn">🎵🧸 Music</a>
     <button id="secretMessageBtn" onclick="showSecretMessageOverlay()">🔒</button>
   </div>
@@ -747,12 +731,14 @@ textarea:focus {
 <div id="gifGalleryContainer"></div>
 
 <script>
+/* Floating Hearts */
 for (let i = 0; i < 10; i++) {
   const heart = document.createElement("div");
   heart.className = "heart";
   heart.style.left = (Math.random() * 96 + 2) + "vw";
   heart.style.animationDuration = (8 + Math.random() * 6) + "s";
   heart.style.animationDelay = (-Math.random() * 10) + "s";
+
   const size = 8 + Math.random() * 5;
   heart.style.width = size + "px";
   heart.style.height = size + "px";
@@ -761,18 +747,23 @@ for (let i = 0; i < 10; i++) {
 
 function spawnBurst(x, y) {
   if (!x || !y) return;
+
   const symbols = ["💖", "✨", "🌸", "💕"];
+
   for (let i = 0; i < 4; i++) {
     const el = document.createElement("div");
     el.className = "sparkle-particle";
     el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
     el.style.left = x + "px";
     el.style.top = y + "px";
+
     const angle = Math.random() * Math.PI * 2;
     const distance = 25 + Math.random() * 35;
+
     el.style.setProperty("--tx", Math.cos(angle) * distance + "px");
     el.style.setProperty("--ty", (Math.sin(angle) * distance - 12) + "px");
     el.style.setProperty("--rot", (Math.random() * 60 - 30) + "deg");
+
     document.body.appendChild(el);
     setTimeout(() => el.remove(), 700);
   }
@@ -781,7 +772,10 @@ function spawnBurst(x, y) {
 function setText(message, evt) {
   const textarea = document.getElementById("text");
   textarea.value = message;
-  document.querySelectorAll(".preset-buttons button").forEach(btn => btn.classList.remove("active-chip"));
+
+  document.querySelectorAll(".preset-buttons button")
+    .forEach(btn => btn.classList.remove("active-chip"));
+
   if (evt && evt.currentTarget) {
     evt.currentTarget.classList.add("active-chip");
     spawnBurst(evt.clientX, evt.clientY);
@@ -791,63 +785,138 @@ function setText(message, evt) {
 function clearText() {
   const textarea = document.getElementById("text");
   textarea.value = "";
-  document.querySelectorAll(".preset-buttons button").forEach(btn => btn.classList.remove("active-chip"));
+
+  document.querySelectorAll(".preset-buttons button")
+    .forEach(btn => btn.classList.remove("active-chip"));
+
   textarea.focus();
 }
 
 function toggleDark() {
-  const isDark = document.body.classList.toggle('dark');
-  localStorage.setItem('darkMode', isDark);
+  const isDark = document.body.classList.toggle("dark");
+  localStorage.setItem("darkMode", isDark);
 }
 
+/* ===========================
+   GIF LOADING WITH FALLBACKS
+   =========================== */
+
 let gifs = [];
+let gifFallbacks = [];
 let lastGifIndex = -1;
+
+/*
+  Primary GIF fails:
+    → Try one random backup GIF.
+  Backup also fails:
+    → Remove broken image and hide it.
+*/
+function setGifWithFallback(img, primaryUrl) {
+  if (!img || !primaryUrl) return;
+
+  let backupAttempted = false;
+
+  img.onerror = function () {
+    if (!backupAttempted && gifFallbacks.length > 0) {
+      backupAttempted = true;
+
+      const backupIndex = Math.floor(Math.random() * gifFallbacks.length);
+      img.src = gifFallbacks[backupIndex];
+      return;
+    }
+
+    img.onerror = null;
+    img.removeAttribute("src");
+    img.style.display = "none";
+  };
+
+  img.style.display = "";
+  img.src = primaryUrl;
+}
 
 async function loadGifs() {
   try {
-    const response = await fetch('./gifs.json');
-    if (!response.ok) throw new Error();
+    const response = await fetch("./gifs.json");
+
+    if (!response.ok) {
+      throw new Error("GIF JSON loading failed");
+    }
+
     const data = await response.json();
+
     gifs = (data.files || []).map(file => data.baseUrl + file);
 
-    const gifGalleryContainer = document.getElementById("gifGalleryContainer");
+    gifFallbacks = (data.fallbacks || [])
+      .map(item => typeof item === "string" ? item : item.url)
+      .filter(url =>
+        typeof url === "string" &&
+        url.trim() !== ""
+      );
+
+    const gifGalleryContainer =
+      document.getElementById("gifGalleryContainer");
+
     gifGalleryContainer.innerHTML = "";
+
     gifs.forEach((gif) => {
       const img = document.createElement("img");
-      img.src = gif;
+
+      img.alt = "Cute GIF";
       img.loading = "lazy";
+
+      setGifWithFallback(img, gif);
+
       gifGalleryContainer.appendChild(img);
     });
 
     const gifElement = document.getElementById("randomGif");
-    if (gifElement && !gifElement.getAttribute("src") && gifs.length > 0) {
+
+    if (
+      gifElement &&
+      !gifElement.getAttribute("src") &&
+      gifs.length > 0
+    ) {
       changeGif();
     }
-  } catch (error) {}
+
+  } catch (error) {
+    console.error("GIF loading error:", error);
+  }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem('darkMode') === 'true') {
-    document.body.classList.add('dark');
-    document.getElementById('darkToggle').checked = true;
+  if (localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark");
+    document.getElementById("darkToggle").checked = true;
   }
+
   loadGifs();
 
-  document.getElementById("codeInput").addEventListener("keydown", (e) => { if (e.key === "Enter") checkSecret(); });
-  document.getElementById("secretMessageInput").addEventListener("keydown", (e) => { if (e.key === "Enter") checkSecretMessage(); });
+  document.getElementById("codeInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") checkSecret();
+  });
+
+  document.getElementById("secretMessageInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") checkSecretMessage();
+  });
 });
 
 function changeGif(evt) {
   if (gifs.length === 0) return;
+
   const gifElement = document.getElementById("randomGif");
   gifElement.style.opacity = "0.2";
 
   let nextIndex = Math.floor(Math.random() * gifs.length);
-  if (gifs.length > 1 && nextIndex === lastGifIndex) nextIndex = (nextIndex + 1) % gifs.length;
+
+  if (gifs.length > 1 && nextIndex === lastGifIndex) {
+    nextIndex = (nextIndex + 1) % gifs.length;
+  }
+
   lastGifIndex = nextIndex;
 
   setTimeout(() => {
-    gifElement.src = gifs[nextIndex];
+    setGifWithFallback(gifElement, gifs[nextIndex]);
     gifElement.style.opacity = "1";
   }, 100);
 
@@ -856,8 +925,10 @@ function changeGif(evt) {
   }
 }
 
+/* VoiceMonkey */
 async function sendToAlexa(evt) {
   if (evt) spawnBurst(evt.clientX, evt.clientY);
+
   const text = document.getElementById("text").value.trim();
   const status = document.getElementById("status");
   const btn = document.getElementById("sendToAlexaBtn");
@@ -877,7 +948,10 @@ async function sendToAlexa(evt) {
         "Content-Type": "application/json",
         "Authorization": "ceaf115ac415b9674a43dfb33322e2ef_df91f7d5637439e6586689aa4caa93d1"
       },
-      body: JSON.stringify({ device: "echo", text: text })
+      body: JSON.stringify({
+        device: "echo",
+        text: text
+      })
     });
 
     if (response.ok) {
@@ -893,24 +967,31 @@ async function sendToAlexa(evt) {
   }
 }
 
-let currentCode = '';
+/* Secret Code System */
+let currentCode = "";
 
 function triggerShake(cardId) {
   const card = document.getElementById(cardId);
   if (!card) return;
+
   card.classList.remove("shake");
   void card.offsetWidth;
   card.classList.add("shake");
 }
 
-
-const ENCODED_CODES = ["Ym9vYm9v", "cGF5YWw1Mjk1", "YmFieQ=="];
+const ENCODED_CODES = [
+  "Ym9vYm9v",
+  "cGF5YWw1Mjk1",
+  "YmFieQ=="
+];
 
 function decodeBase64(str) {
   try {
-    return decodeURIComponent(atob(str).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+    return decodeURIComponent(
+      atob(str).split("").map(function(c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join("")
+    );
   } catch (e) {
     return atob(str);
   }
@@ -920,32 +1001,43 @@ function checkSecret() {
   const input = document.getElementById("codeInput").value.trim().toLowerCase();
   const overlay = document.getElementById("codeOverlay");
   const error = document.getElementById("codeError");
+
   const randomGifContainer = document.getElementById("randomGifContainer");
   const gifGalleryContainer = document.getElementById("gifGalleryContainer");
+
   const birthdayCountdownContainer = document.getElementById("birthdayCountdownContainer");
   const anniversaryCountdownContainer = document.getElementById("anniversaryCountdownContainer");
+
   const birthdayContainer = document.getElementById("birthdayContainer");
   const anniversaryContainer = document.getElementById("anniversaryContainer");
+
   const container = document.querySelector(".container");
   const backArrow = document.querySelector(".back-arrow");
   const switchContainer = document.querySelector(".switch-container");
+
   const presetButtons = document.querySelectorAll(".preset-buttons button, .preset-buttons a");
   const secretMessageBtn = document.getElementById("secretMessageBtn");
   const sendToAlexaBtn = document.getElementById("sendToAlexaBtn");
   const textarea = document.getElementById("text");
   const boobooTitle = document.getElementById("boobooTitle");
 
-  const matchedCode = ENCODED_CODES.find(enc => decodeBase64(enc).toLowerCase() === input);
+  const matchedCode = ENCODED_CODES.find(
+    enc => decodeBase64(enc).toLowerCase() === input
+  );
 
   if (matchedCode) {
     const decodedInput = decodeBase64(matchedCode).toLowerCase();
+
     error.style.display = "none";
     overlay.style.opacity = "0";
+
     setTimeout(() => overlay.style.display = "none", 250);
+
     currentCode = decodedInput;
 
     if (decodedInput === "payal5295") {
       presetButtons.forEach(btn => btn.style.display = "none");
+
       gifGalleryContainer.style.display = "grid";
       randomGifContainer.style.display = "none";
       container.style.display = "none";
@@ -953,18 +1045,33 @@ function checkSecret() {
       switchContainer.style.display = "none";
       sendToAlexaBtn.style.display = "none";
       boobooTitle.style.display = "none";
+
     } else if (decodedInput === "booboo" || decodedInput === "baby") {
-      presetButtons.forEach(btn => btn.style.display = (decodedInput === "booboo") ? "inline-flex" : "none");
+      presetButtons.forEach(btn =>
+        btn.style.display = decodedInput === "booboo" ? "inline-flex" : "none"
+      );
+
       gifGalleryContainer.style.display = "none";
       randomGifContainer.style.display = "block";
+
       changeGif();
+
       container.style.display = "block";
       backArrow.style.display = "flex";
       switchContainer.style.display = "block";
       secretMessageBtn.style.display = "inline-flex";
-      sendToAlexaBtn.style.display = (decodedInput === "booboo") ? "block" : "none";
-      boobooTitle.style.display = (decodedInput === "booboo") ? "block" : "none";
-      textarea.value = (decodedInput === "baby") ? "Good Morning!! It's OVER NOW...All the best for your life..." : "";
+
+      sendToAlexaBtn.style.display =
+        decodedInput === "booboo" ? "block" : "none";
+
+      boobooTitle.style.display =
+        decodedInput === "booboo" ? "block" : "none";
+
+      textarea.value =
+        decodedInput === "baby"
+          ? "Good Morning!! It's OVER NOW...All the best for your life..."
+          : "";
+
       displaySpecialEvents();
     }
   } else {
@@ -981,12 +1088,19 @@ function showSecretMessageOverlay() {
 }
 
 function checkSecretMessage() {
-  const input = document.getElementById("secretMessageInput").value.trim().toLowerCase();
-  const secretMessageDisplay = document.getElementById("secretMessageDisplay");
-  const secretMessageError = document.getElementById("secretMessageError");
+  const input = document.getElementById("secretMessageInput")
+    .value.trim().toLowerCase();
+
+  const secretMessageDisplay =
+    document.getElementById("secretMessageDisplay");
+
+  const secretMessageError =
+    document.getElementById("secretMessageError");
 
   if (input === "booboo") {
-    secretMessageDisplay.innerText = "app SMARTeefi email zrnhl@proton.me password Zarna@2006 ";
+    secretMessageDisplay.innerText =
+      "Your private account details have been removed from this public HTML version. Store credentials securely outside the webpage.";
+
     secretMessageDisplay.style.display = "block";
     secretMessageError.style.display = "none";
   } else {
@@ -996,51 +1110,110 @@ function checkSecretMessage() {
   }
 }
 
+/* Birthday & Anniversary */
 async function displaySpecialEvents() {
   try {
     if (currentCode !== "booboo") return;
-    const response = await fetch('./events.json');
+
+    const response = await fetch("./events.json");
     if (!response.ok) return;
+
     const events = await response.json();
 
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const currentYear = today.getFullYear();
 
-    const birthday = new Date(currentYear, events.birthday.month - 1, events.birthday.day);
+    const birthday = new Date(
+      currentYear,
+      events.birthday.month - 1,
+      events.birthday.day
+    );
+
     if (today > birthday) birthday.setFullYear(currentYear + 1);
 
-    const anniversary = new Date(currentYear, events.anniversary.month - 1, events.anniversary.day);
+    const anniversary = new Date(
+      currentYear,
+      events.anniversary.month - 1,
+      events.anniversary.day
+    );
+
     if (today > anniversary) anniversary.setFullYear(currentYear + 1);
 
     const emojis = ["😊", "🎉", "💖", "🐻", "🌸", "🧁", "🌹", "🎀", "💘", "💞"];
     const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
 
-    const daysUntilBirthday = Math.round((birthday - today) / (1000 * 60 * 60 * 24));
-    const daysUntilAnniversary = Math.round((anniversary - today) / (1000 * 60 * 60 * 24));
+    const daysUntilBirthday = Math.round(
+      (birthday - today) / (1000 * 60 * 60 * 24)
+    );
+
+    const daysUntilAnniversary = Math.round(
+      (anniversary - today) / (1000 * 60 * 60 * 24)
+    );
 
     if (daysUntilBirthday === 0) {
-      const content = (events.birthday.content || []).find(c => c.year === currentYear) || events.birthday.defaultContent;
+      const content =
+        (events.birthday.content || []).find(c => c.year === currentYear) ||
+        events.birthday.defaultContent;
+
       document.getElementById("birthdayContainer").style.display = "block";
-      if (content.image) { document.getElementById("birthdayImage").src = content.image; document.getElementById("birthdayImage").style.display = "block"; }
-      if (content.video) { document.getElementById("birthdayVideo").src = content.video; document.getElementById("birthdayVideo").style.display = "block"; }
-      if (content.audio) { document.getElementById("birthdayAudio").src = content.audio; document.getElementById("birthdayAudio").style.display = "block"; }
-      document.getElementById("birthdayMessage").innerText = content.message || "";
-    } else if (daysUntilBirthday > 0 && daysUntilBirthday <= events.birthday.countdownDays) {
+
+      if (content.image) {
+        document.getElementById("birthdayImage").src = content.image;
+        document.getElementById("birthdayImage").style.display = "block";
+      }
+
+      if (content.video) {
+        document.getElementById("birthdayVideo").src = content.video;
+        document.getElementById("birthdayVideo").style.display = "block";
+      }
+
+      if (content.audio) {
+        document.getElementById("birthdayAudio").src = content.audio;
+        document.getElementById("birthdayAudio").style.display = "block";
+      }
+
+      document.getElementById("birthdayMessage").innerText =
+        content.message || "";
+
+    } else if (
+      daysUntilBirthday > 0 &&
+      daysUntilBirthday <= events.birthday.countdownDays
+    ) {
       document.getElementById("birthdayCountdownContainer").style.display = "block";
-      document.getElementById("birthdayCountdownMessage").innerText = `🎂 Birthday in ${daysUntilBirthday} day${daysUntilBirthday === 1 ? '' : 's'}! ${randomEmoji}`;
+
+      document.getElementById("birthdayCountdownMessage").innerText =
+        `🎂 Birthday in ${daysUntilBirthday} day${daysUntilBirthday === 1 ? "" : "s"}! ${randomEmoji}`;
     }
 
     if (daysUntilAnniversary === 0) {
-      const content = (events.anniversary.content || []).find(c => c.year === currentYear) || events.anniversary.defaultContent;
+      const content =
+        (events.anniversary.content || []).find(c => c.year === currentYear) ||
+        events.anniversary.defaultContent;
+
       document.getElementById("anniversaryContainer").style.display = "block";
-      if (content.image) { document.getElementById("anniversaryImage").src = content.image; document.getElementById("anniversaryImage").style.display = "block"; }
-      document.getElementById("anniversaryMessage").innerText = content.message || "";
-    } else if (daysUntilAnniversary > 0 && daysUntilAnniversary <= events.anniversary.countdownDays) {
+
+      if (content.image) {
+        document.getElementById("anniversaryImage").src = content.image;
+        document.getElementById("anniversaryImage").style.display = "block";
+      }
+
+      document.getElementById("anniversaryMessage").innerText =
+        content.message || "";
+
+    } else if (
+      daysUntilAnniversary > 0 &&
+      daysUntilAnniversary <= events.anniversary.countdownDays
+    ) {
       document.getElementById("anniversaryCountdownContainer").style.display = "block";
-      document.getElementById("anniversaryCountdownMessage").innerText = `💞 ${daysUntilAnniversary} day${daysUntilAnniversary === 1 ? '' : 's'} to anniversary! ${randomEmoji}`;
+
+      document.getElementById("anniversaryCountdownMessage").innerText =
+        `💞 ${daysUntilAnniversary} day${daysUntilAnniversary === 1 ? "" : "s"} to anniversary! ${randomEmoji}`;
     }
-  } catch (error) {}
+
+  } catch (error) {
+    console.error("Events loading error:", error);
+  }
 }
 </script>
 </body>
