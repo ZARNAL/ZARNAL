@@ -486,7 +486,7 @@
                 <div class="result translate" id="result"></div>
                 <button id="flip" data-tooltip="Reveal a flirty challenge!" aria-label="Flip Card">Flip a Card!</button>
                 <button id="done" class="hidden" data-tooltip="Complete the challenge" aria-label="Complete Challenge">Done! +1 Token</button>
-                <button id="music-toggle" data-tooltip="Toggle romantic music" aria-label="Toggle Music">Play Love Tunes</button>
+
                 <div class="score" id="score">Scores: 0 - 0</div>
                 <div class="tokens" id="tokens">Love Tokens: 0</div>
                 <div class="progress-bar">
@@ -533,7 +533,6 @@
             let player2Score = parseInt(localStorage.getItem('player2Score')) || 0;
             let totalTokens = parseInt(localStorage.getItem('totalTokens')) || 0;
             let isFlipping = false;
-            let isMusicPlaying = false;
 
             const startScreen = document.getElementById('start-screen');
             const game = document.getElementById('game');
@@ -543,7 +542,7 @@
             const resultElement = document.getElementById('result');
             const flipButton = document.getElementById('flip');
             const doneButton = document.getElementById('done');
-            const musicToggleButton = document.getElementById('music-toggle');
+
             const darkModeToggle = document.getElementById('dark-mode-toggle');
             const toggleKnob = document.querySelector('.toggle-knob');
             const scoreElement = document.getElementById('score');
@@ -551,18 +550,11 @@
             const progressBar = document.getElementById('progress');
             const startButton = document.getElementById('start-game');
             const backButton = document.getElementById('back');
-            const flipSound = document.getElementById('flip-sound');
-            const successSound = document.getElementById('success-sound');
-            const backgroundMusic = document.getElementById('background-music');
+
+
+
             const confettiCanvas = document.getElementById('confetti');
             const confettiCtx = confettiCanvas.getContext('2d');
-
-            function playSound(audio) {
-                if (!audio) return;
-                audio.currentTime = 0;
-                const playback = audio.play();
-                if (playback && typeof playback.catch === 'function') playback.catch(() => {});
-            }
 
             function googleTranslateElementInit() {
                 new google.translate.TranslateElement({
@@ -627,14 +619,14 @@
                     card.classList.add('milestone');
                     setTimeout(() => card.classList.remove('milestone'), 1000);
                     launchConfetti();
-                    playSound(successSound);
+
                 }
             }
 
             function flipCard() {
                 if (isFlipping) return;
                 isFlipping = true;
-                playSound(flipSound);
+
                 const challenge = challenges[Math.floor(Math.random() * challenges.length)];
                 const message = romanticMessages[Math.floor(Math.random() * romanticMessages.length)];
                 const color = cardColors[Math.floor(Math.random() * cardColors.length)];
@@ -645,7 +637,7 @@
                     resultElement.textContent = `${currentPlayer === 1 ? player1Name : player2Name}, ${challenge}! ${message}`;
                     doneButton.classList.remove('hidden');
                     flipButton.classList.add('hidden');
-                    playSound(successSound);
+
                     launchConfetti();
                     isFlipping = false;
                 }, 600);
@@ -689,18 +681,6 @@
                 cardBack.textContent = '';
             });
 
-            musicToggleButton.addEventListener('click', () => {
-                if (isMusicPlaying) {
-                    backgroundMusic.pause();
-                    musicToggleButton.textContent = 'Play Love Tunes';
-                    isMusicPlaying = false;
-                } else {
-                    const playback = backgroundMusic.play();
-                    if (playback && typeof playback.catch === 'function') {
-                        playback.catch(() => {
-                            isMusicPlaying = false;
-                            musicToggleButton.textContent = 'Play Love Tunes';
-                        });
                     }
                     musicToggleButton.textContent = 'Pause Love Tunes';
                     isMusicPlaying = true;
