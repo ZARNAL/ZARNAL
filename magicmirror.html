@@ -192,8 +192,16 @@ color: #eee;
 border: 1px solid #444;
 }
 </style>
+
+<style>
+.zarnal-home-back{position:fixed;top:calc(12px + env(safe-area-inset-top));left:14px;z-index:10001;display:inline-flex;align-items:center;gap:6px;padding:10px 15px;border-radius:999px;text-decoration:none;font:600 14px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#b52c61;background:rgba(255,255,255,.76);border:1px solid rgba(255,255,255,.65);box-shadow:0 6px 20px rgba(190,60,100,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:transform .2s ease,background .2s ease;}
+.zarnal-home-back:hover{transform:translateY(-1px);background:rgba(255,255,255,.94)}
+.zarnal-home-back:active{transform:scale(.96)}
+@media(prefers-reduced-motion:reduce){.zarnal-home-back{transition:none}}
+</style>
 </head>
 <body>
+<a class="zarnal-home-back" href="https://zarnal.github.io/ZARNAL/zrnl.html" aria-label="Back to Zarnal home">← Back</a>
 <!-- Dark mode toggle -->
 <label class="switch">
 <input type="checkbox" id="modeToggle" />
