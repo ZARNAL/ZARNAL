@@ -1,768 +1,209 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Cache-Control" content="public, max-age=3600">
-<title>📖 Love Shorts</title>
-<style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff4f7">
+  <meta name="description" content="A collection of romantic YouTube Shorts.">
+  <title>Love Shorts ♡</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page:#fff5f8; --page-glow:rgba(245,145,180,.18); --surface:rgba(255,255,255,.76);
+      --border:rgba(255,255,255,.9); --text:#30242c; --muted:#897781;
+      --accent:#e65b89; --accent-2:#d9487b; --control:rgba(255,255,255,.82);
+      --shadow:0 18px 55px rgba(94,48,69,.12);
     }
-
-    html, body {
-        height: 100%;
-        min-height: 100vh;
-        overflow: hidden;
-        position: relative;
-        touch-action: pan-y pinch-zoom;
+    [data-theme="dark"] {
+      color-scheme:dark;
+      --page:#17151d; --page-glow:rgba(181,91,142,.16); --surface:rgba(39,34,47,.82);
+      --border:rgba(255,255,255,.09); --text:#f8edf3; --muted:#b8a8b2;
+      --accent:#f08ab0; --accent-2:#df6d99; --control:rgba(49,42,57,.88);
+      --shadow:0 18px 55px rgba(0,0,0,.32);
     }
-
-    .background-wrapper {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #ffe4e9 0%, #f4c4d2 100%);
-        z-index: -1;
-        transition: background 0.3s ease;
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0}
+    body{
+      min-height:100vh;min-height:100dvh;overflow:hidden;color:var(--text);
+      background:radial-gradient(ellipse at 12% 10%,var(--page-glow),transparent 42%),var(--page);
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+      -webkit-font-smoothing:antialiased;transition:background .3s ease,color .3s ease;
     }
-
-    body.dark-mode .background-wrapper {
-        background: linear-gradient(135deg, #2a1b2e 0%, #3c2f45 100%);
+    button,a{-webkit-tap-highlight-color:transparent}
+    .app{height:100%;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom)}
+    .topbar{height:58px;flex:0 0 58px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+    .back,.theme{
+      min-height:42px;border:1px solid var(--border);border-radius:999px;background:var(--control);
+      color:var(--text);box-shadow:0 4px 18px rgba(40,20,35,.06);backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
     }
-
-    .content-wrapper {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        z-index: 1;
+    .back{justify-self:start;padding:0 15px;font-size:.88rem;font-weight:650;gap:7px}
+    .theme{justify-self:end;width:42px;font-size:1.1rem;cursor:pointer}
+    .brand{margin:0;text-align:center;font-size:1.02rem;font-weight:760;letter-spacing:-.035em;white-space:nowrap}
+    .brand span{color:var(--accent)}
+    .back:active,.theme:active,.nav-button:active{transform:scale(.96)}
+    button:focus-visible,a:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);outline-offset:3px}
+    main{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:2px 0 10px}
+    .viewer{
+      position:relative;width:min(100%,430px);height:min(calc(100dvh - 158px),760px);
+      min-height:220px;display:flex;align-items:center;justify-content:center;
+      border-radius:25px;overflow:hidden;background:#100d13;box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.12);isolation:isolate;
     }
-
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-        color: #333;
-        transition: color 0.3s ease;
+    .player-frame{width:100%;height:100%;position:relative;background:#100d13}
+    .player-frame iframe{display:block;width:100%;height:100%;border:0;background:#100d13}
+    .loading{
+      position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+      color:#fff;background:linear-gradient(145deg,#21151f,#100d13);z-index:1;pointer-events:none;
+      transition:opacity .25s ease;
     }
-
-    body.dark-mode {
-        color: #e0e0e0;
+    .loading.done{opacity:0}
+    .spinner{width:34px;height:34px;border:3px solid rgba(255,255,255,.22);border-top-color:#f08ab0;border-radius:50%;animation:spin .8s linear infinite}
+    .loading p{margin:0;font-size:.85rem;color:rgba(255,255,255,.78)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .under-player{width:min(100%,430px);display:flex;flex-direction:column;gap:10px}
+    .meta{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .counter{font-size:.83rem;color:var(--muted);font-weight:650;font-variant-numeric:tabular-nums}
+    .progress{height:4px;flex:1;max-width:150px;border-radius:10px;background:rgba(140,120,132,.18);overflow:hidden}
+    .progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#bd91e9);border-radius:inherit;transition:width .3s ease}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .nav-button{
+      min-height:48px;border:1px solid var(--border);border-radius:16px;background:var(--surface);
+      color:var(--text);font-size:.92rem;font-weight:700;cursor:pointer;box-shadow:0 5px 18px rgba(40,20,35,.05);
+      transition:transform .18s ease,background .2s ease,opacity .2s ease;
     }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 10px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 10;
-        background: rgba(255, 255, 255, 0.15);
-        transition: background 0.3s ease;
+    .nav-button.primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border-color:transparent}
+    .nav-button:disabled{opacity:.35;cursor:not-allowed}
+    .open-link{align-self:center;color:var(--muted);font-size:.78rem;text-decoration:none;padding:3px 8px}
+    .open-link:hover{color:var(--accent)}
+    .empty{color:#fff;text-align:center;padding:25px}
+    @media(min-width:700px){
+      .app{padding-left:24px;padding-right:24px}
+      .topbar{height:66px;flex-basis:66px}
+      .brand{font-size:1.12rem}
+      .viewer{height:min(calc(100dvh - 180px),780px)}
     }
-
-    body.dark-mode .header {
-        background: rgba(40, 30, 45, 0.25);
+    @media(max-height:560px) and (orientation:landscape){
+      .topbar{height:46px;flex-basis:46px}
+      main{flex-direction:row;gap:18px}
+      .viewer{width:auto;height:calc(100dvh - 70px);aspect-ratio:9/16;min-height:0}
+      .under-player{width:min(38vw,300px)}
     }
-
-    h1 {
-        font-size: 1.6em;
-        font-weight: 600;
-        color: #4a2c3e;
-        margin: 0;
-        transition: color 0.3s ease;
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
     }
-
-    body.dark-mode h1 {
-        color: #d8a7b1;
-    }
-
-    .back-button {
-        background: linear-gradient(45deg, #ff6f91, #ff8ba7);
-        color: white;
-        padding: 6px 12px;
-        border-radius: 18px;
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 0.8em;
-        transition: transform 0.2s ease, background 0.3s ease;
-    }
-
-    body.dark-mode .back-button {
-        background: linear-gradient(45deg, #a14a76, #c06c84);
-    }
-
-    .back-button:hover {
-        transform: scale(1.05);
-    }
-
-    .shorts-container {
-        height: calc(100vh - 40px);
-        position: relative;
-        margin-top: 40px;
-        overflow: hidden;
-    }
-
-    .short-card {
-        width: 100%;
-        height: calc(100vh - 40px);
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .video-wrapper {
-        position: relative;
-        width: 100%;
-        max-width: 360px;
-        height: 640px;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .video-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
-        pointer-events: none;
-    }
-
-    .next-button {
-        position: absolute;
-        bottom: 20px;
-        right: 20px;
-        background: linear-gradient(45deg, #ff6f91, #ff8ba7);
-        color: white;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2em;
-        font-weight: 600;
-        text-decoration: none;
-        cursor: pointer;
-        transition: transform 0.2s ease, background 0.3s ease;
-        pointer-events: auto;
-        z-index: 5;
-    }
-
-    body.dark-mode .next-button {
-        background: linear-gradient(45deg, #a14a76, #c06c84);
-    }
-
-    .next-button:hover {
-        transform: scale(1.1);
-    }
-
-    .next-button.hidden {
-        display: none;
-    }
-
-    iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-        loading: lazy;
-    }
-
-    .video-title {
-        font-size: 0.85em;
-        color: #333;
-        text-align: center;
-        margin-top: 8px;
-        max-width: 90%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        transition: color 0.3s ease;
-    }
-
-    body.dark-mode .video-title {
-        color: #d8a7b1;
-    }
-
-    .error {
-        color: #d32f2f;
-        font-weight: 500;
-        text-align: center;
-        font-size: 0.9em;
-        padding: 20px;
-        transition: color 0.3s ease;
-    }
-
-    body.dark-mode .error {
-        color: #ff6f91;
-    }
-
-    .heart {
-        position: fixed;
-        top: -1vh;
-        font-size: clamp(0.7rem, 2vw, 0.9rem);
-        color: #ff6f91;
-        animation: fall 3s linear infinite;
-        pointer-events: none;
-    }
-
-    body.dark-mode .heart {
-        color: #d8a7b1;
-    }
-
-    @keyframes fall {
-        to {
-            transform: translateY(100vh) rotate(360deg);
-            opacity: 0;
-        }
-    }
-
-    .theme-toggle {
-        display: flex;
-        align-items: center;
-    }
-
-    .toggle-switch {
-        position: relative;
-        width: 36px;
-        height: 18px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 9px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 3px;
-    }
-
-    body.dark-mode .toggle-switch {
-        background: rgba(40, 30, 45, 0.3);
-    }
-
-    .toggle-switch::before {
-        content: '';
-        position: absolute;
-        width: 14px;
-        height: 14px;
-        background: linear-gradient(45deg, #fff, #f0f0f0);
-        border-radius: 50%;
-        top: 2px;
-        left: 2px;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    body.dark-mode .toggle-switch::before {
-        background: linear-gradient(45deg, #d8a7b1, #a14a76);
-    }
-
-    .toggle-switch .sun {
-        font-size: 10px;
-        color: #f1c40f;
-        transform: scale(1);
-        transition: transform 0.3s ease, opacity 0.3s ease;
-        opacity: 1;
-    }
-
-    .toggle-switch .moon {
-        font-size: 10px;
-        color: #8e44ad;
-        transform: scale(0.8);
-        transition: transform 0.3s ease, opacity 0.3s ease;
-        opacity: 0;
-    }
-
-    input[type="checkbox"]:checked + .toggle-switch {
-        background: rgba(255, 111, 145, 0.3);
-    }
-
-    input[type="checkbox"]:checked + .toggle-switch::before {
-        transform: translateX(18px);
-    }
-
-    input[type="checkbox"]:checked + .toggle-switch .sun {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-
-    input[type="checkbox"]:checked + .toggle-switch .moon {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    input[type="checkbox"] {
-        display: none;
-    }
-
-    @media (max-width: 480px) {
-        .header {
-            padding: 6px 8px;
-            height: 32px;
-        }
-        h1 {
-            font-size: 1.3em;
-        }
-        .back-button {
-            padding: 5px 10px;
-            font-size: 0.7em;
-        }
-        .toggle-switch {
-            width: 32px;
-            height: 16px;
-        }
-        .toggle-switch::before {
-            width: 12px;
-            height: 12px;
-        }
-        input[type="checkbox"]:checked + .toggle-switch::before {
-            transform: translateX(16px);
-        }
-        .toggle-switch .sun, .toggle-switch .moon {
-            font-size: 9px;
-        }
-        .shorts-container {
-            margin-top: 32px;
-            height: calc(100vh - 32px);
-        }
-        .short-card {
-            height: calc(100vh - 32px);
-        }
-        .video-wrapper {
-            max-width: 100%;
-            height: 100%;
-            border-radius: 0;
-        }
-        .video-title {
-            font-size: 0.75em;
-            padding: 0 8px;
-        }
-        .heart {
-            font-size: 0.7rem;
-        }
-        .next-button {
-            width: 40px;
-            height: 40px;
-            font-size: 1em;
-            bottom: 16px;
-        }
-    }
-
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255, 240, 245, 0.9);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        transition: opacity 0.3s ease;
-    }
-
-    body.dark-mode .loading-overlay {
-        background: rgba(44, 26, 47, 0.9);
-    }
-
-    .loading-spinner {
-        width: 36px;
-        height: 36px;
-        border: 4px solid #ff6f91;
-        border-top: 4px solid transparent;
-        border-radius: 50%;
-        animation: spin 0.8s ease-in-out infinite, heartbeat 1.2s ease-in-out infinite;
-    }
-
-    body.dark-mode .loading-spinner {
-        border: 4px solid #d8a7b1;
-        border-top: 4px solid transparent;
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    @keyframes heartbeat {
-        0%, 100% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.3);
-        }
-    }
-
-    .loading-overlay.hidden {
-        opacity: 0;
-        pointer-events: none;
-    }
-</style>
-
-<div class="background-wrapper"></div>
-<div class="loading-overlay" id="loading-overlay">
-    <div class="loading-spinner"></div>
-</div>
-<div class="content-wrapper">
-    <div class="header">
-        <a href="https://zarnal.github.io/ZARNAL/zrnl.html" class="back-button">Back</a>
-        <h1>🎬 Love Shorts</h1>
-        <div class="theme-toggle">
-            <input type="checkbox" id="theme-switch" onchange="toggleTheme()">
-            <label for="theme-switch" class="toggle-switch">
-                <span class="sun">☀️</span>
-                <span class="moon">🌙</span>
-            </label>
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <a class="back" href="https://zarnal.github.io/ZARNAL/zrnl.html" aria-label="Back to home">‹ <span>Back</span></a>
+      <h1 class="brand">Love <span>Shorts</span> ♡</h1>
+      <button class="theme" id="themeButton" type="button" aria-label="Switch to dark mode" title="Toggle theme">☾</button>
+    </header>
+    <main>
+      <section class="viewer" aria-label="Shorts video player">
+        <div class="player-frame" id="playerFrame">
+          <div class="loading" id="loading"><div class="spinner"></div><p>Loading your short…</p></div>
         </div>
-    </div>
-    <div id="shorts-container" class="shorts-container"></div>
-</div>
+      </section>
+      <section class="under-player" aria-label="Video navigation">
+        <div class="meta">
+          <span class="counter" id="counter" aria-live="polite">Short 1 of 41</span>
+          <div class="progress" role="progressbar" aria-label="Collection progress" aria-valuemin="1" aria-valuemax="41" aria-valuenow="1" id="progress"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+        <div class="actions">
+          <button class="nav-button" id="previousButton" type="button" disabled>← Previous</button>
+          <button class="nav-button primary" id="nextButton" type="button">Next short →</button>
+        </div>
+        <a class="open-link" id="openLink" href="https://www.youtube.com/shorts/jYTzeGuToPM" target="_blank" rel="noopener noreferrer">Having trouble? Open on YouTube ↗</a>
+      </section>
+    </main>
+  </div>
+  <script>
+    (() => {
+      'use strict';
+      const videos = ["jYTzeGuToPM","8B9QFnpjw58","1yOj1G2noPE","_HDsVbalb0o","iK6x_ud-NNI","zpjn8uPbAhw","r-vGytfjGVE","GNuIfXfmb7A","wO2FX8nXGWo","067r2yjkRxM","rmCXKwq7YxQ","k1zjLQGsyG4","WLIJ4Hpb0ko","Em_oNYkDiYw","x4TFi_9tvWQ","qRmg2a90QgU","Lmtdr1QKMms","9_UNsvtRJSA","oEkJZozYkbY","Airm4b2V0rc","rdn1zzgXxFw","9_N9CYLB_FE","q-hvHek0kp4","hw3Yc00Av00","ujONA2l8fzA","AOuqfaL51aU","uG1ng_fgWJg","pPUxeueDDGU","otDKoAksil0","3xVnkyAz5fI","uBqGSgvjUD0","GpGaht3exVk","qg98Y6a23mQ","5ueh0cM0Oz0","YKj_Lur9rmY","gMSvsY6zqYo","qykpmPnavtk","bfT5PFRjLUw","6oG21hDEb2I","px1Zv8LKZ0k","Lve_XmvmWHw"];
+      const frame = document.getElementById('playerFrame');
+      const loading = document.getElementById('loading');
+      const counter = document.getElementById('counter');
+      const progress = document.getElementById('progress');
+      const progressFill = document.getElementById('progressFill');
+      const previousButton = document.getElementById('previousButton');
+      const nextButton = document.getElementById('nextButton');
+      const openLink = document.getElementById('openLink');
+      const themeButton = document.getElementById('themeButton');
+      let index = 0;
+      let loadTimer = 0;
 
-<script>
-    // Shorts are embedded directly from the supplied dataset (no spreadsheet dependency).
-    const embeddedShorts = [
-    "https://youtube.com/shorts/jYTzeGuToPM",
-    "https://youtube.com/shorts/8B9QFnpjw58",
-    "https://youtube.com/shorts/1yOj1G2noPE",
-    "https://youtube.com/shorts/_HDsVbalb0o",
-    "https://youtube.com/shorts/iK6x_ud-NNI",
-    "https://youtube.com/shorts/zpjn8uPbAhw",
-    "https://youtube.com/shorts/r-vGytfjGVE",
-    "https://youtube.com/shorts/GNuIfXfmb7A",
-    "https://youtube.com/shorts/wO2FX8nXGWo",
-    "https://youtube.com/shorts/067r2yjkRxM",
-    "https://youtube.com/shorts/rmCXKwq7YxQ",
-    "https://youtube.com/shorts/k1zjLQGsyG4",
-    "https://youtube.com/shorts/WLIJ4Hpb0ko",
-    "https://youtube.com/shorts/Em_oNYkDiYw",
-    "https://youtube.com/shorts/x4TFi_9tvWQ",
-    "https://youtube.com/shorts/qRmg2a90QgU",
-    "https://youtube.com/shorts/Lmtdr1QKMms",
-    "https://youtube.com/shorts/9_UNsvtRJSA",
-    "https://youtube.com/shorts/oEkJZozYkbY",
-    "https://youtube.com/shorts/Airm4b2V0rc",
-    "https://youtube.com/shorts/rdn1zzgXxFw",
-    "https://youtube.com/shorts/9_N9CYLB_FE",
-    "https://youtube.com/shorts/q-hvHek0kp4",
-    "https://youtube.com/shorts/hw3Yc00Av00",
-    "https://youtube.com/shorts/ujONA2l8fzA",
-    "https://youtube.com/shorts/AOuqfaL51aU",
-    "https://youtube.com/shorts/uG1ng_fgWJg",
-    "https://youtube.com/shorts/pPUxeueDDGU",
-    "https://youtube.com/shorts/otDKoAksil0",
-    "https://youtube.com/shorts/3xVnkyAz5fI",
-    "https://youtube.com/shorts/uBqGSgvjUD0",
-    "https://youtube.com/shorts/GpGaht3exVk",
-    "https://youtube.com/shorts/qg98Y6a23mQ",
-    "https://youtube.com/shorts/5ueh0cM0Oz0",
-    "https://youtube.com/shorts/YKj_Lur9rmY",
-    "https://youtube.com/shorts/gMSvsY6zqYo",
-    "https://youtube.com/shorts/qykpmPnavtk",
-    "https://youtube.com/shorts/bfT5PFRjLUw",
-    "https://youtube.com/shorts/6oG21hDEb2I",
-    "https://youtube.com/shorts/px1Zv8LKZ0k",
-    "https://youtube.com/shorts/Lve_XmvmWHw"
-];
-    let apiReady = false;
+      function setTheme(theme) {
+        const dark = theme === 'dark';
+        document.documentElement.toggleAttribute('data-theme', dark);
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+        themeButton.textContent = dark ? '☀' : '☾';
+        themeButton.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+        try { localStorage.setItem('zarnal-shorts-theme', dark ? 'dark' : 'light'); } catch (_) {}
+        const metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme) metaTheme.content = dark ? '#17151d' : '#fff4f7';
+      }
 
-    // Global variables
-    let urls = embeddedShorts.slice();
-    let currentIndex = 0;
-    let players = [];
-    let heartInterval = null;
-    let isSwiping = false;
-    let startY = 0;
-    let startTime = 0;
-    let lastScrollTime = 0;
+      function showVideo() {
+        window.clearTimeout(loadTimer);
+        const id = videos[index];
+        frame.replaceChildren();
+        const overlay = document.createElement('div');
+        overlay.className = 'loading';
+        overlay.id = 'loading';
+        overlay.innerHTML = '<div class="spinner"></div><p>Loading your short…</p>';
+        frame.appendChild(overlay);
+        const iframe = document.createElement('iframe');
+        iframe.title = 'Love Short ' + (index + 1);
+        iframe.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) + '?autoplay=1&mute=1&playsinline=1&controls=1&rel=0&iv_load_policy=3';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.addEventListener('load', () => {
+          window.clearTimeout(loadTimer);
+          const currentOverlay = frame.querySelector('.loading');
+          if (currentOverlay) currentOverlay.classList.add('done');
+          window.setTimeout(() => currentOverlay && currentOverlay.remove(), 300);
+        }, { once: true });
+        frame.appendChild(iframe);
+        counter.textContent = 'Short ' + (index + 1) + ' of ' + videos.length;
+        progressFill.style.width = ((index + 1) / videos.length * 100) + '%';
+        progress.setAttribute('aria-valuenow', String(index + 1));
+        previousButton.disabled = index === 0;
+        nextButton.disabled = index === videos.length - 1;
+        nextButton.textContent = index === videos.length - 1 ? 'You’re all caught up ✓' : 'Next short →';
+        openLink.href = 'https://www.youtube.com/shorts/' + id;
+        loadTimer = window.setTimeout(() => {
+          const currentOverlay = frame.querySelector('.loading');
+          if (currentOverlay) {
+            currentOverlay.innerHTML = '<p>Taking a while? You can open this Short directly on YouTube.</p>';
+            currentOverlay.style.pointerEvents = 'auto';
+          }
+        }, 12000);
+      }
 
-    // Create falling heart animations
-    let heartCount = 0;
-    const maxHearts = 3;
-    function createHeart() {
-        if (heartCount >= maxHearts) return;
-        heartCount++;
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerHTML = '♥';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = Math.random() * 2 + 2 + 's';
-        heart.style.fontSize = Math.random() * 0.4 + 0.7 + 'rem';
-        document.body.appendChild(heart);
-        setTimeout(() => {
-            heart.remove();
-            heartCount--;
-        }, 4000);
-    }
-
-    // Convert YouTube Shorts URL to video ID
-    function getVideoId(url) {
-        try {
-            const videoIdMatch = url.match(/(?:shorts\/|v=|youtu\.be\/|watch\?v=)([a-zA-Z0-9_-]{11})/);
-            if (!videoIdMatch) {
-                console.warn('Invalid YouTube URL:', url);
-                return null;
-            }
-            return videoIdMatch[1];
-        } catch (e) {
-            console.error('Error parsing URL:', url, e);
-            return null;
-        }
-    }
-
-    // Load from the locally embedded list; no network data fetch required.
-    function fetchShortsUrls() {
-        const loadingOverlay = document.getElementById('loading-overlay');
-        if (!urls.length) {
-            document.getElementById('shorts-container').innerHTML = '<p class="error">No romantic Shorts found.</p>';
-            loadingOverlay.classList.add('hidden');
-            return;
-        }
-        if (apiReady) setupVideos();
-    }
-
-    // Setup video cards
-    function setupVideos() {
-        const container = document.getElementById('shorts-container');
-        container.innerHTML = '';
-        updateCards();
-    }
-
-    // Update video cards
-    function updateCards() {
-        const container = document.getElementById('shorts-container');
-        container.innerHTML = '';
-        if (currentIndex >= urls.length) {
-            container.innerHTML = '<p class="error">No more Shorts available.</p>';
-            clearInterval(heartInterval);
-            return;
-        }
-
-        // Current video
-        const currentVideoId = getVideoId(urls[currentIndex]);
-        if (currentVideoId) {
-            const card = document.createElement('div');
-            card.className = 'short-card';
-            card.dataset.index = currentIndex;
-            card.style.transform = `translateY(0%)`;
-            card.innerHTML = `
-                <div class="video-wrapper">
-                    <div id="player-${currentIndex}"></div>
-                    <div class="video-overlay"></div>
-                    ${currentIndex < urls.length - 1 ? '<a class="next-button" onclick="loadNextVideo()">↓</a>' : ''}
-                </div>
-                <p class="video-title">Romantic Short ${currentIndex + 1}</p>
-            `;
-            container.appendChild(card);
-            players[0] = new YT.Player(`player-${currentIndex}`, {
-                height: '100%',
-                width: '100%',
-                videoId: currentVideoId,
-                playerVars: {
-                    autoplay: 1,
-                    mute: 0,
-                    controls: 1,
-                    rel: 0,
-                    modestbranding: 1
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange,
-                    'onError': (e) => {
-                        console.error('Error with video:', currentVideoId, e);
-                        loadNextVideo();
-                    }
-                }
-            });
-        }
-
-        // Next video
-        if (currentIndex + 1 < urls.length) {
-            const nextVideoId = getVideoId(urls[currentIndex + 1]);
-            if (nextVideoId) {
-                const nextCard = document.createElement('div');
-                nextCard.className = 'short-card';
-                nextCard.dataset.index = currentIndex + 1;
-                nextCard.style.transform = `translateY(100%)`;
-                nextCard.innerHTML = `
-                    <div class="video-wrapper">
-                        <div id="player-${currentIndex + 1}"></div>
-                        <div class="video-overlay"></div>
-                        <a class="next-button" onclick="loadNextVideo()">↓</a>
-                    </div>
-                    <p class="video-title">Romantic Short ${currentIndex + 2}</p>
-                `;
-                container.appendChild(nextCard);
-                players[1] = new YT.Player(`player-${currentIndex + 1}`, {
-                    height: '100%',
-                    width: '100%',
-                    videoId: nextVideoId,
-                    playerVars: {
-                        autoplay: 0,
-                        mute: 0,
-                        controls: 1,
-                        rel: 0,
-                        modestbranding: 1
-                    },
-                    events: {
-                        'onError': (e) => console.error('Error with next video:', nextVideoId, e)
-                    }
-                });
-            }
-        }
-    }
-
-    // Handle player ready
-    function onPlayerReady(event) {
-        console.log('Player ready:', currentIndex);
-        event.target.playVideo();
-        document.getElementById('loading-overlay').classList.add('hidden');
-        clearInterval(heartInterval);
-    }
-
-    // Handle player state change
-    function onPlayerStateChange(event) {
-        if (event.data === YT.PlayerState.ENDED) {
-            loadNextVideo();
-        }
-    }
-
-    // Load next video
-    function loadNextVideo() {
-        if (players[0]) players[0].destroy();
-        players[0] = players[1];
-        players[1] = null;
-        currentIndex++;
-        if (currentIndex >= urls.length) {
-            document.getElementById('shorts-container').innerHTML = '<p class="error">No more Shorts available.</p>';
-            clearInterval(heartInterval);
-            return;
-        }
-        updateCards();
-        animateScroll(currentIndex);
-    }
-
-    // Animate scroll
-    function animateScroll(index) {
-        const cards = document.querySelectorAll('.short-card');
-        cards.forEach(card => {
-            const cardIndex = parseInt(card.dataset.index);
-            card.style.transform = `translateY(${(cardIndex - index) * 100}%)`;
-        });
-    }
-
-    // Handle touch events
-    function handleTouchStart(e) {
-        if (isSwiping) return;
-        startY = e.changedTouches[0].screenY;
-        startTime = Date.now();
-        isSwiping = true;
-    }
-
-    function handleTouchMove(e) {
-        if (!isSwiping) return;
-        const currentY = e.changedTouches[0].screenY;
-        const delta = currentY - startY;
-        const cards = document.querySelectorAll('.short-card');
-        cards.forEach(card => {
-            const cardIndex = parseInt(card.dataset.index);
-            const offset = (cardIndex - currentIndex) * 100 + delta / window.innerHeight * 100;
-            card.style.transform = `translateY(${offset}%)`;
-        });
-        e.preventDefault();
-    }
-
-    function handleTouchEnd(e) {
-        if (!isSwiping) return;
-        const endY = e.changedTouches[0].screenY;
-        const delta = endY - startY;
-        const duration = Date.now() - startTime;
-        const velocity = Math.abs(delta / duration);
-        const threshold = window.innerHeight * 0.1;
-        const velocityThreshold = 0.2;
-
-        if ((delta < -threshold || (delta < 0 && velocity > velocityThreshold)) && currentIndex < urls.length - 1) {
-            loadNextVideo();
-        } else if ((delta > threshold || (delta > 0 && velocity > velocityThreshold)) && currentIndex > 0) {
-            if (players[0]) players[0].destroy();
-            if (players[1]) players[1].destroy();
-            players = [];
-            currentIndex--;
-            updateCards();
-            animateScroll(currentIndex);
-        } else {
-            animateScroll(currentIndex);
-        }
-        isSwiping = false;
-    }
-
-    // Handle mouse wheel
-    function handleWheel(e) {
-        const now = Date.now();
-        if (now - lastScrollTime < 200 || isSwiping) return;
-        lastScrollTime = now;
-        if (e.deltaY > 20 && currentIndex < urls.length - 1) {
-            loadNextVideo();
-        } else if (e.deltaY < -20 && currentIndex > 0) {
-            if (players[0]) players[0].destroy();
-            if (players[1]) players[1].destroy();
-            players = [];
-            currentIndex--;
-            updateCards();
-            animateScroll(currentIndex);
-        }
-    }
-
-    // Toggle dark mode
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        const backgroundWrapper = document.querySelector('.background-wrapper');
-        if (document.body.classList.contains('dark-mode')) {
-            backgroundWrapper.style.background = 'linear-gradient(135deg, #2a1b2e 0%, #3c2f45 100%)';
-        } else {
-            backgroundWrapper.style.background = 'linear-gradient(135deg, #ffe4e9 0%, #f4c4d2 100%)';
-        }
-        try { localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light'); } catch (_) {}
-    }
-
-    // Initialize
-    window.onload = () => {
-        console.log('Page loading started');
-        let savedTheme = 'light';\n        try { savedTheme = localStorage.getItem('theme') || 'light'; } catch (_) {}
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-mode');
-            document.getElementById('theme-switch').checked = true;
-            document.querySelector('.background-wrapper').style.background = 'linear-gradient(135deg, #2a1b2e 0%, #3c2f45 100%)';
-        } else {
-            document.querySelector('.background-wrapper').style.background = 'linear-gradient(135deg, #ffe4e9 0%, #f4c4d2 100%)';
-        }
-        const container = document.getElementById('shorts-container');
-        container.addEventListener('touchstart', handleTouchStart);
-        container.addEventListener('touchmove', handleTouchMove);
-        container.addEventListener('touchend', handleTouchEnd);
-        container.addEventListener('wheel', handleWheel);
-        fetchShortsUrls();
-        setTimeout(() => {
-            document.getElementById('loading-overlay').classList.add('hidden');
-        }, 800);
-        heartInterval = setInterval(createHeart, 1200);
-    };
-
-    // YouTube API ready callback
-    function onYouTubeIframeAPIReady() {
-        if (urls.length > 0) {
-            setupVideos();
-        }
-    }
-</script>
+      function goTo(nextIndex) {
+        if (nextIndex < 0 || nextIndex >= videos.length || nextIndex === index) return;
+        index = nextIndex;
+        showVideo();
+      }
+      previousButton.addEventListener('click', () => goTo(index - 1));
+      nextButton.addEventListener('click', () => goTo(index + 1));
+      themeButton.addEventListener('click', () => {
+        setTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'ArrowDown' || event.key === 'PageDown') { event.preventDefault(); goTo(index + 1); }
+        if (event.key === 'ArrowUp' || event.key === 'PageUp') { event.preventDefault(); goTo(index - 1); }
+      });
+      let savedTheme = 'light';
+      try { savedTheme = localStorage.getItem('zarnal-shorts-theme') || 'light'; } catch (_) {}
+      setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+      showVideo();
+    })();
+  </script>
+</body>
+</html>
