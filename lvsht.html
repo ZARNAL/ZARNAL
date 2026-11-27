@@ -48,9 +48,10 @@ const feed = document.getElementById('feed');
 const counter = document.getElementById('counter');
 const hint = document.getElementById('hint');
 let activeIndex = -1;
-let observer = null;
-let activationQueued = false;
-let pendingActivation = -1;
+let scrollTimer = 0;
+let activePlayer = null;
+let playerApiReady = false;
+let pendingPlayerId = null;
 let soundEnabled = false;
 try { soundEnabled = localStorage.getItem('loveShortsSound') === 'on'; } catch(e) { soundEnabled = false; }
 const soundToggle = document.getElementById('soundToggle');
@@ -80,58 +81,94 @@ videos.forEach((id,index)=>{
 
 function activate(index){
   if(!Number.isInteger(index)||index<0||index>=videos.length||index===activeIndex)return;
-  const oldSlide=feed.children[activeIndex];
-  if(oldSlide){
-    const oldPlayer=oldSlide.querySelector('iframe');
-    if(oldPlayer)oldPlayer.remove();
+  if(activePlayer && typeof activePlayer.destroy==='function'){
+    try{activePlayer.destroy();}catch(e){}
+    activePlayer=null;
   }
+  const oldSlide=feed.children[activeIndex];
+  if(oldSlide)oldSlide.querySelector('.video-frame').replaceChildren();
+
   activeIndex=index;
   const frame=feed.children[index].querySelector('.video-frame');
-  const player=document.createElement('iframe');
-  player.title='Love Short '+(index+1);
-  player.loading='eager';
-  player.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
-  player.allowFullscreen=true;
-  player.referrerPolicy='strict-origin-when-cross-origin';
-  // Keep the visitor's sound choice for every next Short.
-  // Browsers may still block audible autoplay until the visitor interacts once.
-  player.src='https://www.youtube.com/embed/'+encodeURIComponent(videos[index])+
-    '?autoplay=1&mute='+(soundEnabled?'0':'1')+'&playsinline=1&controls=1&rel=0&modestbranding=1';
-  frame.replaceChildren(player);
+  const mount=document.createElement('div');
+  mount.id='yt-player-active';
+  mount.style.cssText='width:100%;height:100%';
+  frame.replaceChildren(mount);
+
+  const config={
+    videoId:videos[index],
+    playerVars:{
+      autoplay:1,
+      mute:1,
+      playsinline:1,
+      controls:1,
+      rel:0,
+      modestbranding:1,
+      enablejsapi:1
+    },
+    events:{
+      onReady:(event)=>{
+        if(index!==activeIndex){try{event.target.destroy();}catch(e){};return;}
+        try{
+          event.target.mute();
+          event.target.playVideo();
+          if(soundEnabled) event.target.unMute();
+        }catch(e){}
+      },
+      onStateChange:(event)=>{
+        // If the active player is cued but not yet playing, retry once when ready.
+        if(index===activeIndex && event.data===YT.PlayerState.CUED){
+          try{event.target.playVideo();}catch(e){}
+        }
+      }
+    }
+  };
+
+  if(playerApiReady){
+    activePlayer=new YT.Player(mount.id,config);
+  }else{
+    pendingPlayerId={mountId:mount.id,config,index};
+    loadYouTubeApi();
+  }
   counter.textContent=String(index+1).padStart(2,'0')+' / '+String(videos.length).padStart(2,'0');
   if(index>0)hint.style.display='none';
 }
 
-function chooseVisible(entries){
-  let best=null;
-  for(const entry of entries){
-    if(entry.isIntersecting&&(!best||entry.intersectionRatio>best.intersectionRatio))best=entry;
-  }
-  if(best&&best.intersectionRatio>=0.65){
-    const index=Number(best.target.dataset.index);
-    pendingActivation=index;
-    if(!activationQueued){
-      activationQueued=true;
-      requestAnimationFrame(()=>{
-        const next=pendingActivation;
-        pendingActivation=-1;
-        activationQueued=false;
-        if(next>=0)activate(next);
-      });
-    }
-  }
+function loadYouTubeApi(){
+  if(document.getElementById('youtube-iframe-api'))return;
+  const script=document.createElement('script');
+  script.id='youtube-iframe-api';
+  script.src='https://www.youtube.com/iframe_api';
+  script.async=true;
+  document.head.appendChild(script);
 }
+window.onYouTubeIframeAPIReady=function(){
+  playerApiReady=true;
+  if(pendingPlayerId && pendingPlayerId.index===activeIndex){
+    const pending=pendingPlayerId;
+    pendingPlayerId=null;
+    activePlayer=new YT.Player(pending.mountId,pending.config);
+  }
+};
 
-if('IntersectionObserver' in window){
-  observer=new IntersectionObserver(chooseVisible,{root:feed,threshold:[0.4,0.65,0.8,1]});
-  [...feed.children].forEach(slide=>observer.observe(slide));
-}else{
-  let scrollTimer=0;
-  feed.addEventListener('scroll',()=>{
-    clearTimeout(scrollTimer);
-    scrollTimer=setTimeout(()=>activate(Math.round(feed.scrollTop/Math.max(feed.clientHeight,1))),100);
-  },{passive:true});
+function getNearestReel(){
+  const height=feed.clientHeight || window.innerHeight;
+  return Math.max(0,Math.min(videos.length-1,Math.round(feed.scrollTop/height)));
 }
+function settleToVisibleReel(){
+  const index=getNearestReel();
+  if(index!==activeIndex)activate(index);
+}
+feed.addEventListener('scroll',()=>{
+  if(feed.scrollTop<30)hint.style.display='flex';
+  clearTimeout(scrollTimer);
+  scrollTimer=setTimeout(settleToVisibleReel,140);
+},{passive:true});
+feed.addEventListener('scrollend',settleToVisibleReel,{passive:true});
+window.addEventListener('resize',()=>{
+  clearTimeout(scrollTimer);
+  scrollTimer=setTimeout(settleToVisibleReel,180);
+});
 activate(0);
 
 
@@ -141,10 +178,11 @@ soundToggle.addEventListener('click',()=>{
   updateSoundButton();
   // Apply the sound choice to the current Short. The button disappears immediately;
   // every later Short inherits the saved unmuted preference in activate().
-  const current = activeIndex;
-  if(current >= 0){
-    activeIndex = -1;
-    activate(current);
+  if(activePlayer){
+    try{
+      if(soundEnabled){activePlayer.unMute();activePlayer.playVideo();}
+      else activePlayer.mute();
+    }catch(e){}
   }
 });
 
