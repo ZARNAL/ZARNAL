@@ -14106,14 +14106,201 @@ main{max-width:920px;margin:auto;padding:18px 16px 60px}.searchbox{height:50px;d
   }
 ]
 </script><script>
-(()=>{const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();let names=[],index=[],gender='All',letter='All',query='',sort='az',filtered=[],shown=0;const page=60,favKey='baby_names_pro_867_favs';let fav=[];try{fav=JSON.parse(localStorage.getItem(favKey)||'[]');if(!Array.isArray(fav))fav=[]}catch{fav=[]}const key=n=>n.Name+'|'+n.Gender,isFav=n=>fav.includes(key(n));
-function filter(){const terms=query?norm(query).split(' ').filter(Boolean):[],out=[];for(let i=0;i<names.length;i++){const n=names[i];if(gender!=='All'&&gender!=='Favorites'&&n.Gender!==gender)continue;if(gender==='Favorites'&&!isFav(n))continue;if(letter!=='All'&&n.StartingLetter!==letter)continue;if(terms.length&&!terms.every(t=>index[i].includes(t)))continue;out.push(n)}out.sort((a,b)=>sort==='za'?b.Name.localeCompare(a.Name):a.Name.localeCompare(b.Name));return out}
-function card(n){const el=document.createElement('article');el.className='card';el.innerHTML='<div class="top"><div class="namearea"><div class="name">'+esc(n.Name)+'</div><div class="meaning">'+esc(n.Meaning)+'</div><span class="tag '+esc(n.Gender)+'">'+esc(n.Gender)+'</span></div><button class="heart '+(isFav(n)?'on':'')+'" aria-label="Favorite">'+(isFav(n)?'♥':'♡')+'</button></div><div class="details"><div><b>Origin:</b> '+esc(n.Origin||'Not specified')+'</div><div><b>Language:</b> '+esc(n.Language||'Not specified')+'</div><div><b>Gender:</b> '+esc(n.Gender)+'</div></div><button class="expand">Details ↓</button>';el.querySelector('.heart').onclick=e=>{e.stopPropagation();const k=key(n),i=fav.indexOf(k);if(i<0)fav.push(k);else fav.splice(i,1);try{localStorage.setItem(favKey,JSON.stringify(fav))}catch{}draw()};el.querySelector('.expand').onclick=()=>{el.classList.toggle('expanded');el.querySelector('.expand').textContent=el.classList.contains('expanded')?'Hide details ↑':'Details ↓'};return el}
-function draw(){filtered=filter();shown=0;$('list').replaceChildren();$('count').innerHTML='<strong>'+filtered.length.toLocaleString()+'</strong> names';if(!filtered.length){$('list').innerHTML='<div class="empty">'+(gender==='Favorites'?'No saved names yet. Tap ♡ to save names.':'No matches. Try another search or filter.')+'</div>';more();return}append();more()}
-function append(){const end=Math.min(shown+page,filtered.length),frag=document.createDocumentFragment();for(let i=shown;i<end;i++)frag.appendChild(card(filtered[i]));$('list').appendChild(frag);shown=end;$('shown').textContent='Showing '+shown.toLocaleString();more()}
-function more(){$('more').innerHTML=shown<filtered.length?'<button>Load more · '+(filtered.length-shown).toLocaleString()+' remaining</button>':'';$('more').firstElementChild?.addEventListener('click',append)}
-$('genderFilters').onclick=e=>{const b=e.target.closest('[data-g]');if(!b)return;gender=b.dataset.g;document.querySelectorAll('[data-g]').forEach(x=>x.classList.toggle('active',x===b));draw()};$('letters').onclick=e=>{const b=e.target.closest('[data-l]');if(!b)return;letter=b.dataset.l;document.querySelectorAll('[data-l]').forEach(x=>x.classList.toggle('active',x===b));draw()};$('sort').onchange=e=>{sort=e.target.value;draw()};let timer;$('search').oninput=e=>{query=e.target.value;$('clear').style.display=query?'block':'none';clearTimeout(timer);timer=setTimeout(draw,70)};$('clear').onclick=()=>{$('search').value='';query='';$('clear').style.display='none';draw();$('search').focus()};$('theme').onclick=()=>{document.body.classList.toggle('dark');const d=document.body.classList.contains('dark');$('theme').textContent=d?'☀':'◐';try{localStorage.setItem('baby_names_pro_theme',d?'dark':'light')}catch{}};try{if(localStorage.getItem('baby_names_pro_theme')==='dark'){document.body.classList.add('dark');$('theme').textContent='☀'}}catch{}
-function start(){try{names=JSON.parse($('babyNamesData').textContent);if(!Array.isArray(names)||names.length<1)throw Error('name dataset is empty or invalid');names=names.map(n=>({...n,Name:String(n.Name||'').trim(),StartingLetter:String(n.Name||'').trim()[0].toUpperCase()}));if(names.some(n=>!n.Name||!n.Meaning||!['Boy','Girl','Unisex'].includes(n.Gender)))throw Error('record validation failed');index=names.map(n=>norm([n.Name,n.Meaning,n.Origin,n.Language,n.Gender].join(' ')));draw();$('app').classList.add('ready');$('boot').classList.add('done');setTimeout(()=>$('boot').remove(),250);$('foot').textContent=names.length.toLocaleString()+' curated names · Search ready · Offline'}catch(err){console.error('Names app initialization:',err);$('ring').style.display='none';$('bootError').style.display='block';$('bootError').textContent='The name database could not initialize. Please reload.'}}
-setTimeout(start,70);setTimeout(()=>{if(!$('app').classList.contains('ready')){$('ring').style.display='none';$('bootError').style.display='block';$('bootError').textContent='Loading took too long. Reload the page.'}},1867);
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const normalize=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const PAGE_SIZE=60;
+const FAV_KEY='baby_names_pro_867_favs';
+const THEME_KEY='baby_names_pro_theme';
+let names=[],filtered=[],genderFilter='All',letterFilter='All',searchQuery='',sortOrder='az',visibleCount=0,favorites=[];
+const elements={};
+['app','boot','ring','bootError','genderFilters','letters','search','clear','sort','list','count','shown','more','foot','theme'].forEach(id=>elements[id]=$(id));
+function readFavorites(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(FAV_KEY)||'[]');
+  favorites=Array.isArray(saved)?saved.filter(x=>typeof x==='string'):[];
+ }catch{favorites=[]}
+}
+function isFavorite(name){return favorites.includes(name.Name+'|'+name.Gender)}
+function saveFavorites(){
+ try{localStorage.setItem(FAV_KEY,JSON.stringify(favorites))}
+ catch(error){console.warn('Could not save favorites:',error)}
+}
+function setActive(container,attribute,value){
+ container.querySelectorAll('['+attribute+']').forEach(button=>{
+  const active=button.getAttribute(attribute)===value;
+  button.classList.toggle('active',active);
+  button.setAttribute('aria-pressed',String(active));
+ });
+}
+function updateCount(){
+ elements.count.innerHTML='<strong>'+filtered.length.toLocaleString()+'</strong> names';
+ elements.shown.textContent=filtered.length?'Showing '+visibleCount.toLocaleString():'';
+}
+function matches(name){
+ if(genderFilter==='Favorites'&&!isFavorite(name))return false;
+ if(genderFilter!=='All'&&genderFilter!=='Favorites'&&name.Gender!==genderFilter)return false;
+ if(letterFilter!=='All'&&name.StartingLetter!==letterFilter)return false;
+ if(searchQuery){
+  const terms=normalize(searchQuery).split(/\s+/).filter(Boolean);
+  if(terms.length&&!terms.every(term=>name._search.includes(term)))return false;
+ }
+ return true;
+}
+function getFiltered(){
+ const result=names.filter(matches);
+ result.sort((a,b)=>{
+  const compared=a.Name.localeCompare(b.Name,undefined,{sensitivity:'base',numeric:true});
+  return sortOrder==='za'?-compared:compared;
+ });
+ return result;
+}
+function makeCard(name){
+ const article=document.createElement('article');
+ article.className='card';
+ const favorite=isFavorite(name);
+ article.innerHTML=
+  '<div class="top"><div class="namearea"><div class="name">'+esc(name.Name)+'</div>'+
+  '<div class="meaning">'+esc(name.Meaning)+'</div><span class="tag '+esc(name.Gender)+'">'+esc(name.Gender)+'</span></div>'+
+  '<button type="button" class="heart '+(favorite?'on':'')+'" aria-label="'+(favorite?'Remove '+esc(name.Name)+' from saved names':'Save '+esc(name.Name))+'" aria-pressed="'+favorite+'">'+(favorite?'♥':'♡')+'</button></div>'+
+  '<div class="details"><div><b>Origin:</b> '+esc(name.Origin||'Not specified')+'</div>'+
+  '<div><b>Language:</b> '+esc(name.Language||'Not specified')+'</div>'+
+  '<div><b>Gender:</b> '+esc(name.Gender)+'</div></div>'+
+  '<button type="button" class="expand" aria-expanded="false">Details ↓</button>';
+ article.querySelector('.heart').addEventListener('click',()=>{
+  const key=name.Name+'|'+name.Gender;
+  const index=favorites.indexOf(key);
+  if(index===-1)favorites.push(key);else favorites.splice(index,1);
+  saveFavorites();
+  refresh();
+ });
+ const expand=article.querySelector('.expand');
+ expand.addEventListener('click',()=>{
+  const open=article.classList.toggle('expanded');
+  expand.textContent=open?'Hide details ↑':'Details ↓';
+  expand.setAttribute('aria-expanded',String(open));
+ });
+ return article;
+}
+function renderMore(){
+ elements.more.replaceChildren();
+ if(visibleCount>=filtered.length)return;
+ const button=document.createElement('button');
+ button.type='button';
+ button.textContent='Load more · '+(filtered.length-visibleCount).toLocaleString()+' remaining';
+ button.addEventListener('click',appendNext);
+ elements.more.appendChild(button);
+}
+function appendNext(){
+ const end=Math.min(visibleCount+PAGE_SIZE,filtered.length);
+ const fragment=document.createDocumentFragment();
+ for(let i=visibleCount;i<end;i++)fragment.appendChild(makeCard(filtered[i]));
+ elements.list.appendChild(fragment);
+ visibleCount=end;
+ updateCount();
+ renderMore();
+}
+function refresh(){
+ filtered=getFiltered();
+ visibleCount=0;
+ elements.list.replaceChildren();
+ if(filtered.length===0){
+  const empty=document.createElement('div');
+  empty.className='empty';
+  empty.textContent=genderFilter==='Favorites'?'No saved names yet. Tap ♡ to save names.':'No matches. Try another search or filter.';
+  elements.list.appendChild(empty);
+  updateCount();
+  renderMore();
+  return;
+ }
+ appendNext();
+}
+function setGender(value){
+ genderFilter=value;
+ setActive(elements.genderFilters,'data-g',value);
+ refresh();
+}
+function setLetter(value){
+ letterFilter=value;
+ setActive(elements.letters,'data-l',value);
+ refresh();
+}
+function setTheme(dark){
+ document.body.classList.toggle('dark',dark);
+ elements.theme.textContent=dark?'☀':'◐';
+ elements.theme.setAttribute('aria-label',dark?'Switch to light appearance':'Switch to dark appearance');
+ try{localStorage.setItem(THEME_KEY,dark?'dark':'light')}catch{}
+}
+function initializeData(){
+ const parsed=JSON.parse(elementsData.textContent);
+ if(!Array.isArray(parsed)||!parsed.length)throw new Error('Empty name database');
+ const valid=[];
+ parsed.forEach((item,index)=>{
+  if(!item||typeof item!=='object')throw new Error('Invalid name record at row '+(index+1));
+  const Name=String(item.Name??'').trim();
+  const Meaning=String(item.Meaning??'').trim();
+  const Gender=String(item.Gender??'').trim();
+  if(!Name||!Meaning||!['Boy','Girl','Unisex'].includes(Gender))throw new Error('Invalid name record at row '+(index+1));
+  const record={...item,Name,Meaning,Gender,Origin:String(item.Origin??'').trim(),Language:String(item.Language??'').trim()};
+  record.StartingLetter=normalize(Name).charAt(0).toUpperCase();
+  record._search=normalize([Name,Meaning,record.Origin,record.Language,Gender].join(' '));
+  valid.push(record);
+ });
+ names=valid;
+}
+const elementsData=$('babyNamesData');
+function bindEvents(){
+ elements.genderFilters.addEventListener('click',event=>{
+  const button=event.target.closest('button[data-g]');
+  if(!button||!elements.genderFilters.contains(button))return;
+  setGender(button.dataset.g);
+ });
+ elements.letters.addEventListener('click',event=>{
+  const button=event.target.closest('button[data-l]');
+  if(!button||!elements.letters.contains(button))return;
+  setLetter(button.dataset.l);
+ });
+ elements.search.addEventListener('input',()=>{
+  searchQuery=elements.search.value;
+  elements.clear.style.display=searchQuery?'block':'none';
+  refresh();
+ });
+ elements.clear.addEventListener('click',()=>{
+  elements.search.value='';
+  searchQuery='';
+  elements.clear.style.display='none';
+  refresh();
+  elements.search.focus();
+ });
+ elements.sort.addEventListener('change',()=>{
+  sortOrder=elements.sort.value==='za'?'za':'az';
+  refresh();
+ });
+ elements.theme.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark')));
+}
+function start(){
+ try{
+  initializeData();
+  readFavorites();
+  bindEvents();
+  try{setTheme(localStorage.getItem(THEME_KEY)==='dark')}catch{setTheme(false)}
+  setGender('All');
+  setLetter('All');
+  refresh();
+  elements.app.classList.add('ready');
+  elements.boot.classList.add('done');
+  window.setTimeout(()=>elements.boot.remove(),260);
+  elements.foot.textContent=names.length.toLocaleString()+' curated names · Search ready · Offline';
+ }catch(error){
+  console.error('Baby names initialization failed:',error);
+  elements.ring.style.display='none';
+  elements.bootError.style.display='block';
+  elements.bootError.textContent='The name database could not initialize. Please reload.';
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
+else start();
 })();
 </script></body></html>
