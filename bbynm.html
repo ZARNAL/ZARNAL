@@ -124,7 +124,7 @@ try{favorites=JSON.parse(localStorage.getItem('favorites')||'[]');if(!Array.isAr
 let debounceTimer;
 const $=id=>document.getElementById(id);
 const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-const popularityScore=n=>({Popular:4,Rising:3,Stable:2,Rare:1}[n.popularity||n['Popularity Trend']]||0;
+const popularityScore=n=>({Popular:4,Rising:3,Stable:2,Rare:1}[n.popularity||n['Popularity Trend']]||0);
 function updateThemeTitle(){
   $('header').querySelector('#header').textContent=selectedGender==='Boy'?'Boy Names':selectedGender==='Girl'?'Girl Names':selectedGender==='Unisex'?'Unisex Names':(showFavoritesOnly||isFavoritesView)?'Favorite Names':'Baby Names';
   updateExportVisibility();
@@ -159,40 +159,56 @@ function getShownNames(){
     const favOk=!showFavoritesOnly||favorites.some(f=>f.Name===n.Name&&f.Gender===n.Gender);
     return genderOk&&textOk&&favOk;
   });
-  list.sort(sortOption==='popularity'?(a,b)=>safePopularity(b)-safePopularity(a):(a,b)=>String(a.Name||'').localeCompare(String(b.Name||'')));
+  list.sort(sortOption==='popularity'?(a,b)=>popularityScore(b)-popularityScore(a)||(a.Name||'').localeCompare(b.Name||''):(a,b)=>String(a.Name||'').localeCompare(String(b.Name||'')));
   return list;
 }
+let renderSequence=0;
 function displayNames(){
-  const container=$('nameList');container.innerHTML='';const loading=$('loadingWrap');loading.classList.add('active');const shown=getShownNames();$('resultCount').textContent=shown.length+' names';$('resultMode').textContent=(showFavoritesOnly||isFavoritesView)?'Favorites':selectedGender==='All'?'All genders':selectedGender;setTimeout(()=>loading.classList.remove('active'),0);
-  const list=shown;
-  if(!list.length){container.innerHTML='<p class="empty">No names found. Try another search or filter.</p>';return;}
-  const frag=document.createDocumentFragment();
-  list.forEach(n=>{
-    const gender=String(n.Gender||'Unisex').toLowerCase();
-    const isFav=favorites.some(f=>f.Name===n.Name&&f.Gender===n.Gender);
-    const card=document.createElement('article');card.className=`card ${gender}`;card.dataset.name=n.Name||'';card.dataset.gender=n.Gender||'';
-    const name=escapeHTML(n.Name),meaning=escapeHTML(n.Meaning);
-    const genderEmoji=n.Gender==='Boy'?'👦':n.Gender==='Girl'?'👧':'🧸';
-    card.innerHTML=`
-      <div class="icon-bar">
-        <button class="icon-btn material-icons-round ${isFav?'favorited':''}" data-action="favorite" aria-label="Favorite">${isFav?'favorite':'favorite_border'}</button>
-        <button class="icon-btn material-icons-round" data-action="copy" aria-label="Copy name">content_copy</button>
-        <button class="icon-btn material-icons-round" data-action="share" aria-label="Share name">share</button>
-        <button class="icon-btn material-icons-round" data-action="speak" aria-label="Pronounce name">volume_up</button>
-      </div>
-      <div class="tooltip">Copied!</div>
-      <div class="name">${name} ${genderEmoji}</div><div class="meaning">${meaning}</div>
-      <div class="details">
-        <div><strong>Starting Letter:</strong> ${escapeHTML(n['Starting Letter']||'N/A')}</div>
-        <div><strong>Origin:</strong> ${escapeHTML(n.Origin||'N/A')}</div>
-        <div><strong>Cultural Significance:</strong> ${escapeHTML(n['Cultural Significance']||'N/A')}</div>
-        <div><strong>Astrological Association:</strong> ${escapeHTML(n['Astrological Association']||'N/A')}</div>
-        <div><strong>Popularity Trend:</strong> ${escapeHTML(n['Popularity Trend']||'N/A')}</div>
-        <div><strong>Popularity:</strong> ${escapeHTML(n.popularity||'N/A')}</div>
-      </div>`;
-    frag.appendChild(card);
-  });
-  container.appendChild(frag);
+  const container=$('nameList'),loading=$('loadingWrap');
+  const sequence=++renderSequence;
+  container.replaceChildren();
+  const list=getShownNames();
+  $('resultCount').textContent=list.length+' names';
+  $('resultMode').textContent=(showFavoritesOnly||isFavoritesView)?'Favorites':selectedGender==='All'?'All genders':selectedGender;
+  if(!list.length){loading.classList.remove('active');container.innerHTML='<p class="empty">No names found. Try another search or filter.</p>';return;}
+  loading.classList.add('active');
+  let index=0;
+  function renderBatch(){
+    if(sequence!==renderSequence)return;
+    const frag=document.createDocumentFragment();
+    const limit=Math.min(index+45,list.length);
+    for(;index<limit;index++){
+      const n=list[index];
+      const gender=String(n.Gender||'Unisex').toLowerCase();
+      const isFav=favorites.some(f=>f.Name===n.Name&&f.Gender===n.Gender);
+      const card=document.createElement('article');
+      card.className='card '+gender;card.dataset.name=n.Name||'';card.dataset.gender=n.Gender||'';
+      const name=escapeHTML(n.Name),meaning=escapeHTML(n.Meaning);
+      const genderEmoji=n.Gender==='Boy'?'👦':n.Gender==='Girl'?'👧':'🧸';
+      card.innerHTML=`
+        <div class="icon-bar">
+          <button class="icon-btn material-icons-round ${isFav?'favorited':''}" data-action="favorite" aria-label="Favorite">${isFav?'favorite':'favorite_border'}</button>
+          <button class="icon-btn material-icons-round" data-action="copy" aria-label="Copy name">content_copy</button>
+          <button class="icon-btn material-icons-round" data-action="share" aria-label="Share name">share</button>
+          <button class="icon-btn material-icons-round" data-action="speak" aria-label="Pronounce name">volume_up</button>
+        </div>
+        <div class="tooltip">Copied!</div>
+        <div class="name">${name} ${genderEmoji}</div><div class="meaning">${meaning}</div>
+        <div class="details">
+          <div><strong>Starting Letter:</strong> ${escapeHTML(n['Starting Letter']||'N/A')}</div>
+          <div><strong>Origin:</strong> ${escapeHTML(n.Origin||'N/A')}</div>
+          <div><strong>Cultural Significance:</strong> ${escapeHTML(n['Cultural Significance']||'N/A')}</div>
+          <div><strong>Astrological Association:</strong> ${escapeHTML(n['Astrological Association']||'N/A')}</div>
+          <div><strong>Popularity Trend:</strong> ${escapeHTML(n['Popularity Trend']||'N/A')}</div>
+          <div><strong>Popularity:</strong> ${escapeHTML(n.popularity||'N/A')}</div>
+        </div>`;
+      frag.appendChild(card);
+    }
+    container.appendChild(frag);
+    if(index<list.length)requestAnimationFrame(renderBatch);
+    else loading.classList.remove('active');
+  }
+  requestAnimationFrame(renderBatch);
 }
 function getNameRecord(card){return names.find(n=>n.Name===card.dataset.name&&n.Gender===card.dataset.gender);}
 function toggleFavoriteRecord(record,btn){
