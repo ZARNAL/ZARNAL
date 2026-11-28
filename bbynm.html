@@ -48,7 +48,7 @@ function saveFavorites(){try{localStorage.setItem(favKey,JSON.stringify(favorite
 function normPopularity(n){const p=String(n.popularity||n['Popularity Trend']||'').toLowerCase();return ({popular:4,rising:3,stable:2,rare:1}[p]||0);}
 function filtered(){
  let arr=names.filter(n=>(gender==='All'||n.Gender===gender)&&(!favoritesOnly||isFav(n))&&(letter==='All'||String(n.Name||'').trim().charAt(0).toUpperCase()===letter));
- if(query){const q=query.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase().trim();const terms=q.split(/\\s+/).filter(Boolean);arr=arr.filter(n=>{const searchable=Object.values(n).map(v=>String(v??'')).join(' ').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLocaleLowerCase();return terms.every(term=>searchable.includes(term));});}
+ if(query){const q=query.trim().toLocaleLowerCase();const terms=q.split(/\s+/).filter(Boolean);arr=arr.filter(n=>{const searchable=Object.values(n).map(v=>String(v??'')).join(' ').toLocaleLowerCase();return terms.every(term=>searchable.includes(term));});}
  if(sort==='pop')arr.sort((a,b)=>normPopularity(b)-normPopularity(a)||a.Name.localeCompare(b.Name));
  else arr.sort((a,b)=>a.Name.localeCompare(b.Name));
  return arr;
